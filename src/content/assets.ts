@@ -23,7 +23,11 @@ export type BrandAsset = {
   required: string;
   /** Where a supplied asset came from, for the asset audit trail. */
   source?: string;
+  /** Illustrations with transparency are contained, never cropped. */
+  fit?: "cover" | "contain";
 };
+
+const MASCOT = "Supplied Mumma's Bite character illustration — used unaltered";
 
 const FILM = "Still from the supplied process film (illustrated/rendered — not a product photograph)";
 const HERO_FILM = "Still from the supplied hero film (rendered — not a product photograph)";
@@ -42,15 +46,48 @@ type AssetKey =
   | "ingredientBowl"
   | "processPoster"
   | "heroPoster"
+  | "mascotLaughing"
+  | "mascotOffering"
+  | "mascotSurprised"
   | IngredientAssetKey;
 
 export const assets: Record<AssetKey, BrandAsset> = {
+  /** Primary character: the mother feeding her child a bite. */
   mascot: {
-    src: null,
-    alt: "The Mumma's Bite mother and child character",
-    width: 1200,
-    height: 1400,
+    src: "/assets/mascot/mascot-feeding.webp",
+    alt: "The Mumma's Bite mother, smiling, feeding her little boy a bite",
+    width: 1312,
+    height: 1199,
     required: "Supplied mother-and-child character illustration (transparent PNG or SVG)",
+    source: MASCOT,
+    fit: "contain",
+  },
+  mascotLaughing: {
+    src: "/assets/mascot/mascot-laughing.webp",
+    alt: "The Mumma's Bite mother laughing happily",
+    width: 1254,
+    height: 1254,
+    required: "Character — laughing",
+    source: MASCOT,
+    fit: "contain",
+  },
+  mascotOffering: {
+    src: "/assets/mascot/mascot-offering.webp",
+    alt: "The Mumma's Bite mother holding out a bowl of homemade sweets",
+    width: 1287,
+    height: 1222,
+    required: "Character — offering",
+    source: MASCOT,
+    fit: "contain",
+  },
+  mascotSurprised: {
+    src: "/assets/mascot/mascot-surprised.webp",
+    alt: "The Mumma's Bite mother looking surprised",
+    width: 1254,
+    height: 1254,
+    required: "Character — surprised",
+    source: MASCOT,
+    fit: "contain",
   },
   heroScene: {
     src: null,
@@ -115,6 +152,6 @@ export const storyAssetFor: Record<string, AssetKey> = {
   recipe: "storyRecipe",
   experiments: "storyExperiments",
   product: "barPressed",
-  brand: "storyBrand",
+  brand: "mascotLaughing",
   next: "storyNext",
 };

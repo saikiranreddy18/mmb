@@ -20,8 +20,10 @@ export function ClosingInvite() {
             </ButtonLink>
           </div>
         </Reveal>
-        <Reveal variant="clip" className="mx-auto aspect-[4/5] w-48 overflow-hidden rounded-t-full md:w-64">
-          <BrandImage asset={assets.mascot} sizes="16rem" decorative className="!p-4 [&>span:last-child]:text-[0.65rem]" />
+        <Reveal variant="clip" className="relative mx-auto aspect-[4/5] w-60 overflow-hidden rounded-t-full bg-cream md:w-80">
+          <div className="absolute inset-x-0 bottom-0 top-[12%]">
+            <BrandImage asset={assets.mascotOffering} sizes="20rem" className="object-bottom" />
+          </div>
         </Reveal>
       </div>
     </section>

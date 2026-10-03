@@ -15,11 +15,20 @@ The supplied 10s process film is an **illustrated / rendered animation**: its pa
 
 Read off the rendered pack, and **all UNVERIFIED** until checked against the real label: name "Dry Fruit Bar", "Dates | Nuts | Seeds", 20 g, ₹30 each, "No Added Sugar", "No Preservatives". The protein figure on the pack is illegible, so it is **not used**. The tagline above "IN EVERY BITE" is cut off.
 
+## SUPPLIED: character set (`public/assets/mascot/`, used unaltered)
+| File | Used for |
+|---|---|
+| `mascot-feeding.webp` (mother feeding her child) | Home "It started at home", Our Story opening |
+| `mascot-laughing.webp` | Hero badge, Profile welcome card, Story ch. 05 "The brand" |
+| `mascot-offering.webp` | Home closing "From our home to yours", empty orders |
+| `mascot-surprised.webp` | Empty cart, 404 page |
+| `mascot-tasting-black-bg.webp` | **Not used.** It has a solid black background. Please resend it as a transparent PNG |
+
 ## ASSET REQUIRED (`src/content/assets.ts`)
-- [ ] **Mother-and-child character** (transparent PNG/SVG): small arch badge on the hero film (appears automatically once `mascot.src` is set), closing invite, profile, empty orders
 - [ ] **Logo file** (PNG/SVG). Until then an interim typographic wordmark in the logo colours is used (`components/ui/Wordmark.tsx`)
 - [ ] **Real pack photographs** (front + back label) to replace the rendered pack
-- [ ] Story images: idea, recipe, experiments, brand, what comes next (5)
+- [ ] Story images: idea, recipe, experiments, what comes next (4)
+- [ ] Ingredient illustrations (date, cashew, pistachio, almond, walnut, seeds) were shared in chat only. Send them as files, with real transparency
 - [ ] Open Graph share image (1200×630)
 
 ## CONTENT REQUIRED

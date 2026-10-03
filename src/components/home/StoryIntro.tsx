@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { BrandImage } from "@/components/ui/BrandImage";
+import { assets } from "@/content/assets";
 import { brand, homeJourney } from "@/content/brand";
 import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
@@ -56,6 +58,9 @@ export function StoryIntro() {
               Read our story
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
             </Link>
+          </Reveal>
+          <Reveal variant="clip" className="mt-10 aspect-[1312/1199] w-full max-w-xs md:max-w-sm lg:mt-12">
+            <BrandImage asset={assets.mascot} sizes="(min-width:768px) 24rem, 80vw" />
           </Reveal>
         </div>
 

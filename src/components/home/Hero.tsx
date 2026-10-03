@@ -139,12 +139,19 @@ export function Hero() {
             </button>
           </div>
 
-          {/* Supplied mother-and-child character joins here once provided. */}
-          {assets.mascot.src && (
-            <div className="absolute -bottom-8 -left-4 aspect-[4/5] w-28 overflow-hidden rounded-t-full bg-cream shadow-lg md:w-36 lg:-left-10">
-              <Image src={assets.mascot.src} alt={assets.mascot.alt} fill sizes="9rem" className="object-contain" />
-            </div>
-          )}
+          {/* Mumma herself — a static brand moment, never animated beyond the entrance. */}
+          <div
+            data-hero-reveal="fade"
+            className="absolute -bottom-7 right-3 aspect-square w-24 overflow-hidden rounded-full border-4 border-bg bg-cream shadow-[0_12px_30px_-12px_rgba(31,42,32,0.45)] md:w-32 lg:-right-6 lg:w-40"
+          >
+            <Image
+              src={assets.mascotLaughing.src!}
+              alt={assets.mascotLaughing.alt}
+              fill
+              sizes="(min-width:1024px) 10rem, 8rem"
+              className="translate-y-[6%] scale-110 object-cover"
+            />
+          </div>
           <span aria-hidden className="absolute right-3 top-[18%] size-5 md:size-6 rounded-full bg-gold/80 lg:-right-5 lg:size-8" />
         </div>
       </IntroReveal>

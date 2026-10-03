@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { Minus, Plus, Trash2, X } from "lucide-react";
 import { useCart } from "./CartProvider";
 import { formatMoney } from "@/lib/commerce/money";
 import { Button, ButtonLink, buttonClass } from "@/components/ui/Button";
@@ -53,7 +53,7 @@ export function CartDrawer() {
 
         {isEmpty ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-5 px-8 text-center">
-            <ShoppingBag className="size-8 text-green/60" strokeWidth={1.5} aria-hidden />
+            <Image src="/assets/mascot/mascot-surprised.webp" alt="" width={160} height={160} className="size-36" />
             <p className="text-2xl font-extrabold uppercase tracking-tight text-green">
               Nothing here <span className="editorial normal-case">yet.</span>
             </p>

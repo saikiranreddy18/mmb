@@ -9,8 +9,8 @@ export function OrderHistory({ orders }: { orders: Order[] }) {
   if (!orders.length) {
     return (
       <div className="flex flex-col items-center gap-6 py-6 text-center sm:flex-row sm:text-left">
-        <div className="aspect-[4/5] w-28 shrink-0 overflow-hidden rounded-t-full">
-          <BrandImage asset={assets.mascot} decorative sizes="7rem" className="!gap-1 !p-2 [&>span:last-child]:hidden" />
+        <div className="aspect-square w-32 shrink-0">
+          <BrandImage asset={assets.mascotOffering} decorative sizes="8rem" />
         </div>
         <div>
           <p className="text-2xl font-extrabold uppercase tracking-tight text-green">

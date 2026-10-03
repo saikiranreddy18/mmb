@@ -4,6 +4,8 @@ import { Reveal } from "@/components/motion/Reveal";
 import { StoryChapter } from "@/components/story/StoryChapter";
 import { ButtonLink } from "@/components/ui/Button";
 import { MockNotice } from "@/components/ui/MockNotice";
+import { BrandImage } from "@/components/ui/BrandImage";
+import { assets } from "@/content/assets";
 import { brand, story } from "@/content/brand";
 
 export const metadata: Metadata = {
@@ -16,7 +18,8 @@ export default function OurStoryPage() {
   return (
     <>
       <section aria-labelledby="story-title" className="pb-16 pt-32 md:pb-24 md:pt-44">
-        <IntroReveal className="shell">
+        <IntroReveal className="shell grid items-end gap-10 lg:grid-cols-[1.4fr_1fr]">
+          <div>
           <p data-hero-reveal="fade" className="eyebrow mb-8 flex items-center gap-3 text-brown">
             <span aria-hidden className="h-px w-8 bg-gold" />
             Our story
@@ -41,6 +44,10 @@ export default function OurStoryPage() {
               The real Mumma's Bite story hasn&apos;t been supplied yet. Each chapter below shows what it needs — nothing
               here has been invented.
             </MockNotice>
+          </div>
+          </div>
+          <div data-hero-reveal="fade" className="mx-auto aspect-[1312/1199] w-full max-w-sm lg:max-w-none">
+            <BrandImage asset={assets.mascot} priority sizes="(min-width:1024px) 34vw, 80vw" />
           </div>
         </IntroReveal>
       </section>

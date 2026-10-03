@@ -33,7 +33,7 @@ export function BrandImage({ asset, className = "", sizes = "100vw", priority, t
         height={asset.height}
         sizes={sizes}
         priority={priority}
-        className={`h-full w-full object-cover ${className}`}
+        className={`h-full w-full ${asset.fit === "contain" ? "object-contain" : "object-cover"} ${className}`}
       />
     );
   }

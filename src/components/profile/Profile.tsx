@@ -71,8 +71,8 @@ export function Profile({ session }: { session: CustomerSession }) {
             data-hero-reveal="fade"
             className="mt-10 grid items-center gap-8 overflow-hidden rounded-[2rem] bg-cream p-6 md:grid-cols-[auto_1fr] md:p-10"
           >
-            <div className="mx-auto aspect-[4/5] w-36 overflow-hidden rounded-t-full md:w-44">
-              <BrandImage asset={assets.mascot} tone="light" decorative sizes="11rem" className="!gap-1 !p-3 [&>span:last-child]:text-[0.6rem]" />
+            <div className="mx-auto aspect-square w-40 md:w-48">
+              <BrandImage asset={assets.mascotLaughing} decorative sizes="12rem" />
             </div>
             <div>
               {session.status === "not-connected" ? (
