@@ -30,7 +30,7 @@ export function ProductDetail({ product }: { product: Product }) {
           <div className="space-y-4 lg:sticky lg:top-28 lg:self-start">
             {images.length ? (
               images.map((img, i) => (
-                <div key={img.url} data-hero-reveal={i === 0 ? "clip" : undefined} className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-cream">
+                <div key={img.url} data-hero-reveal={i === 0 ? "clip" : undefined} className={`${i > 0 ? "hidden sm:block" : ""} relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-cream`}>
                   <Image
                     src={img.url}
                     alt={img.altText ?? product.title}
@@ -58,7 +58,7 @@ export function ProductDetail({ product }: { product: Product }) {
           {/* Information */}
           <div>
             <div data-hero-reveal="fade" className="flex flex-wrap items-center gap-3">
-              <p className="eyebrow text-brown">Mummas Bite</p>
+              <p className="eyebrow text-brown">Mumma's Bite</p>
               {product.isMock && <MockBadge />}
             </div>
             <h1 className="mt-4 overflow-hidden pb-[0.08em] text-green">

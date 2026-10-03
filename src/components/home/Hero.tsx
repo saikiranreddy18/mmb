@@ -10,7 +10,7 @@ import { brand } from "@/content/brand";
 import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
 /**
- * WORLD 01 — Enter Mummas Bite.
+ * WORLD 01 — Enter Mumma's Bite.
  * Motion: IntroReveal (typography line reveal + arch image unmask) and a
  * subtle desktop-only parallax on the arch (yPercent 0 → -8, scrubbed to scroll).
  * Reduced motion / mobile: no parallax.
@@ -56,7 +56,7 @@ export function Hero() {
             {brand.supporting.value}
           </p>
           <div data-hero-reveal="fade" className="mt-8 flex flex-col gap-3 sm:flex-row md:mt-10">
-            <ButtonLink href="/shop">Shop Mummas Bite</ButtonLink>
+            <ButtonLink href="/shop">Shop Mumma's Bite</ButtonLink>
             <ButtonLink href="/our-story" variant="secondary">
               Our story
             </ButtonLink>
@@ -70,7 +70,13 @@ export function Hero() {
             data-hero-reveal="clip"
             className="relative aspect-[4/5] overflow-hidden rounded-t-full"
           >
-            <BrandImage asset={assets.mascot} priority sizes="(min-width:1024px) 30rem, 80vw" className="rounded-t-full" />
+            {/* The supplied mother-and-child character takes this spot once provided; until then, the pack. */}
+            <BrandImage
+              asset={assets.mascot.src ? assets.mascot : assets.productPack}
+              priority
+              sizes="(min-width:1024px) 30rem, 80vw"
+              className="rounded-t-full"
+            />
           </div>
           <span aria-hidden className="absolute -left-3 top-1/3 size-6 rounded-full bg-gold/80 lg:-left-8 lg:size-8" />
         </div>

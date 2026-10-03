@@ -1,6 +1,6 @@
 # Motion contract
 
-Principle: motion only where it helps understanding, navigation or feeling. One easing (`power3.out`). No 3D, WebGL, particles, cursor effects or video. The mascot is never animated beyond its image reveal.
+Principle: motion only where it helps understanding, navigation or feeling. One easing (`power3.out`). No 3D, WebGL, particles or cursor effects. The only video is the short supplied process film, which explains the product, is not a background, and loads only when it is about to play. The mascot is never animated beyond its image reveal.
 
 **Lenis is not used.** Native scrolling plus CSS `scroll-behavior` is smooth enough here. Scroll hijacking would hurt touch devices and accessibility, and it would add JS without improving the story.
 
@@ -19,5 +19,7 @@ Global rules:
 | Section text (`Reveal up`) | top hits 85% viewport, once | opacity 0, y 28 → visible | 0.9s | no | 0.6s, y 16 | static |
 | Images (`Reveal clip`) | top hits 85% viewport, once | inset(100% 0 0 0) → inset(0) | 0.9s | no | 0.6s | static |
 | Ingredient / product grid (`Reveal stagger`) | top hits 85%, once | opacity 0, y 28 → visible | 0.9s, 0.08–0.1s stagger | no | stagger ×0.6 | static |
+| Process film (`ProcessFilm`) | ≥40% visible | plays muted loop; pauses off-screen | 10s film | no / no | same, `playsInline` | never autoplays (poster + Play) · always pausable |
+| Process steps | video `timeupdate` | active step → green card | 300ms CSS | no | same | static (step 01) |
 | Navbar background | scrollY > 24 | transparent → cream 90% + blur | 400ms CSS | no | same | instant |
 | Cart drawer / mobile menu | open / close | translateX 100% → 0 / opacity | 500 / 300ms CSS | no | same | instant |

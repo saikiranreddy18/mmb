@@ -14,7 +14,7 @@ export function ClosingInvite() {
             A little piece <span className="editorial block text-brown">of home in every bite.</span>
           </h2>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/shop">Shop Mummas Bite</ButtonLink>
+            <ButtonLink href="/shop">Shop Mumma's Bite</ButtonLink>
             <ButtonLink href="/our-story" variant="secondary">
               Our story
             </ButtonLink>

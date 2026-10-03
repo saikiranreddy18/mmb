@@ -12,13 +12,14 @@ import Image from "next/image";
 
 /** WORLD 03 — Discover the product. */
 export function ProductPreview({ product }: { product: Product | null }) {
-  const img = product?.featuredImage;
+  // Second gallery shot (e.g. the bar itself) so the pack isn't repeated right after the hero.
+  const img = product ? (product.images[1] ?? product.featuredImage) : null;
   return (
     <section aria-labelledby="product-preview-title" className="py-20 md:py-32">
       <div className="shell grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
         <Reveal variant="clip" className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-t-full bg-cream lg:max-w-none">
           {img ? (
-            <Image src={img.url} alt={img.altText ?? product.title} fill sizes="(min-width:1024px) 45vw, 90vw" className="object-cover" />
+            <Image src={img.url} alt={img.altText ?? product?.title ?? ""} fill sizes="(min-width:1024px) 45vw, 90vw" className="object-cover" />
           ) : (
             <BrandImage asset={assets.productPack} sizes="(min-width:1024px) 45vw, 90vw" />
           )}

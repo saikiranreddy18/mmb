@@ -14,7 +14,7 @@ export function OrderHistory({ orders }: { orders: Order[] }) {
         </div>
         <div>
           <p className="text-2xl font-extrabold uppercase tracking-tight text-green">
-            Your first Mummas Bite <span className="editorial normal-case text-brown">is waiting.</span>
+            Your first Mumma's Bite <span className="editorial normal-case text-brown">is waiting.</span>
           </p>
           <ButtonLink href="/shop" className="mt-5">
             Shop now

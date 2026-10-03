@@ -43,7 +43,7 @@ export default async function ProductPage({ params }: Params) {
         name: product.title,
         description: product.description,
         image: product.images.map((i) => i.url),
-        brand: { "@type": "Brand", name: "Mummas Bite" },
+        brand: { "@type": "Brand", name: "Mumma's Bite" },
         offers: product.variants.map((v) => ({
           "@type": "Offer",
           price: v.price.amount,

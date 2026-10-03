@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────
-   MUMMAS BITE — DESIGN TOKENS
+   MUMMA'S BITE — DESIGN TOKENS
    Nature + motherly love + homemade origin + modern Indian food brand.
    One primary family (Manrope) + one editorial family (Instrument Serif).
    ────────────────────────────────────────────────────────────── */
@@ -16,6 +16,7 @@
   --mb-cream: #f3ead7;          /* secondary — warm cream */
   --mb-cream-200: #ebdfc5;
   --mb-brown: #6b4a33;          /* supporting — earth brown */
+  --mb-caramel: #d06a2c;        /* from the supplied logo ("bite") — wordmark use only */
   --mb-gold: #c9a04a;           /* accent — muted golden yellow (decorative; not for body text on light) */
   --mb-gold-ink: #8a6a24;       /* gold tuned for text on light surfaces (AA) */
   --mb-bg: #fbf7ef;             /* background — warm off-white */
@@ -37,6 +38,7 @@
   --color-cream: var(--mb-cream);
   --color-cream-200: var(--mb-cream-200);
   --color-brown: var(--mb-brown);
+  --color-caramel: var(--mb-caramel);
   --color-gold: var(--mb-gold);
   --color-gold-ink: var(--mb-gold-ink);
   --color-bg: var(--mb-bg);

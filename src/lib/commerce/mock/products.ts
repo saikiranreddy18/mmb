@@ -2,72 +2,62 @@
  * ════════════════════════════════════════════════════════════════
  *  MOCK DATA — REPLACE WITH SHOPIFY DATA
  * ════════════════════════════════════════════════════════════════
- * These records exist only so the shop, product page and cart can be
- * built and tested before Shopify is connected. Names, prices and
- * descriptions are placeholders, not real products. Every product is
- * flagged `isMock: true` and the UI labels it as such.
+ * Stand-in product so the shop, product page and cart can be tested
+ * before Shopify is connected. Its values are read off the pack shown in
+ * the supplied process film ("Dry Fruit Bar · Dates | Nuts | Seeds ·
+ * 20 g · ₹30 each · No Added Sugar · No Preservatives"). That pack is a
+ * render, so every value stays UNVERIFIED until it matches the real
+ * printed label. The protein figure on the rendered pack is illegible and
+ * is deliberately not used.
  */
 
 import { unknown, unverified } from "@/content/status";
 import type { Product } from "../types";
 
-const MOCK_CURRENCY = "INR";
-
-const mockDetails = () => ({
-  netQuantity: unknown(),
-  ingredients: unverified("Dates, almonds, cashews, walnuts, seeds (from brief example — confirm against label)"),
-  nutrition: unknown(),
-  allergens: unknown(),
-  storage: unknown(),
-  shelfLife: unknown(),
-  fssai: unknown(),
-});
+const pack = {
+  url: "/assets/pack.jpg",
+  altText: "Mumma's Bite Dry Fruit Bar pouch",
+  width: 800,
+  height: 1000,
+};
+const bar = {
+  url: "/assets/bar-pressed.jpg",
+  altText: "A dry fruit bar of dates and nuts",
+  width: 864,
+  height: 1080,
+};
 
 export const mockProducts: Product[] = [
   {
     id: "gid://mock/Product/1",
-    handle: "mock-dry-fruit-bar",
+    handle: "dry-fruit-bar",
     title: "Dry Fruit Bar",
-    shortDescription: "Placeholder product — real name and description come from Shopify.",
+    shortDescription: "Dates, nuts and seeds, pressed into one honest bar.",
     description:
-      "MOCK DATA. This product card is a stand-in so the shopping journey can be tested. The real description, written by the brand, will be pulled from Shopify.",
-    featuredImage: null,
-    images: [],
-    priceRange: { minVariantPrice: { amount: "100.00", currencyCode: MOCK_CURRENCY } },
+      "Soft dates, a handful of nuts and a sprinkle of seeds, pressed together into a bar that tastes like something made at home.",
+    featuredImage: pack,
+    images: [pack, bar],
+    priceRange: { minVariantPrice: { amount: "30.00", currencyCode: "INR" } },
     variants: [
       {
         id: "gid://mock/ProductVariant/1",
-        title: "Default",
+        title: "20 g",
         availableForSale: true,
-        price: { amount: "100.00", currencyCode: MOCK_CURRENCY },
-        selectedOptions: [],
+        price: { amount: "30.00", currencyCode: "INR" },
+        selectedOptions: [{ name: "Size", value: "20 g" }],
       },
     ],
     availableForSale: true,
-    details: mockDetails(),
-    isMock: true,
-  },
-  {
-    id: "gid://mock/Product/2",
-    handle: "mock-dry-fruit-bar-box",
-    title: "Dry Fruit Bar Box",
-    shortDescription: "Placeholder multi-pack — contents and pricing to be confirmed.",
-    description:
-      "MOCK DATA. A second stand-in product so the grid, cart quantities and subtotals can be tested with more than one item.",
-    featuredImage: null,
-    images: [],
-    priceRange: { minVariantPrice: { amount: "500.00", currencyCode: MOCK_CURRENCY } },
-    variants: [
-      {
-        id: "gid://mock/ProductVariant/2",
-        title: "Default",
-        availableForSale: true,
-        price: { amount: "500.00", currencyCode: MOCK_CURRENCY },
-        selectedOptions: [],
-      },
-    ],
-    availableForSale: true,
-    details: mockDetails(),
+    details: {
+      netQuantity: unverified("20 g"),
+      claims: unverified("No added sugar · No preservatives"),
+      ingredients: unverified("Dates, nuts (almonds, cashews, walnuts, pistachios), seeds"),
+      nutrition: unknown(),
+      allergens: unknown(),
+      storage: unknown(),
+      shelfLife: unknown(),
+      fssai: unknown(),
+    },
     isMock: true,
   },
 ];

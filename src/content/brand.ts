@@ -31,23 +31,19 @@ export type BrandStory = {
   chapters: StoryChapter[];
 };
 
-export type IngredientAssetKey =
-  | "ingredientDates"
-  | "ingredientAlmonds"
-  | "ingredientCashews"
-  | "ingredientWalnuts"
-  | "ingredientSeeds";
+export type IngredientAssetKey = "ingredientDates" | "ingredientNuts" | "ingredientSeeds";
 
 export const brand = {
-  name: "Mummas Bite",
-  wordmark: "MUMMAS BITE",
+  /** As written on the supplied logo and packaging. */
+  name: "Mumma's Bite",
+  wordmark: "mumma's bite",
   promise: verified("Made with a mother's love."),
   supporting: verified(
     "Simple ingredients. Honest nourishment. A little piece of home in every bite.",
   ),
   idea: verified("A modern food brand inspired by the food a mother makes at home."),
-  /** Positioning suggested in the brief — confirm the category before launch. */
-  category: unverified("Homemade Dry Fruit Bars"),
+  /** Product name as printed on the pack in the supplied process film. */
+  category: unverified("Dry Fruit Bar"),
 } as const;
 
 /**
@@ -60,7 +56,7 @@ export const homeJourney: { id: string; label: string; needs: string }[] = [
   { id: "recipe", label: "Recipe", needs: "The recipe at the heart of it and why it mattered." },
   { id: "experiments", label: "Experimentation", needs: "How the recipe was tested and refined." },
   { id: "product", label: "Product", needs: "How it became something others could buy." },
-  { id: "brand", label: "Brand", needs: "Why the name Mummas Bite." },
+  { id: "brand", label: "Brand", needs: "Why the name Mumma's Bite." },
 ];
 
 export const story: BrandStory = {
@@ -99,7 +95,7 @@ export const story: BrandStory = {
       index: "05",
       title: "The brand",
       body: unknown(),
-      needs: "Why “Mummas Bite”, and the story behind the mother-and-child character.",
+      needs: "Why “Mumma's Bite”, and the story behind the mother-and-child character.",
     },
     {
       id: "next",
@@ -112,15 +108,14 @@ export const story: BrandStory = {
 };
 
 /**
- * Ingredient list taken from the example in the brief.
- * UNVERIFIED — confirm against the real recipe/label before launch.
+ * Ingredient groups as printed on the pack in the supplied process film
+ * ("Dates | Nuts | Seeds"). The film shows almonds, cashews, walnuts and
+ * pistachios as the nuts. UNVERIFIED — confirm against the real label.
  */
-export const ingredientsStatus = unverified("Ingredient list from brief example");
+export const ingredientsStatus = unverified("Dates | Nuts | Seeds — from pack in process film");
 
 export const ingredients: Ingredient[] = [
-  { id: "dates", name: "Dates", note: "Soft, naturally sweet fruit.", assetKey: "ingredientDates" },
-  { id: "almonds", name: "Almonds", note: "A familiar crunch from every Indian kitchen.", assetKey: "ingredientAlmonds" },
-  { id: "cashews", name: "Cashews", note: "Mild, creamy and buttery.", assetKey: "ingredientCashews" },
-  { id: "walnuts", name: "Walnuts", note: "Earthy, with a gentle bite.", assetKey: "ingredientWalnuts" },
+  { id: "dates", name: "Dates", note: "Soft, naturally sweet fruit at the heart of the bar.", assetKey: "ingredientDates" },
+  { id: "nuts", name: "Nuts", note: "Almonds, cashews, walnuts and pistachios, as shown in our process film.", assetKey: "ingredientNuts" },
   { id: "seeds", name: "Seeds", note: "Small, toasty texture in every piece.", assetKey: "ingredientSeeds" },
 ];

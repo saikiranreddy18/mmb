@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="on-dark bg-green-900 text-cream">
       <div className="shell grid gap-12 py-16 md:grid-cols-[1.4fr_1fr] md:py-20">
         <div className="space-y-6">
-          <Wordmark className="text-lg text-cream" />
+          <Wordmark onDark className="text-2xl" />
           <p className="max-w-[18ch] text-4xl font-extrabold uppercase leading-[0.95] tracking-tight md:text-5xl">
             Made with <span className="editorial block text-gold">a mother&apos;s love.</span>
           </p>
@@ -32,7 +32,7 @@ export function Footer() {
       </div>
       <div className="border-t border-cream/10">
         <div className="shell flex flex-col gap-2 py-6 text-xs text-cream/60 sm:flex-row sm:justify-between">
-          <p>© {new Date().getFullYear()} Mummas Bite</p>
+          <p>© {new Date().getFullYear()} Mumma's Bite</p>
           <p>Contact, legal and FSSAI details: content required.</p>
         </div>
       </div>

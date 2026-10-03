@@ -1,6 +1,6 @@
-# Mummas Bite: Web Experience v1
+# Mumma's Bite: Web Experience v1
 
-**Made with a mother's love.** A simple, premium, Shopify-ready site for Mummas Bite.
+**Made with a mother's love.** A simple, premium, Shopify-ready site for Mumma's Bite.
 
 Scope (v1): **Home · Shop · Product · Cart drawer · Our Story · Profile**. Nothing else.
 
@@ -23,7 +23,7 @@ src/
   app/                    routes: /, /shop, /shop/[handle], /our-story, /profile, sitemap, robots
   components/
     layout/               Navbar (mobile menu), Footer
-    home/                 Hero, StoryIntro, ProductPreview, IngredientSection, ClosingInvite
+    home/                 Hero, StoryIntro, ProcessFilm, ProductPreview, IngredientSection, ClosingInvite
     story/                StoryChapter
     shop/                 ProductCard, ProductGrid, ProductDetail, AddToCartButton
     cart/                 CartProvider (state), CartDrawer

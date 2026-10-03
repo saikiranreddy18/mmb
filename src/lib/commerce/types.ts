@@ -39,6 +39,8 @@ export type ProductVariant = {
  */
 export type ProductDetails = {
   netQuantity: ContentField;
+  /** On-pack claims, e.g. "No added sugar". Shown only with their content status. */
+  claims: ContentField;
   ingredients: ContentField;
   nutrition: ContentField;
   allergens: ContentField;

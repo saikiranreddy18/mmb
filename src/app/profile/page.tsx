@@ -4,7 +4,7 @@ import { getCustomerSession } from "@/lib/commerce/customer";
 
 export const metadata: Metadata = {
   title: "Profile",
-  description: "Your Mummas Bite account.",
+  description: "Your Mumma's Bite account.",
   alternates: { canonical: "/profile" },
   robots: { index: false, follow: true },
 };

@@ -21,7 +21,11 @@ export type BrandAsset = {
   height: number;
   /** Plain-language description of the asset that must be supplied. */
   required: string;
+  /** Where a supplied asset came from, for the asset audit trail. */
+  source?: string;
 };
+
+const FILM = "Still from the supplied process film (illustrated/rendered — not a product photograph)";
 
 type AssetKey =
   | "mascot"
@@ -33,29 +37,57 @@ type AssetKey =
   | "storyProduct"
   | "storyBrand"
   | "storyNext"
+  | "barPressed"
+  | "ingredientBowl"
+  | "processPoster"
   | IngredientAssetKey;
 
 export const assets: Record<AssetKey, BrandAsset> = {
   mascot: {
     src: null,
-    alt: "The Mummas Bite mother and child character",
+    alt: "The Mumma's Bite mother and child character",
     width: 1200,
     height: 1400,
     required: "Supplied mother-and-child character illustration (transparent PNG or SVG)",
   },
   heroScene: {
     src: null,
-    alt: "Mummas Bite in a warm home kitchen",
+    alt: "Mumma's Bite in a warm home kitchen",
     width: 1600,
     height: 1200,
     required: "Hero brand photograph (product or kitchen scene)",
   },
   productPack: {
-    src: null,
-    alt: "Mummas Bite product packaging",
-    width: 1200,
-    height: 1200,
+    src: "/assets/pack.jpg",
+    alt: "Mumma's Bite Dry Fruit Bar pouch",
+    width: 800,
+    height: 1000,
     required: "Real product packaging photograph",
+    source: `${FILM}. Replace with a real pack photo before launch.`,
+  },
+  barPressed: {
+    src: "/assets/bar-pressed.jpg",
+    alt: "A dry fruit bar of dates and nuts, freshly pressed",
+    width: 864,
+    height: 1080,
+    required: "Close-up of the bar",
+    source: FILM,
+  },
+  ingredientBowl: {
+    src: "/assets/ingredients-bowl.jpg",
+    alt: "Dates in a bowl with almonds, cashews, walnuts and pistachios falling in",
+    width: 864,
+    height: 1080,
+    required: "Ingredients photograph",
+    source: FILM,
+  },
+  processPoster: {
+    src: "/assets/process-poster.jpg",
+    alt: "Ingredients arriving on the line",
+    width: 1280,
+    height: 720,
+    required: "Process film poster frame",
+    source: FILM,
   },
   storyKitchen: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the idea / home" },
   storyRecipe: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the recipe" },
@@ -63,18 +95,16 @@ export const assets: Record<AssetKey, BrandAsset> = {
   storyProduct: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the product" },
   storyBrand: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the brand / character" },
   storyNext: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — what comes next" },
-  ingredientDates: { src: null, alt: "Dates", width: 800, height: 800, required: "Ingredient photo — dates" },
-  ingredientAlmonds: { src: null, alt: "Almonds", width: 800, height: 800, required: "Ingredient photo — almonds" },
-  ingredientCashews: { src: null, alt: "Cashews", width: 800, height: 800, required: "Ingredient photo — cashews" },
-  ingredientWalnuts: { src: null, alt: "Walnuts", width: 800, height: 800, required: "Ingredient photo — walnuts" },
-  ingredientSeeds: { src: null, alt: "Seeds", width: 800, height: 800, required: "Ingredient photo — seeds" },
+  ingredientDates: { src: "/assets/ingredient-dates.jpg", alt: "Dates", width: 600, height: 600, required: "Ingredient photo — dates", source: FILM },
+  ingredientNuts: { src: "/assets/ingredient-nuts.jpg", alt: "Almonds, cashews, walnuts and pistachios", width: 600, height: 600, required: "Ingredient photo — nuts", source: FILM },
+  ingredientSeeds: { src: null, alt: "Seeds", width: 800, height: 800, required: "Ingredient photo — the seeds used in the bar" },
 };
 
 export const storyAssetFor: Record<string, AssetKey> = {
   idea: "storyKitchen",
   recipe: "storyRecipe",
   experiments: "storyExperiments",
-  product: "storyProduct",
+  product: "barPressed",
   brand: "storyBrand",
   next: "storyNext",
 };

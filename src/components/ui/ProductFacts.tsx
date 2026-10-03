@@ -3,6 +3,7 @@ import { ContentValue } from "./ContentValue";
 
 const LABELS: { key: keyof ProductDetails; label: string }[] = [
   { key: "netQuantity", label: "Net quantity" },
+  { key: "claims", label: "On the pack" },
   { key: "ingredients", label: "Ingredients" },
   { key: "nutrition", label: "Nutrition" },
   { key: "allergens", label: "Allergens" },

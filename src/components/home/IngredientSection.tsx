@@ -23,15 +23,15 @@ export function IngredientSection() {
               Unverified
             </span>
             <br />
-            Ingredient list taken from the brief. To be confirmed against the final product label.
+            “Dates | Nuts | Seeds”, as printed on the pack in our process film. To be confirmed against the final product label.
           </p>
         </Reveal>
 
-        <Reveal as="ol" stagger={0.08} className="mt-14 grid gap-6 sm:grid-cols-2 md:mt-20 lg:grid-cols-5 lg:gap-5">
+        <Reveal as="ol" stagger={0.08} className="mt-14 grid gap-6 sm:grid-cols-3 md:mt-20 lg:grid-cols-3 lg:gap-8">
           {ingredients.map((ing, i) => (
-            <li key={ing.id} className="flex items-center gap-5 lg:flex-col lg:items-start">
-              <div className="aspect-square w-24 shrink-0 overflow-hidden rounded-full sm:w-28 lg:w-full">
-                <BrandImage asset={assets[ing.assetKey]} tone="green" sizes="(min-width:1024px) 18vw, 112px" className="rounded-full !p-3 [&>span:last-child]:hidden lg:[&>span:last-child]:block" />
+            <li key={ing.id} className="flex items-center gap-5 sm:flex-col sm:items-start">
+              <div className="aspect-square w-24 shrink-0 overflow-hidden rounded-full sm:w-full lg:w-4/5">
+                <BrandImage asset={assets[ing.assetKey]} tone="green" sizes="(min-width:1024px) 28vw, 112px" className="rounded-full !p-3 [&>span:last-child]:hidden lg:[&>span:last-child]:block" />
               </div>
               <div>
                 <p className="text-xs font-bold tabular-nums text-gold">{String(i + 1).padStart(2, "0")}</p>

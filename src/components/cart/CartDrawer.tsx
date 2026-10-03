@@ -59,7 +59,7 @@ export function CartDrawer() {
             </p>
             <p className="text-sm text-ink-soft">A little piece of home is only a click away.</p>
             <ButtonLink href="/shop" onClick={close}>
-              Shop Mummas Bite
+              Shop Mumma's Bite
             </ButtonLink>
           </div>
         ) : (

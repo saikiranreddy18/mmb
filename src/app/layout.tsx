@@ -11,7 +11,7 @@ import { defaultDescription, defaultTitle, siteName, siteUrl } from "@/lib/seo/s
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: defaultTitle, template: "%s | Mummas Bite" },
+  title: { default: defaultTitle, template: "%s | Mumma's Bite" },
   description: defaultDescription,
   applicationName: siteName,
   alternates: { canonical: "/" },

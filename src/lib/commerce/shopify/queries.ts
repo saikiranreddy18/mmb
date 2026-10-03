@@ -2,13 +2,14 @@
  * Storefront API documents.
  *
  * Factual product information lives in product metafields, namespace `mummas`:
- *   net_quantity · ingredients · nutrition · allergens · storage · shelf_life · fssai
+ *   net_quantity · claims · ingredients · nutrition · allergens · storage · shelf_life · fssai
  * Create these metafield definitions in Shopify Admin (Settings → Custom data →
  * Products) and expose them to the Storefront API.
  */
 
 const METAFIELD_KEYS = [
   "net_quantity",
+  "claims",
   "ingredients",
   "nutrition",
   "allergens",

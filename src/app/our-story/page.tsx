@@ -8,7 +8,7 @@ import { brand, story } from "@/content/brand";
 
 export const metadata: Metadata = {
   title: "Our Story",
-  description: "How Mummas Bite began — a modern food brand inspired by the food a mother makes at home.",
+  description: "How Mumma's Bite began — a modern food brand inspired by the food a mother makes at home.",
   alternates: { canonical: "/our-story" },
 };
 
@@ -38,7 +38,7 @@ export default function OurStoryPage() {
           </p>
           <div data-hero-reveal="fade" className="mt-10 max-w-xl">
             <MockNotice>
-              The real Mummas Bite story hasn&apos;t been supplied yet. Each chapter below shows what it needs — nothing
+              The real Mumma's Bite story hasn&apos;t been supplied yet. Each chapter below shows what it needs — nothing
               here has been invented.
             </MockNotice>
           </div>
@@ -57,7 +57,7 @@ export default function OurStoryPage() {
             Taste the <span className="editorial text-gold">story.</span>
           </h2>
           <ButtonLink href="/shop" variant="light">
-            Shop Mummas Bite
+            Shop Mumma's Bite
           </ButtonLink>
         </Reveal>
       </section>

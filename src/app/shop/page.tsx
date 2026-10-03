@@ -7,7 +7,7 @@ import { getProducts } from "@/lib/commerce/products";
 
 export const metadata: Metadata = {
   title: "Shop",
-  description: "Shop Mummas Bite — made with a mother's love.",
+  description: "Shop Mumma's Bite — made with a mother's love.",
   alternates: { canonical: "/shop" },
 };
 
@@ -22,7 +22,7 @@ export default async function ShopPage() {
         <h1 className="text-green">
           <span className="block overflow-hidden pb-[0.1em]">
             <span data-hero-reveal="line" className="display block text-[clamp(2.75rem,8vw,6.5rem)]">
-              Shop <span className="editorial text-brown">Mummas Bite</span>
+              Shop <span className="editorial text-brown">Mumma's Bite</span>
             </span>
           </span>
         </h1>

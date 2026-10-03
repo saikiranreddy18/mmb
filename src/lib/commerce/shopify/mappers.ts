@@ -33,6 +33,7 @@ export function mapProduct(raw: RawProduct): Product {
     availableForSale: raw.availableForSale,
     details: {
       netQuantity: field(meta, "net_quantity"),
+      claims: field(meta, "claims"),
       ingredients: field(meta, "ingredients"),
       nutrition: field(meta, "nutrition"),
       allergens: field(meta, "allergens"),

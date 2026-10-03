@@ -1,26 +1,34 @@
 # Content & asset checklist
 
+## SUPPLIED: from the process film (`public/assets/`)
+The supplied 10s process film is an **illustrated / rendered animation**: its pack text is partly garbled and it carries a generator watermark. Stills from it are used as brand visuals and never as factual product evidence.
+
+| File | Used for |
+|---|---|
+| `process.webm` / `process.mp4` + `process-poster.jpg` | Home → "From dates to bar" process film |
+| `pack.jpg` | Hero (until the mascot arrives), Shop card, product page |
+| `bar-pressed.jpg` | Home product preview, product page 2nd image, Story ch. 04 |
+| `ingredients-bowl.jpg` | Spare. Not placed yet (ingredient story / social) |
+| `ingredient-dates.jpg`, `ingredient-nuts.jpg` | Ingredients section |
+
+Read off the rendered pack, and **all UNVERIFIED** until checked against the real label: name "Dry Fruit Bar", "Dates | Nuts | Seeds", 20 g, ₹30 each, "No Added Sugar", "No Preservatives". The protein figure on the pack is illegible, so it is **not used**. The tagline above "IN EVERY BITE" is cut off.
+
 ## ASSET REQUIRED (`src/content/assets.ts`)
 - [ ] **Mother-and-child character** (transparent PNG/SVG): hero, closing invite, profile, empty orders
-- [ ] **Logo file**: a typographic wordmark is used until one is supplied (`components/ui/Wordmark.tsx`). `app/icon.svg` is a neutral placeholder arch icon.
-- [ ] Hero brand photograph (optional; the hero currently uses the character)
-- [ ] Real product packaging photograph (home product preview)
-- [ ] Product photos: upload in Shopify (product media)
-- [ ] 6 story images: idea, recipe, experiments, product, brand, what comes next
-- [ ] 5 ingredient photos: dates, almonds, cashews, walnuts, seeds
+- [ ] **Logo file** (PNG/SVG). Until then an interim typographic wordmark in the logo colours is used (`components/ui/Wordmark.tsx`)
+- [ ] **Real pack photographs** (front + back label) to replace the rendered pack
+- [ ] Seeds ingredient photo
+- [ ] Story images: idea, recipe, experiments, brand, what comes next (5)
 - [ ] Open Graph share image (1200×630)
 
 ## CONTENT REQUIRED
 - [ ] The real founding story: 6 chapters (`content/brand.ts → story`) and 6 home beats (`homeJourney`)
-- [ ] Confirm the ingredient list (currently **UNVERIFIED**, taken from the brief's example)
-- [ ] Confirm the category / positioning "Homemade Dry Fruit Bars" (UNVERIFIED)
-- [ ] Per product, in Shopify metafields: net quantity, ingredients, nutrition, allergens, storage, shelf life, FSSAI
-- [ ] Real product names, descriptions and prices (Shopify)
+- [ ] Confirm every on-pack value listed above, then enter it in Shopify metafields: net quantity, claims, ingredients, nutrition, allergens, storage, shelf life, FSSAI
+- [ ] Brand spelling: the site now uses **"Mumma's Bite"** (as on the logo and pack); the brief said "MUMMAS BITE"
 - [ ] Contact, legal pages and FSSAI licence details for the footer
 - [ ] Production domain → `NEXT_PUBLIC_SITE_URL`
 
 ## VERIFIED (from the brief)
-- Brand name: Mummas Bite
 - Promise: "Made with a mother's love."
 - Supporting line: "Simple ingredients. Honest nourishment. A little piece of home in every bite."
 - Brand idea: a modern food brand inspired by the food a mother makes at home
