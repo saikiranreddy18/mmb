@@ -1,0 +1,23 @@
+# Motion contract
+
+Principle: motion only where it helps understanding, navigation or feeling. One easing (`power3.out`). No 3D, WebGL, particles, cursor effects or video. The mascot is never animated beyond its image reveal.
+
+**Lenis is not used.** Native scrolling plus CSS `scroll-behavior` is smooth enough here. Scroll hijacking would hurt touch devices and accessibility, and it would add JS without improving the story.
+
+Global rules:
+- `js-motion` goes on `<html>` before paint, and only when `prefers-reduced-motion` is not `reduce`. Without it, every element is static and visible.
+- Initial (hidden) states are applied by JS or by `.js-motion` CSS only. A CSS failsafe reveals hero content after 2.5s if JS never hydrates.
+- Every animation is registered through `gsap.matchMedia()` and reverted on unmount.
+
+| Element | Trigger | Initial → Final | Duration / ease | Scrub / pin | Mobile | Reduced motion |
+|---|---|---|---|---|---|---|
+| Hero & page-intro headline (`IntroReveal`, `line`) | load | yPercent 105 inside a mask → 0 | 1.0s, 0.08s stagger, power3.out | no / no | 0.7s | static |
+| Intro supporting text / CTAs (`fade`) | load | opacity 0, y 16 → visible | 1.0s (+0.15s offset) | no | 0.7s | static |
+| Hero arch / PDP image (`clip`) | load | inset(0 0 100% 0) → inset(0) | 1.3s | no | 0.9s | static |
+| Hero arch parallax | scroll through hero | yPercent 0 → -8 | linear | scrub 0.6 / no | **off** (desktop ≥1024px only) | off |
+| "It started at home" thread | journey list from 70% → 60% viewport | scaleY 0 → 1 | linear | scrub 0.5 / no | same | fully drawn |
+| Section text (`Reveal up`) | top hits 85% viewport, once | opacity 0, y 28 → visible | 0.9s | no | 0.6s, y 16 | static |
+| Images (`Reveal clip`) | top hits 85% viewport, once | inset(100% 0 0 0) → inset(0) | 0.9s | no | 0.6s | static |
+| Ingredient / product grid (`Reveal stagger`) | top hits 85%, once | opacity 0, y 28 → visible | 0.9s, 0.08–0.1s stagger | no | stagger ×0.6 | static |
+| Navbar background | scrollY > 24 | transparent → cream 90% + blur | 400ms CSS | no | same | instant |
+| Cart drawer / mobile menu | open / close | translateX 100% → 0 / opacity | 500 / 300ms CSS | no | same | instant |
