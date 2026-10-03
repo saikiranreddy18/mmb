@@ -26,6 +26,7 @@ export type BrandAsset = {
 };
 
 const FILM = "Still from the supplied process film (illustrated/rendered — not a product photograph)";
+const HERO_FILM = "Still from the supplied hero film (rendered — not a product photograph)";
 
 type AssetKey =
   | "mascot"
@@ -40,6 +41,7 @@ type AssetKey =
   | "barPressed"
   | "ingredientBowl"
   | "processPoster"
+  | "heroPoster"
   | IngredientAssetKey;
 
 export const assets: Record<AssetKey, BrandAsset> = {
@@ -89,6 +91,14 @@ export const assets: Record<AssetKey, BrandAsset> = {
     required: "Process film poster frame",
     source: FILM,
   },
+  heroPoster: {
+    src: "/assets/hero-poster.jpg",
+    alt: "A wooden bowl filled with dates, nuts and seeds on a table in an orchard",
+    width: 1280,
+    height: 720,
+    required: "Hero film final frame",
+    source: HERO_FILM,
+  },
   storyKitchen: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the idea / home" },
   storyRecipe: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the recipe" },
   storyExperiments: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the experiments" },
@@ -97,7 +107,7 @@ export const assets: Record<AssetKey, BrandAsset> = {
   storyNext: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — what comes next" },
   ingredientDates: { src: "/assets/ingredient-dates.jpg", alt: "Dates", width: 600, height: 600, required: "Ingredient photo — dates", source: FILM },
   ingredientNuts: { src: "/assets/ingredient-nuts.jpg", alt: "Almonds, cashews, walnuts and pistachios", width: 600, height: 600, required: "Ingredient photo — nuts", source: FILM },
-  ingredientSeeds: { src: null, alt: "Seeds", width: 800, height: 800, required: "Ingredient photo — the seeds used in the bar" },
+  ingredientSeeds: { src: "/assets/ingredient-seeds.jpg", alt: "Pumpkin and sunflower seeds", width: 600, height: 600, required: "Ingredient photo — the seeds used in the bar", source: HERO_FILM },
 };
 
 export const storyAssetFor: Record<string, AssetKey> = {

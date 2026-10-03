@@ -117,5 +117,5 @@ export const ingredientsStatus = unverified("Dates | Nuts | Seeds — from pack 
 export const ingredients: Ingredient[] = [
   { id: "dates", name: "Dates", note: "Soft, naturally sweet fruit at the heart of the bar.", assetKey: "ingredientDates" },
   { id: "nuts", name: "Nuts", note: "Almonds, cashews, walnuts and pistachios, as shown in our process film.", assetKey: "ingredientNuts" },
-  { id: "seeds", name: "Seeds", note: "Small, toasty texture in every piece.", assetKey: "ingredientSeeds" },
+  { id: "seeds", name: "Seeds", note: "Pumpkin and sunflower seeds, as shown in our films.", assetKey: "ingredientSeeds" },
 ];

@@ -51,7 +51,7 @@ export const mockProducts: Product[] = [
     details: {
       netQuantity: unverified("20 g"),
       claims: unverified("No added sugar · No preservatives"),
-      ingredients: unverified("Dates, nuts (almonds, cashews, walnuts, pistachios), seeds"),
+      ingredients: unverified("Dates, nuts (almonds, cashews, walnuts, pistachios), seeds (pumpkin, sunflower)"),
       nutrition: unknown(),
       allergens: unknown(),
       storage: unknown(),

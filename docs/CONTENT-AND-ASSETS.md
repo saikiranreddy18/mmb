@@ -5,8 +5,10 @@ The supplied 10s process film is an **illustrated / rendered animation**: its pa
 
 | File | Used for |
 |---|---|
+| `hero.webm` / `hero.mp4` + `hero-poster.jpg` | Home hero: dates, nuts and seeds falling into a wooden bowl (supplied hero film, rendered) |
+| `ingredient-seeds.jpg` | Ingredients section (from the hero film) |
 | `process.webm` / `process.mp4` + `process-poster.jpg` | Home → "From dates to bar" process film |
-| `pack.jpg` | Hero (until the mascot arrives), Shop card, product page |
+| `pack.jpg` | Shop card, product page |
 | `bar-pressed.jpg` | Home product preview, product page 2nd image, Story ch. 04 |
 | `ingredients-bowl.jpg` | Spare. Not placed yet (ingredient story / social) |
 | `ingredient-dates.jpg`, `ingredient-nuts.jpg` | Ingredients section |
@@ -14,10 +16,9 @@ The supplied 10s process film is an **illustrated / rendered animation**: its pa
 Read off the rendered pack, and **all UNVERIFIED** until checked against the real label: name "Dry Fruit Bar", "Dates | Nuts | Seeds", 20 g, ₹30 each, "No Added Sugar", "No Preservatives". The protein figure on the pack is illegible, so it is **not used**. The tagline above "IN EVERY BITE" is cut off.
 
 ## ASSET REQUIRED (`src/content/assets.ts`)
-- [ ] **Mother-and-child character** (transparent PNG/SVG): hero, closing invite, profile, empty orders
+- [ ] **Mother-and-child character** (transparent PNG/SVG): small arch badge on the hero film (appears automatically once `mascot.src` is set), closing invite, profile, empty orders
 - [ ] **Logo file** (PNG/SVG). Until then an interim typographic wordmark in the logo colours is used (`components/ui/Wordmark.tsx`)
 - [ ] **Real pack photographs** (front + back label) to replace the rendered pack
-- [ ] Seeds ingredient photo
 - [ ] Story images: idea, recipe, experiments, brand, what comes next (5)
 - [ ] Open Graph share image (1200×630)
 

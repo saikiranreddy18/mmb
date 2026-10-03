@@ -1,6 +1,6 @@
 # Motion contract
 
-Principle: motion only where it helps understanding, navigation or feeling. One easing (`power3.out`). No 3D, WebGL, particles or cursor effects. The only video is the short supplied process film, which explains the product, is not a background, and loads only when it is about to play. The mascot is never animated beyond its image reveal.
+Principle: motion only where it helps understanding, navigation or feeling. One easing (`power3.out`). No 3D, WebGL, particles or cursor effects. The only videos are the two short supplied films (hero: plays once; process: explains the product), which explains the product, is not a background, and loads only when it is about to play. The mascot is never animated beyond its image reveal.
 
 **Lenis is not used.** Native scrolling plus CSS `scroll-behavior` is smooth enough here. Scroll hijacking would hurt touch devices and accessibility, and it would add JS without improving the story.
 
@@ -14,6 +14,7 @@ Global rules:
 | Hero & page-intro headline (`IntroReveal`, `line`) | load | yPercent 105 inside a mask → 0 | 1.0s, 0.08s stagger, power3.out | no / no | 0.7s | static |
 | Intro supporting text / CTAs (`fade`) | load | opacity 0, y 16 → visible | 1.0s (+0.15s offset) | no | 0.7s | static |
 | Hero arch / PDP image (`clip`) | load | inset(0 0 100% 0) → inset(0) | 1.3s | no | 0.9s | static |
+| Hero film | load (+0.6s), motion allowed | still final frame → video fades in (700ms) and plays once, rests on full bowl | 10s, no loop | no / no | same (5:4 frame) | never autoplays — still frame + Play · Pause/Replay always available |
 | Hero arch parallax | scroll through hero | yPercent 0 → -8 | linear | scrub 0.6 / no | **off** (desktop ≥1024px only) | off |
 | "It started at home" thread | journey list from 70% → 60% viewport | scaleY 0 → 1 | linear | scrub 0.5 / no | same | fully drawn |
 | Section text (`Reveal up`) | top hits 85% viewport, once | opacity 0, y 28 → visible | 0.9s | no | 0.6s, y 16 | static |
