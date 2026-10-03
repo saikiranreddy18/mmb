@@ -22,6 +22,7 @@ Read off the rendered pack, and **all UNVERIFIED** until checked against the rea
 | `mascot-laughing.webp` | Hero badge, Profile welcome card, Story ch. 05 "The brand" |
 | `mascot-offering.webp` | Home closing "From our home to yours", empty orders |
 | `mascot-surprised.webp` | Empty cart, 404 page |
+| `ingredient-parade.webp` | Home "All in it together": the 8 ingredient characters walking hand in hand |
 | `mascot-tasting-black-bg.webp` | **Not used.** It has a solid black background. Please resend it as a transparent PNG |
 
 ## ASSET REQUIRED (`src/content/assets.ts`)

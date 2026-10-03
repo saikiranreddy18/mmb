@@ -22,5 +22,7 @@ Global rules:
 | Ingredient / product grid (`Reveal stagger`) | top hits 85%, once | opacity 0, y 28 → visible | 0.9s, 0.08–0.1s stagger | no | stagger ×0.6 | static |
 | Process film (`ProcessFilm`) | ≥40% visible | plays muted loop; pauses off-screen | 10s film | no / no | same, `playsInline` | never autoplays (poster + Play) · always pausable |
 | Process steps | video `timeupdate` | active step → green card | 300ms CSS | no | same | static (step 01) |
+| Ingredient parade — walk | in view | each character bobs −7% and sways ±3° (origin: feet), neighbours in opposite phase | 0.55s alternate, ease-in-out, infinite | no / no | same | none — stands still, centred |
+| Ingredient parade — travel | in view | line walks left → right across the band, loops | 32s desktop / 16s mobile, linear | no / no | 16s | none · Pause/Play button; pauses off-screen |
 | Navbar background | scrollY > 24 | transparent → cream 90% + blur | 400ms CSS | no | same | instant |
 | Cart drawer / mobile menu | open / close | translateX 100% → 0 / opacity | 500 / 300ms CSS | no | same | instant |

@@ -1,5 +1,6 @@
 import { ClosingInvite } from "@/components/home/ClosingInvite";
 import { ProcessFilm } from "@/components/home/ProcessFilm";
+import { IngredientParade } from "@/components/home/IngredientParade";
 import { Hero } from "@/components/home/Hero";
 import { IngredientSection } from "@/components/home/IngredientSection";
 import { ProductPreview } from "@/components/home/ProductPreview";
@@ -15,6 +16,7 @@ export default async function HomePage() {
       <ProcessFilm />
       <ProductPreview product={featured} />
       <IngredientSection />
+      <IngredientParade />
       <ClosingInvite />
     </>
   );
