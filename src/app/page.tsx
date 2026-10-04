@@ -1,20 +1,18 @@
 import { ClosingInvite } from "@/components/home/ClosingInvite";
-import { ProcessFilm } from "@/components/home/ProcessFilm";
-import { IngredientParade } from "@/components/home/IngredientParade";
 import { Hero } from "@/components/home/Hero";
+import { IngredientParade } from "@/components/home/IngredientParade";
 import { IngredientSection } from "@/components/home/IngredientSection";
-import { ProductPreview } from "@/components/home/ProductPreview";
-import { StoryIntro } from "@/components/home/StoryIntro";
+import { ProcessFilm } from "@/components/home/ProcessFilm";
+import { ShopShowcase } from "@/components/home/ShopShowcase";
 import { getProducts } from "@/lib/commerce/products";
 
 export default async function HomePage() {
-  const [featured = null] = await getProducts(1);
+  const products = await getProducts(4);
   return (
     <>
       <Hero />
-      <StoryIntro />
+      <ShopShowcase products={products} />
       <ProcessFilm />
-      <ProductPreview product={featured} />
       <IngredientSection />
       <IngredientParade />
       <ClosingInvite />

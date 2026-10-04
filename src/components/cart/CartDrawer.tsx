@@ -64,7 +64,7 @@ export function CartDrawer() {
           </div>
         ) : (
           <>
-            <ul className="flex-1 divide-y divide-line overflow-y-auto px-6" aria-busy={isBusy}>
+            <ul data-lenis-prevent className="flex-1 divide-y divide-line overflow-y-auto px-6" aria-busy={isBusy}>
               {lines.map((line) => {
                 const img = line.merchandise.product.featuredImage;
                 return (

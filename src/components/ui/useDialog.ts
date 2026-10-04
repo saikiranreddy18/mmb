@@ -22,6 +22,7 @@ export function useDialog(
     const previous = document.activeElement as HTMLElement | null;
     const { overflow } = document.body.style;
     document.body.style.overflow = "hidden";
+    window.__lenis?.stop();
     panel?.focus();
 
     function onKey(e: KeyboardEvent) {
@@ -48,6 +49,7 @@ export function useDialog(
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = overflow;
+      window.__lenis?.start();
       const usable =
         previous && previous !== document.body && previous.isConnected && !(previous as HTMLButtonElement).disabled;
       const target = usable ? previous : fallbackSelector ? document.querySelector<HTMLElement>(fallbackSelector) : null;

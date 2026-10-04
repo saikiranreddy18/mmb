@@ -5,6 +5,7 @@ import "@fontsource/instrument-serif/400-italic.css";
 import "./globals.css";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { defaultDescription, defaultTitle, siteName, siteUrl } from "@/lib/seo/site";
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <SmoothScroll />
         <CartProvider>
           <Navbar />
           <main id="main" tabIndex={-1} className="focus:outline-none">

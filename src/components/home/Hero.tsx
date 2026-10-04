@@ -1,55 +1,82 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowDown, Pause, Play, RotateCcw } from "lucide-react";
-import { IntroReveal } from "@/components/motion/IntroReveal";
 import { ButtonLink } from "@/components/ui/Button";
+import { Wordmark } from "@/components/ui/Wordmark";
 import { assets } from "@/content/assets";
 import { brand } from "@/content/brand";
-import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
+import { EASE, MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
 type FilmState = "idle" | "playing" | "paused" | "ended";
 
 /**
- * WORLD 01 — Enter Mumma's Bite.
+ * WORLD 01 — Enter Mumma's Bite. Brand intro that zooms into the hero.
  *
- * MOTION CONTRACT — Hero film
- * Element: supplied 10s slow-motion film — dates, nuts, then seeds fill a wooden bowl.
- * Initial: the final frame (full bowl) renders immediately as an optimised, priority
- *          image, so the hero is complete before any video loads (good LCP, no blank box).
- * Trigger: plays ONCE after load, muted, inline; then rests on the full bowl. No loop —
- *          a calm hero, not a moving wallpaper. Pause / Replay control always available.
- * Mobile: same film (1280×720, ~1 MB WebM / MP4 fallback), framed 5:4.
- * Reduced motion: never autoplays; shows the still frame with a Play control.
- * Also: typography line reveal + frame unmask (IntroReveal), and a subtle desktop-only
- *       parallax on the frame (yPercent 0 → -6, scrubbed). No parallax on mobile.
+ * MOTION CONTRACT — Brand intro zoom (Lenis-smoothed, GSAP ScrollTrigger)
+ * Stage A (load): the Mumma's Bite wordmark fills the screen; Mumma peeks over a
+ *   small arched window that frames the hero film. Entrance: wordmark rises in
+ *   (0.9s, power3.out), then Mumma fades in.
+ * Scroll (pinned via CSS sticky, scrub 0.8, 280vh desktop / 220vh mobile):
+ *   0 → 0.15  Mumma and the scroll cue fade away
+ *   0 → 0.65  the window's clip-path opens from a small arch to full screen while
+ *             the film scales 1.18 → 1 (the zoom into the hero); the wordmark
+ *             scales 1 → 1.6 and fades out
+ *   0.6 → 1   a soft scrim and the hero copy (headline, line, CTAs) rise in
+ *   At 70% the film plays once and rests on the full bowl (Pause/Replay control).
+ * Reduced motion / no JS: no pin, no zoom — the finished hero (full film frame +
+ *   copy) renders immediately and the film never autoplays. Mobile: same scene,
+ *   shorter scroll, wider starting window.
  */
 export function Hero() {
-  const frameRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const started = useRef(false);
   const [film, setFilm] = useState<FilmState>("idle");
 
   useIsoLayoutEffect(() => {
-    const el = frameRef.current;
-    if (!el) return;
+    const root = rootRef.current;
+    if (!root) return;
+    const q = gsap.utils.selector(root);
     const mm = gsap.matchMedia();
-    mm.add(`${MQ.motion} and ${MQ.desktop}`, () => {
-      gsap.to(el, {
-        yPercent: -6,
-        ease: "none",
-        scrollTrigger: { trigger: el, start: "top top+=80", end: "bottom top", scrub: 0.6 },
-      });
-    });
-    return () => mm.revert();
-  }, []);
 
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v || !window.matchMedia(MQ.motion).matches) return;
-    // Let the entrance reveal land first, then start the film.
-    const t = window.setTimeout(() => v.play().catch(() => {}), 600);
-    return () => window.clearTimeout(t);
+    mm.add({ motion: MQ.motion, mobile: MQ.mobile }, (ctx) => {
+      const { motion, mobile } = ctx.conditions as { motion: boolean; mobile: boolean };
+      if (!motion) return;
+
+      const startClip = mobile
+        ? "inset(50% 9% 9% 9% round 50% 50% 6% 6% / 22% 22% 6% 6%)"
+        : "inset(47% 33% 7% 33% round 50% 50% 4% 4% / 30% 30% 4% 4%)";
+      const endClip = "inset(0% 0% 0% 0% round 0% 0% 0% 0% / 0% 0% 0% 0%)";
+
+      gsap.fromTo(q(".intro-word"), { yPercent: 30, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.9, ease: EASE, delay: 0.1, stagger: 0.08 });
+      gsap.fromTo(q(".intro-peek-in"), { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: EASE, delay: 0.55 });
+
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: root,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.8,
+          onUpdate: (self) => {
+            if (!started.current && self.progress > 0.7) {
+              started.current = true;
+              videoRef.current?.play().catch(() => {});
+            }
+          },
+        },
+      });
+      tl.fromTo(q(".intro-peek, .intro-cue"), { opacity: 1 }, { opacity: 0, duration: 0.15 }, 0)
+        .fromTo(q(".intro-media"), { clipPath: startClip }, { clipPath: endClip, duration: 0.65, ease: "power2.inOut" }, 0)
+        .fromTo(q(".intro-film"), { scale: 1.18 }, { scale: 1, duration: 0.65, ease: "power2.inOut" }, 0)
+        .fromTo(q(".intro-brand"), { scale: 1, opacity: 1 }, { scale: 1.6, opacity: 0, duration: 0.5, ease: "power1.in" }, 0.05)
+        .fromTo(q(".intro-scrim"), { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.6)
+        .fromTo(q(".intro-copy"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.65);
+    });
+
+    return () => mm.revert();
   }, []);
 
   const control = () => {
@@ -61,61 +88,35 @@ export function Hero() {
       v.play().catch(() => {});
     }
   };
-
-  const showVideo = film !== "idle";
-  const label =
-    film === "playing" ? "Pause" : film === "ended" ? "Replay" : "Play";
+  const label = film === "playing" ? "Pause" : film === "ended" ? "Replay" : "Play";
   const Icon = film === "playing" ? Pause : film === "ended" ? RotateCcw : Play;
 
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden pt-24 md:pt-28">
-      <IntroReveal className="shell grid items-center gap-10 pb-16 lg:min-h-[calc(100svh-7rem)] lg:grid-cols-[0.9fr_1.1fr] lg:gap-14 lg:pb-14">
-        <div className="relative z-10 max-w-xl">
-          <p data-hero-reveal="fade" className="eyebrow mb-6 flex items-center gap-3 text-brown md:mb-8">
-            <span aria-hidden className="h-px w-8 bg-gold" />
-            {brand.name}
-          </p>
-          <h1 id="hero-title" className="text-green">
-            <span className="block overflow-hidden pb-[0.06em]">
-              <span data-hero-reveal="line" className="display block whitespace-nowrap text-[clamp(2.9rem,6.4vw,6rem)]">
-                Made with
-              </span>
-            </span>
-            <span className="block overflow-hidden pb-[0.12em]">
-              <span data-hero-reveal="line" className="editorial block whitespace-nowrap text-[clamp(2.9rem,5.6vw,5.4rem)] leading-[0.95] text-brown">
-                a mother&apos;s love.
-              </span>
-            </span>
-          </h1>
-          <p data-hero-reveal="fade" className="mt-6 max-w-md text-lg leading-relaxed text-ink-soft md:mt-8 md:text-xl">
-            {brand.supporting.value}
-          </p>
-          <div data-hero-reveal="fade" className="mt-8 flex flex-col gap-3 sm:flex-row md:mt-10">
-            <ButtonLink href="/shop">Shop Mumma&apos;s Bite</ButtonLink>
-            <ButtonLink href="/our-story" variant="secondary">
-              Our story
-            </ButtonLink>
+    <section ref={rootRef} aria-labelledby="hero-title" className="intro-root relative">
+      <div className="intro-stage sticky top-0 h-[100svh] min-h-[560px] overflow-hidden bg-bg">
+        {/* Stage A — the brand, before the zoom */}
+        <div className="intro-brand absolute inset-x-0 top-[13%] flex flex-col items-center px-5 md:top-[10%]">
+          <p className="intro-word eyebrow mb-4 text-brown md:mb-6">{brand.promise.value}</p>
+          <div className="intro-word">
+            <Wordmark className="text-[clamp(4.4rem,19vw,7.5rem)] md:text-[clamp(6rem,11vw,10.5rem)]" />
           </div>
         </div>
 
-        <div ref={frameRef} className="relative">
-          {/* Elliptical arch — the "doorway home" motif, widened for a landscape film. */}
-          <div
-            data-hero-reveal="clip"
-            className="relative aspect-[5/4] overflow-hidden rounded-b-[1.75rem] rounded-t-[50%_28%] bg-cream md:rounded-b-[2.5rem]"
-          >
-            <Image
-              src={assets.heroPoster.src!}
-              alt={assets.heroPoster.alt}
-              fill
-              priority
-              sizes="(min-width:1024px) 55vw, 100vw"
-              className="object-cover"
-            />
+        {/* Mumma peeking over the window — sits behind it so the window rim hides her lower edge */}
+        <div className="intro-peek pointer-events-none absolute left-1/2 top-[41%] w-24 -translate-x-1/2 md:left-[66%] md:top-[41%] md:w-36">
+          <div className="intro-peek-in [mask-image:linear-gradient(to_bottom,black_72%,transparent_98%)]">
+            <Image src={assets.mascotLaughing.src!} alt="" width={288} height={288} className="h-auto w-full" />
+          </div>
+        </div>
+
+        {/* The hero film — starts as a small arched window, opens to full screen */}
+        <div className="intro-media absolute inset-0">
+          <div className="intro-film absolute inset-0">
+            <Image src={assets.heroPoster.src!} alt={assets.heroPoster.alt} fill priority sizes="100vw" className="object-cover" />
             <video
               ref={videoRef}
               className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-brand ${
-                showVideo ? "opacity-100" : "opacity-0"
+                film === "idle" ? "opacity-0" : "opacity-100"
               }`}
               muted
               playsInline
@@ -129,39 +130,48 @@ export function Hero() {
               <source src="/assets/hero.webm" type="video/webm" />
               <source src="/assets/hero.mp4" type="video/mp4" />
             </video>
-            <button
-              onClick={control}
-              className="on-dark absolute bottom-4 left-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/70 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-6 md:left-6"
-              aria-label={`${label} the hero film: dates, nuts and seeds falling into a wooden bowl`}
-            >
-              <Icon className="size-4" aria-hidden />
-              {label}
-            </button>
           </div>
-
-          {/* Mumma herself — a static brand moment, never animated beyond the entrance. */}
-          <div
-            data-hero-reveal="fade"
-            className="absolute -bottom-7 right-3 aspect-square w-24 overflow-hidden rounded-full border-4 border-bg bg-cream shadow-[0_12px_30px_-12px_rgba(31,42,32,0.45)] md:w-32 lg:-right-6 lg:w-40"
-          >
-            <Image
-              src={assets.mascotLaughing.src!}
-              alt={assets.mascotLaughing.alt}
-              fill
-              sizes="(min-width:1024px) 10rem, 8rem"
-              className="translate-y-[6%] scale-110 object-cover"
-            />
-          </div>
-          <span aria-hidden className="absolute right-3 top-[18%] size-5 md:size-6 rounded-full bg-gold/80 lg:-right-5 lg:size-8" />
+          <div className="intro-scrim pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(28,46,32,0.85)_0%,rgba(28,46,32,0.5)_40%,rgba(28,46,32,0)_72%)] md:bg-[linear-gradient(100deg,rgba(28,46,32,0.8)_0%,rgba(28,46,32,0.4)_45%,rgba(28,46,32,0)_72%)]" />
         </div>
-      </IntroReveal>
 
-      <a
-        href="#from-home"
-        className="eyebrow absolute bottom-5 left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-full px-3 py-2 text-ink-soft transition-colors hover:text-green lg:inline-flex"
-      >
-        It started at home <ArrowDown className="size-3.5" aria-hidden />
-      </a>
+        <a
+          href="#shop-preview"
+          className="intro-cue eyebrow absolute bottom-5 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg/85 px-4 py-2 text-ink-soft backdrop-blur"
+        >
+          Scroll <ArrowDown className="size-3.5" aria-hidden />
+        </a>
+
+        {/* Stage B — the hero, after the zoom */}
+        <div className="intro-copy on-dark absolute inset-0 flex items-end pb-20 md:items-center md:pb-0">
+          <div className="shell">
+            <div className="max-w-xl text-cream">
+              <h1 id="hero-title">
+                <span className="display block whitespace-nowrap text-[clamp(2.7rem,6.4vw,6rem)]">Made with</span>
+                <span className="editorial block whitespace-nowrap text-[clamp(2.8rem,5.8vw,5.6rem)] leading-[0.95] text-gold">
+                  a mother&apos;s love.
+                </span>
+              </h1>
+              <p className="mt-5 max-w-md text-lg leading-relaxed text-cream/90 md:mt-7 md:text-xl">{brand.supporting.value}</p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row md:mt-9">
+                <ButtonLink href="/shop" variant="light">
+                  Shop Mumma&apos;s Bite
+                </ButtonLink>
+                <ButtonLink href="/our-story" variant="ghost-light">
+                  Our story
+                </ButtonLink>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={control}
+            className="absolute bottom-5 right-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/60 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-8 md:right-8"
+            aria-label={`${label} the hero film: dates, nuts and seeds falling into a wooden bowl`}
+          >
+            <Icon className="size-4" aria-hidden />
+            {label}
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

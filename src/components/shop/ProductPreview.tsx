@@ -10,7 +10,7 @@ import { formatMoney } from "@/lib/commerce/money";
 import type { Product } from "@/lib/commerce/types";
 import Image from "next/image";
 
-/** WORLD 03 — Discover the product. */
+/** Product spotlight on the Shop page: "A little bite. A lot of care." */
 export function ProductPreview({ product }: { product: Product | null }) {
   // Second gallery shot (e.g. the bar itself) so the pack isn't repeated right after the hero.
   const img = product ? (product.images[1] ?? product.featuredImage) : null;

@@ -43,7 +43,7 @@ export function Navbar() {
       </a>
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-400 ease-brand ${
-          scrolled || menuOpen ? "bg-bg/90 shadow-[0_1px_0_var(--mb-line)] backdrop-blur-md" : "bg-transparent"
+          scrolled || menuOpen ? "bg-bg/90 shadow-[0_1px_0_var(--mb-line)] backdrop-blur-md" : "bg-bg/80 backdrop-blur-sm"
         }`}
       >
         <nav aria-label="Main" className="shell flex h-16 items-center justify-between md:h-20">

@@ -58,6 +58,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+}
+html:not(.lenis) {
   scroll-behavior: smooth;
 }
 
@@ -159,4 +161,83 @@ body {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+}
+
+/* ── Wordmark (modelled on the supplied logo) ─────────────────── */
+.mb-wordmark {
+  font-family: "Baloo 2", var(--font-sans);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+}
+.mb-wordmark__top,
+.mb-wordmark__bottom {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0.04em 0 rgba(255, 255, 255, 0.9)) drop-shadow(0 0.06em 0.05em rgba(74, 36, 14, 0.25));
+}
+.mb-wordmark__top {
+  background-image: linear-gradient(180deg, #8a4a24 0%, #6b3417 55%, #4f240d 100%);
+}
+.mb-wordmark__bottom {
+  background-image: linear-gradient(180deg, #f7a046 0%, #ec7f27 55%, #d4611a 100%);
+  font-size: 1.12em;
+}
+.mb-wordmark--dark .mb-wordmark__top {
+  background-image: linear-gradient(180deg, #fff6e6 0%, #f3ead7 100%);
+}
+.mb-wordmark--dark .mb-wordmark__top,
+.mb-wordmark--dark .mb-wordmark__bottom {
+  filter: none;
+}
+
+/* ── Brand intro zoom (Hero) ────────────────────────────────────
+   Default (reduced motion / no JS): the finished hero, no pin.
+   .js-motion: the intro's opening frame, before GSAP takes over.   */
+.intro-brand,
+.intro-peek,
+.intro-cue {
+  display: none;
+}
+.js-motion .intro-root {
+  height: 220vh;
+}
+@media (width >= 768px) {
+  .js-motion .intro-root {
+    height: 280vh;
+  }
+}
+.js-motion .intro-brand,
+.js-motion .intro-peek,
+.js-motion .intro-cue {
+  display: flex;
+}
+.js-motion .intro-peek {
+  display: block;
+}
+.js-motion .intro-media {
+  clip-path: inset(50% 9% 9% 9% round 50% 50% 6% 6% / 22% 22% 6% 6%);
+}
+@media (width >= 768px) {
+  .js-motion .intro-media {
+    clip-path: inset(47% 33% 7% 33% round 50% 50% 4% 4% / 30% 30% 4% 4%);
+  }
+}
+.js-motion .intro-film {
+  transform: scale(1.18);
+}
+.js-motion .intro-copy,
+.js-motion .intro-scrim {
+  opacity: 0;
+}
+@keyframes mb-failsafe-fade {
+  to {
+    opacity: 1;
+  }
+}
+.js-motion .intro-word,
+.js-motion .intro-peek-in {
+  opacity: 0;
+  animation: mb-failsafe-fade 0.01s linear 2.5s forwards;
 }

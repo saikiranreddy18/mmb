@@ -14,7 +14,7 @@ npm run build && npm start   # production
 npm run typecheck
 ```
 
-Stack: Next.js (App Router) · React · TypeScript · Tailwind CSS v4 with CSS-variable tokens · GSAP + ScrollTrigger · Lucide · self-hosted fonts (Manrope + Instrument Serif). Works on Vercel as-is.
+Stack: Next.js (App Router) · React · TypeScript · Tailwind CSS v4 with CSS-variable tokens · GSAP + ScrollTrigger · Lenis · Lucide · self-hosted fonts (Manrope + Instrument Serif). Works on Vercel as-is.
 
 ## Architecture
 
@@ -23,7 +23,7 @@ src/
   app/                    routes: /, /shop, /shop/[handle], /our-story, /profile, sitemap, robots
   components/
     layout/               Navbar (mobile menu), Footer
-    home/                 Hero, StoryIntro, ProcessFilm, ProductPreview, IngredientSection, ClosingInvite
+    home/                 Hero (brand intro zoom), ShopShowcase, ProcessFilm, IngredientSection, IngredientParade, ClosingInvite
     story/                StoryChapter
     shop/                 ProductCard, ProductGrid, ProductDetail, AddToCartButton
     cart/                 CartProvider (state), CartDrawer

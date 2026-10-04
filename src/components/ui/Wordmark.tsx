@@ -1,13 +1,17 @@
+import "@fontsource/baloo-2/800.css";
+
 /**
- * Interim typographic wordmark echoing the supplied logo's colours
- * ("mumma's" in deep brown, "bite" in caramel). Swap for the real logo
- * file once it is supplied as an asset (see content/assets.ts).
+ * Wordmark modelled on the supplied Mumma's Bite logo: stacked, rounded heavy
+ * lettering — "mumma's" in deep brown, "bite" in orange, both softly graded.
+ * Interim CSS recreation; swap for the original logo file (SVG/PNG) once supplied.
  */
 export function Wordmark({ className = "", onDark = false }: { className?: string; onDark?: boolean }) {
   return (
-    <span className={`inline-flex items-baseline gap-[0.3em] font-extrabold lowercase tracking-[-0.02em] ${className}`}>
-      <span className={onDark ? "text-cream" : "text-brown"}>mumma&apos;s</span>
-      <span className="text-caramel">bite</span>
+    <span
+      className={`mb-wordmark inline-flex flex-col items-center leading-[0.78] ${onDark ? "mb-wordmark--dark" : ""} ${className}`}
+    >
+      <span className="mb-wordmark__top">mumma&apos;s</span>
+      <span className="mb-wordmark__bottom">bite</span>
     </span>
   );
 }

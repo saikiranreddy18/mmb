@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IntroReveal } from "@/components/motion/IntroReveal";
 import { ProductGrid } from "@/components/shop/ProductGrid";
+import { ProductPreview } from "@/components/shop/ProductPreview";
 import { MockNotice } from "@/components/ui/MockNotice";
 import { isShopifyConnected } from "@/lib/commerce/config";
 import { getProducts } from "@/lib/commerce/products";
@@ -37,6 +38,9 @@ export default async function ShopPage() {
       </IntroReveal>
       <div className="shell">
         <ProductGrid products={products} />
+      </div>
+      <div className="mt-16 border-t border-line md:mt-24">
+        <ProductPreview product={products[0] ?? null} />
       </div>
     </div>
   );
