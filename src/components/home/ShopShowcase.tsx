@@ -15,7 +15,7 @@ export function ShopShowcase({ products }: { products: Product[] }) {
             From our <span className="editorial block text-brown">kitchen to yours.</span>
           </h2>
           <p className="mt-6 max-w-sm text-lg leading-relaxed text-ink-soft">
-            Dates, nuts and seeds, pressed into one honest bar.
+            Dates, nuts and seeds, pressed into honest bars.
           </p>
           <Link
             href="/shop"

@@ -20,6 +20,18 @@ const pack = {
   width: 800,
   height: 1000,
 };
+const msFront = {
+  url: "/assets/multiseed-front.jpg",
+  altText: "Mumma's Bite Multi-Seed Energy Bar pouch, front",
+  width: 760,
+  height: 1024,
+};
+const msBack = {
+  url: "/assets/multiseed-back.jpg",
+  altText: "Mumma's Bite Multi-Seed Energy Bar pouch, back label with ingredients and nutrition",
+  width: 760,
+  height: 1024,
+};
 const bar = {
   url: "/assets/bar-pressed.jpg",
   altText: "A dry fruit bar of dates and nuts",
@@ -57,6 +69,58 @@ export const mockProducts: Product[] = [
       storage: unknown(),
       shelfLife: unknown(),
       fssai: unknown(),
+    },
+    isMock: true,
+  },
+  {
+    /*
+     * Values transcribed from the supplied pack artwork (front + back label).
+     * UNVERIFIED until checked against the printed, approved label. The pack's
+     * phone number and barcode look like placeholders, so they're not used.
+     */
+    id: "gid://mock/Product/2",
+    handle: "multi-seed-energy-bar",
+    title: "Multi-Seed Energy Bar",
+    shortDescription: "Peanuts, six seeds and dates, pressed into one bar.",
+    description:
+      "Peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, held together with dates. A crunchy, seedy bar from the Mumma's Bite kitchen.",
+    featuredImage: msFront,
+    images: [msFront, msBack],
+    priceRange: { minVariantPrice: { amount: "30.00", currencyCode: "INR" } },
+    variants: [
+      {
+        id: "gid://mock/ProductVariant/2",
+        title: "20 g",
+        availableForSale: true,
+        price: { amount: "30.00", currencyCode: "INR" },
+        selectedOptions: [{ name: "Size", value: "20 g" }],
+      },
+    ],
+    availableForSale: true,
+    details: {
+      netQuantity: unverified("20 g"),
+      claims: unverified("No added sugar · No preservatives · Rich in natural nutrients · 3.1 g protein per 20 g bar"),
+      ingredients: unverified("Peanuts, pumpkin seeds, sunflower seeds, watermelon seeds, sesame seeds, flax seeds, dates"),
+      nutrition: unverified(
+        [
+          "Per 20 g bar (approx.)",
+          "Energy: 100 kcal",
+          "Protein: 3.1 g",
+          "Total carbohydrate: 11.5 g",
+          "Total sugars: 8.5 g",
+          "Added sugars: 0 g",
+          "Total fat: 5.8 g",
+          "Saturated fat: 1.1 g",
+          "Trans fat: 0 g",
+          "Cholesterol: 0 mg",
+          "Dietary fibre: 1.8 g",
+          "Sodium: 10 mg",
+        ].join("\n"),
+      ),
+      allergens: unverified("Contains peanuts and sesame seeds."),
+      storage: unknown(),
+      shelfLife: unknown(),
+      fssai: unverified("Lic. No. 20126052001147"),
     },
     isMock: true,
   },
