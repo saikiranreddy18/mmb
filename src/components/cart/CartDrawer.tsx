@@ -9,6 +9,41 @@ import { formatMoney } from "@/lib/commerce/money";
 import { Button, ButtonLink, buttonClass } from "@/components/ui/Button";
 import { MockNotice } from "@/components/ui/MockNotice";
 import { useDialog } from "@/components/ui/useDialog";
+import { applyOffers } from "@/lib/commerce/offers";
+import type { Money } from "@/lib/commerce/types";
+
+function CartTotals({ subtotal }: { subtotal: Money }) {
+  const o = applyOffers(subtotal);
+  return (
+    <div className="space-y-2 text-sm">
+      {o.next && (
+        <p className="rounded-xl bg-cream px-3 py-2 text-brown">
+          Add <strong>{formatMoney({ amount: String(o.next.amountNeeded), currencyCode: subtotal.currencyCode })}</strong> more for{" "}
+          <strong>{o.next.label}</strong>.
+        </p>
+      )}
+      <div className="flex justify-between">
+        <span className="text-ink-soft">Subtotal</span>
+        <span className="font-semibold">{formatMoney(subtotal)}</span>
+      </div>
+      {o.percent > 0 && (
+        <div className="flex justify-between text-green">
+          <span>Offer discount ({o.percent}%)</span>
+          <span className="font-semibold">−{formatMoney(o.discount)}</span>
+        </div>
+      )}
+      <div className="flex justify-between">
+        <span className="text-ink-soft">Delivery</span>
+        <span className="font-semibold">{o.freeDelivery ? <span className="text-green">Free</span> : "Calculated at checkout"}</span>
+      </div>
+      <div className="flex items-baseline justify-between border-t border-line pt-2">
+        <span className="eyebrow text-ink-soft">Estimated total</span>
+        <span className="text-xl font-extrabold">{formatMoney(o.total)}</span>
+      </div>
+      <p className="text-xs text-ink-soft">Taxes and final offers are confirmed at checkout.</p>
+    </div>
+  );
+}
 
 export function CartDrawer() {
   const { cart, isOpen, close, isBusy, error, updateQuantity, removeLine } = useCart();
@@ -132,11 +167,7 @@ export function CartDrawer() {
                   {error}
                 </p>
               )}
-              <div className="flex items-baseline justify-between">
-                <span className="eyebrow text-ink-soft">Subtotal</span>
-                <span className="text-xl font-extrabold">{cart && formatMoney(cart.cost.subtotalAmount)}</span>
-              </div>
-              <p className="text-xs text-ink-soft">Shipping and taxes are calculated at checkout.</p>
+              {cart && <CartTotals subtotal={cart.cost.subtotalAmount} />}
               {cart?.checkoutUrl ? (
                 <a href={cart.checkoutUrl} className={buttonClass("primary", "w-full")}>
                   Checkout

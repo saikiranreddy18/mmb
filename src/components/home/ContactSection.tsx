@@ -4,7 +4,8 @@ import { useState, type FormEvent } from "react";
 import { Send } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
-import { MockNotice } from "@/components/ui/MockNotice";
+import { MessageCircle } from "lucide-react";
+import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
 import { WalkingGang } from "./WalkingGang";
 
 /**
@@ -59,9 +60,17 @@ export function ContactSection() {
           <p className="mt-6 max-w-sm text-lg leading-relaxed text-ink-soft">
             Questions about an order, a bulk request, or just want to tell us how your bite was? Write to us.
           </p>
-          <MockNotice className="mt-8 max-w-sm">
-            Email, phone and address: content required. They&apos;ll appear here once confirmed.
-          </MockNotice>
+          <a
+            href={whatsappLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#1f8f4e] px-6 text-sm font-bold text-white transition-colors hover:bg-[#177a41]"
+          >
+            <MessageCircle className="size-5" aria-hidden />
+            Chat on WhatsApp
+            <span className="font-semibold opacity-85">{WHATSAPP_DISPLAY}</span>
+          </a>
+          <p className="mt-3 text-sm text-ink-soft">Opens WhatsApp with a message to us. Usually the quickest way to reach us.</p>
         </Reveal>
 
         <Reveal>

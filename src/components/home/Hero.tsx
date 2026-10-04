@@ -155,7 +155,7 @@ export function Hero() {
         </div>
 
         {/* Hero copy — arrives once the letters open into the full video */}
-        <div className="hero-copy absolute inset-0 flex items-end pb-12 pt-24 md:items-center md:pb-0">
+        <div className="hero-copy absolute inset-0 flex items-end pb-12 pt-32 md:items-center md:pb-0">
           <div className="shell">
             <div className="max-w-xl">
               {/* eslint-disable-next-line @next/next/no-img-element -- supplied SVG logo, used unaltered */}
@@ -179,7 +179,7 @@ export function Hero() {
 
         <button
           onClick={toggle}
-          className="hero-copy absolute right-4 top-20 z-10 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/55 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-8 md:right-8 md:top-auto"
+          className="hero-copy absolute right-4 top-28 z-10 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/55 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-8 md:right-8 md:top-auto"
           aria-label={playing ? "Pause the background video" : "Play the background video"}
         >
           {playing ? <Pause className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}

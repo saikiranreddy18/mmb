@@ -8,6 +8,7 @@ import { useCart } from "@/components/cart/CartProvider";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { useDialog } from "@/components/ui/useDialog";
 import { isActive, navItems } from "./nav";
+import { OfferRibbon } from "./OfferRibbon";
 
 /**
  * Navigation — transparent over the page top, settles into a solid
@@ -46,6 +47,7 @@ export function Navbar() {
           scrolled || menuOpen ? "bg-bg/90 shadow-[0_1px_0_var(--mb-line)] backdrop-blur-md" : "bg-bg/80 backdrop-blur-sm"
         }`}
       >
+        <OfferRibbon />
         <nav aria-label="Main" className="shell flex h-16 items-center justify-between md:h-20">
           <Link href="/" className="nav-logo relative z-10 -ml-1 rounded-md px-1 py-1.5" aria-label="Mumma's Bite — home">
             <Wordmark className="!h-10 md:!h-12" />
@@ -112,7 +114,7 @@ export function Navbar() {
         aria-modal="true"
         aria-label="Menu"
         inert={!menuOpen}
-        className={`fixed inset-0 z-40 flex flex-col bg-bg px-5 pb-10 pt-24 transition-[opacity,visibility] duration-300 ease-brand focus:outline-none md:hidden ${
+        className={`fixed inset-0 z-40 flex flex-col bg-bg px-5 pb-10 pt-32 transition-[opacity,visibility] duration-300 ease-brand focus:outline-none md:hidden ${
           menuOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >

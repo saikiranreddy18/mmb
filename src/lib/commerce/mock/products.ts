@@ -10,7 +10,7 @@
  * shelf life are not on the labels, so they stay "content required".
  */
 
-import { type ContentField, unknown, unverified } from "@/content/status";
+import { type ContentField, unknown, unverified, verified } from "@/content/status";
 import type { Product, ShopifyImage } from "../types";
 
 const img = (file: string, altText: string): ShopifyImage => ({
@@ -70,7 +70,7 @@ export const mockProducts: Product[] = [
       ]),
       allergens: unverified("Contains tree nuts (almonds, cashews, walnuts, pistachios)."),
       storage: unknown(),
-      shelfLife: unknown(),
+      shelfLife: verified("30 days"),
       fssai: FSSAI,
     },
     isMock: true,
@@ -117,7 +117,7 @@ export const mockProducts: Product[] = [
       ]),
       allergens: unverified("Contains peanuts and sesame seeds."),
       storage: unknown(),
-      shelfLife: unknown(),
+      shelfLife: verified("30 days"),
       fssai: FSSAI,
     },
     isMock: true,

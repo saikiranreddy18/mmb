@@ -16,7 +16,7 @@ export function ProductDetail({ product }: { product: Product }) {
   const images = product.images.length ? product.images : product.featuredImage ? [product.featuredImage] : [];
 
   return (
-    <article className="pb-32 pt-24 md:pb-32 md:pt-32">
+    <article className="pb-32 pt-32 md:pb-32 md:pt-36">
       <div className="shell">
         <Link
           href="/shop"

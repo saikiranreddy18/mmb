@@ -1,8 +1,7 @@
 /**
  * The supplied Mumma's Bite logo (vector, transparent background), used unaltered.
- * Size it with a width or height class. On dark surfaces it sits on a cream
- * badge: the vector's texture is cut-through, and the deep-brown "mumma's"
- * needs a light ground to read.
+ * Size it with a width or height class. On dark surfaces there is no box —
+ * a soft cream halo keeps the deep-brown "mumma's" legible.
  */
 export function Wordmark({ className = "", onDark = false }: { className?: string; onDark?: boolean }) {
   const img = (
@@ -17,5 +16,9 @@ export function Wordmark({ className = "", onDark = false }: { className?: strin
     />
   );
   if (!onDark) return img;
-  return <span className={`inline-flex rounded-2xl bg-cream px-4 py-3 ${className}`}>{img}</span>;
+  return (
+    <span className={`inline-flex [filter:drop-shadow(0_0_0.6px_rgba(251,247,239,0.9))_drop-shadow(0_0_0.6px_rgba(251,247,239,0.9))] ${className}`}>
+      {img}
+    </span>
+  );
 }

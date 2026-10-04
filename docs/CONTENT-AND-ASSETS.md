@@ -21,8 +21,14 @@ Front and back cropped from the supplied pack artwork. Product page values are t
 
 Please check: the Dry Fruit Bar's nutrition panel is identical, value for value, to the earlier 20 g Multi-Seed label, which may be a copy-paste on the artwork. The Dry Fruit Bar front shows a black mark in the veg-symbol box, while the Multi-Seed pack shows the green veg mark. Not used: the phone number and barcode, which look like placeholders. Storage and shelf life aren't on either label (content required).
 
+## SUPPLIED by the brand (direct)
+- Shelf life: **30 days** (both bars), marked verified
+- WhatsApp: +91 83095 32183, linked in the Contact section and footer (`src/content/contact.ts`)
+- FSSAI Lic. No. 20126052001147, shown in the footer and on product pages
+- Offers (ribbon + cart estimate, `src/lib/commerce/offers.ts`): ₹799+ 5% off · ₹1299+ 5% off + free delivery · ₹2000+ 10% off + free delivery. **When Shopify is connected, create the same automatic discounts and a free-shipping rate in Shopify Admin**, because checkout applies the final price.
+
 ## SUPPLIED: logo (`public/assets/logo/mummas-bite-logo.svg`, used unaltered)
-Used in the menu bar, the home brand intro and the footer. On the dark footer it sits on a cream badge: the vector's texture is cut through, and the deep-brown "mumma's" needs a light background.
+Used in the menu bar, the hero and the footer. On the dark footer there is no box; a thin cream edge keeps the deep-brown lettering legible.
 
 ## SUPPLIED: ingredient illustrations (`public/assets/ingredients/`)
 Supplied as JPGs with a painted-in checkerboard (no real transparency). The neutral background connected to the image edges was removed and the artwork itself was left unaltered. Exported as transparent WebP.
