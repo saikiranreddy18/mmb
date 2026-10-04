@@ -39,7 +39,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
             </Link>
           </h2>
           <p className="shrink-0 text-lg font-bold text-green">
-            <span className="text-xs font-semibold text-ink-soft">from </span>
+            {product.variants.length > 1 && <span className="text-xs font-semibold text-ink-soft">from </span>}
             {formatMoney(product.priceRange.minVariantPrice)}
           </p>
         </div>

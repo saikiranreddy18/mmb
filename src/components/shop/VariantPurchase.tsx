@@ -6,7 +6,7 @@ import type { Product } from "@/lib/commerce/types";
 import { AddToCartButton } from "./AddToCartButton";
 
 /**
- * Pack picker (e.g. "Pack of 10 · 200 g" / "1 bar · 20 g") + price + add to cart.
+ * Pack picker (shown only when there is more than one pack) + price + add to cart.
  * `compact` is the product-card version; the full version adds a quantity stepper.
  */
 export function VariantPurchase({ product, compact = false }: { product: Product; compact?: boolean }) {
@@ -17,6 +17,9 @@ export function VariantPurchase({ product, compact = false }: { product: Product
   return (
     <div className={compact ? "mt-4" : "mt-8"}>
       {!compact && <p className="text-3xl font-extrabold text-green">{variant && formatMoney(variant.price)}</p>}
+      {product.variants.length === 1 && variant && (
+        <p className={`text-sm font-semibold text-ink-soft ${compact ? "" : "mt-2"}`}>{variant.title}</p>
+      )}
       {product.variants.length > 1 && (
         <fieldset className={compact ? "" : "mt-5"}>
           <legend className="sr-only">Choose a pack for {product.title}</legend>

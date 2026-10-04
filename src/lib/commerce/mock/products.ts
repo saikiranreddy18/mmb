@@ -32,6 +32,7 @@ export const mockProducts: Product[] = [
     featuredImage: img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
     images: [
       img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
+      img("dryfruit-lifestyle.jpg", "Two Mumma's Bite Dry Fruit Energy Bar pouches with a bar, dates and nuts", 750, 937),
       img(
         "dryfruit-ingredients.jpg",
         "The Dry Fruit Energy Bar (about 4 × 5 cm) surrounded by its ingredients: almonds, cashews, pumpkin seeds, walnuts, dates, sunflower seeds, watermelon seeds and pistachios",
@@ -40,7 +41,7 @@ export const mockProducts: Product[] = [
       ),
       img("dryfruit-back.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, back label with ingredients and nutrition"),
     ],
-    priceRange: { minVariantPrice: { amount: "30.00", currencyCode: "INR" } },
+    priceRange: { minVariantPrice: { amount: "300.00", currencyCode: "INR" } },
     variants: [
       {
         id: "gid://mumma/ProductVariant/dry-fruit-pack-10",
@@ -49,17 +50,10 @@ export const mockProducts: Product[] = [
         price: { amount: "300.00", currencyCode: "INR" },
         selectedOptions: [{ name: "Pack", value: "Pack of 10 (200 g)" }],
       },
-      {
-        id: "gid://mumma/ProductVariant/dry-fruit-single",
-        title: "1 bar · 20 g",
-        availableForSale: true,
-        price: { amount: "30.00", currencyCode: "INR" },
-        selectedOptions: [{ name: "Pack", value: "1 bar (20 g)" }],
-      },
     ],
     availableForSale: true,
     details: {
-      netQuantity: verified("200 g (pack of 10 × 20 g bars) · single bar 20 g"),
+      netQuantity: verified("200 g (pack of 10 × 20 g bars)"),
       claims: verified("No added sugar · No preservatives · 3.1 g protein per 20 g bar"),
       ingredients: verified(
         "Dates, almonds, cashews, walnuts, pistachios, pumpkin seeds, sunflower seeds, watermelon seeds",
@@ -103,27 +97,19 @@ export const mockProducts: Product[] = [
       ),
       img("multiseed-25g-back.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, back label with ingredients and nutrition"),
     ],
-    priceRange: { minVariantPrice: { amount: "25.00", currencyCode: "INR" } },
+    priceRange: { minVariantPrice: { amount: "250.00", currencyCode: "INR" } },
     variants: [
       {
         id: "gid://mumma/ProductVariant/multi-seed-pack-10",
         title: "Pack of 10 · 250 g",
         availableForSale: true,
-        // 10 × ₹25 (no pack discount, matching the Dry Fruit pack) — confirm with the brand.
         price: { amount: "250.00", currencyCode: "INR" },
         selectedOptions: [{ name: "Pack", value: "Pack of 10 (250 g)" }],
-      },
-      {
-        id: "gid://mumma/ProductVariant/multi-seed-single",
-        title: "1 bar · 25 g",
-        availableForSale: true,
-        price: { amount: "25.00", currencyCode: "INR" },
-        selectedOptions: [{ name: "Pack", value: "1 bar (25 g)" }],
       },
     ],
     availableForSale: true,
     details: {
-      netQuantity: verified("250 g (pack of 10 × 25 g bars) · single bar 25 g"),
+      netQuantity: verified("250 g (pack of 10 × 25 g bars)"),
       claims: verified("No added sugar · No preservatives · Rich in natural nutrients · 3.5 g protein per 25 g bar"),
       ingredients: verified("Peanuts, pumpkin seeds, sunflower seeds, watermelon seeds, sesame seeds, flax seeds, dates"),
       nutrition: nutrition("25 g bar", [

@@ -14,8 +14,9 @@ The supplied 10s process film is an **illustrated / rendered animation**: its pa
 Read off the rendered pack, and **all UNVERIFIED** until checked against the real label: name "Dry Fruit Bar", "Dates | Nuts | Seeds", 20 g, ₹30 each, "No Added Sugar", "No Preservatives". The protein figure on the pack is illegible, so it is **not used**. The tagline above "IN EVERY BITE" is cut off.
 
 ## PRODUCTS (real, confirmed by the brand; `src/lib/commerce/mock/products.ts` until Shopify)
-- **Dry Fruit Energy Bar**: Pack of 10 · 200 g **₹300** (default) · single 20 g bar **₹30**. No pack discount.
-- **Multi-Seed Energy Bar**: Pack of 10 · 250 g **₹250** · single 25 g bar **₹25**. **Please confirm the ₹250 pack price**: it was inferred as 10 × ₹25, matching the Dry Fruit pack's no-discount rule.
+- **Dry Fruit Energy Bar**: sold online only as a pack of 10 · 200 g, **₹300** (confirmed). Single bars are not sold online.
+- **Multi-Seed Energy Bar**: sold online only as a pack of 10 · 250 g, **₹250** (confirmed). Single bars are not sold online.
+- Gallery order: front, lifestyle photo (`dryfruit-lifestyle.jpg` / `multiseed-lifestyle.jpg`), ingredient board, back.
 - Gallery images: `dryfruit-ingredients.jpg`, `multiseed-ingredients.jpg` (supplied ingredient boards, bar 4 × 5 cm) and `multiseed-lifestyle.jpg` (supplied pack photo, cropped to 4:5, which also removes the generator watermark corner).
 - Ingredients, nutrition (per bar), allergens, claims and FSSAI are taken from the supplied pack labels. Shelf life is 30 days. Storage is still needed.
 - Until Shopify checkout is connected, the cart's main button sends the order (items, packs, quantities, offers, total) to WhatsApp.
