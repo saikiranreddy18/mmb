@@ -5,57 +5,41 @@ import { ArrowDown, Pause, Play } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { assets } from "@/content/assets";
 import { brand } from "@/content/brand";
-import { EASE, MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
+import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
 const LOGO = "/assets/logo/mummas-bite-logo.svg";
 
-/** Distance of `el` from the top-left of `ancestor`, ignoring CSS transforms. */
-function offsetWithin(el: HTMLElement, ancestor: HTMLElement) {
-  let x = 0;
-  let y = 0;
-  let node: HTMLElement | null = el;
-  while (node && node !== ancestor) {
-    x += node.offsetLeft;
-    y += node.offsetTop;
-    node = node.offsetParent as HTMLElement | null;
-  }
-  return { x, y };
-}
-
 /**
- * WORLD 01 — LOGO + VIDEO → SCROLL → LOGO SETTLES → HERO
+ * WORLD 01 — THE VIDEO LIVES INSIDE THE LOGO → SCROLL → ENTER THE WORLD
  *
- * Layers: 01 video (autoplay, muted, loop — never paused, faded or restarted by
- * scroll) · 02 soft cream glow / wash (no boxes) · 03 the transparent SVG logo
- * (one element, always visible) · 04 hero copy · 05 navigation.
+ * Layers: 01 video (autoplay, muted, loop — never paused/restarted by scroll),
+ * clipped by a CSS mask = the supplied SVG logo + a circle · 02 reading wash ·
+ * 03 hero copy · 04 navigation.
  *
- * MOTION CONTRACT — Logo enters the hero
- * Start: the logo is large and centred over the playing video (its real, final
- *   DOM position is inside the hero copy; the start is a measured transform).
- * Scroll (Lenis-smoothed, scrub 1, CSS-sticky pin ~140vh desktop / ~90vh mobile):
- *   0 → 0.7   logo translate + scale into its final place (power2.inOut);
- *             the centre glow eases out while the reading wash eases in
- *   0.5 → 0.85 headline, line and CTAs arrive together (opacity + 30px rise)
- *   Reverse scroll reverses everything. The video keeps its own time throughout.
- * Load: the logo fades in at its start position (0.8s) — no separate intro screen.
- * Mobile: dedicated composition — final block sits low; shorter movement.
- * Reduced motion: no pin and no logo travel — logo in final place, all copy
- *   visible; the video shows its poster and never autoplays.
+ * MOTION CONTRACT — Logo knockout reveal
+ * Start: light page; the hero video plays only *inside* the letters of
+ *   "mumma's bite" (mask-image: logo SVG), big and centred. Eyebrow line bottom
+ *   left, scroll cue bottom right (reference: knockout-word hero).
+ * Scroll (Lenis-smoothed, scrub 1, CSS-sticky pin ~150vh / ~100vh mobile):
+ *   0 → 0.75  logo mask grows ×1.6 while a circle mask opens from the centre to
+ *             cover the viewport — the letters "open up" into the full video
+ *   0.05→0.25 the intro line + cue fade away
+ *   0.6 → 0.9 reading wash, hero logo and copy rise in as one group
+ *   Reverse scroll reverses it. The video keeps its own time throughout.
+ * Reduced motion / no JS: no mask, no pin — full video (poster) + finished copy.
  */
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
-  // Video: autoplay only when motion is welcome; it then simply loops.
   useEffect(() => {
     const v = videoRef.current;
     if (v && window.matchMedia(MQ.motion).matches) v.play().catch(() => {});
   }, []);
 
-  // While the hero logo is on screen, the navbar logo steps aside (no duplicate logo).
+  // Navbar logo steps aside while the hero is on screen (the hero shows the logo).
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -72,9 +56,8 @@ export function Hero() {
 
   useIsoLayoutEffect(() => {
     const root = rootRef.current;
-    const stage = stageRef.current;
-    const logo = logoRef.current;
-    if (!root || !stage || !logo) return;
+    const media = mediaRef.current;
+    if (!root || !media) return;
     const q = gsap.utils.selector(root);
     const mm = gsap.matchMedia();
 
@@ -82,44 +65,38 @@ export function Hero() {
       const { motion, mobile } = ctx.conditions as { motion: boolean; mobile: boolean };
       if (!motion) return;
 
-      // Start = logo centred in the viewport at a large width; end = its real place.
-      const start = () => {
-        const { x, y } = offsetWithin(logo, stage);
-        const w = logo.offsetWidth;
-        const h = logo.offsetHeight;
-        const vw = stage.clientWidth;
-        const vh = stage.clientHeight;
-        const startW = mobile ? Math.min(vw * 0.86, 560) : Math.min(vw * 0.6, 920);
-        return {
-          x: vw / 2 - (x + w / 2),
-          y: vh * (mobile ? 0.44 : 0.46) - (y + h / 2),
-          scale: startW / w,
-        };
-      };
+      const vw = () => media.clientWidth;
+      const vh = () => media.clientHeight;
+      const logoStart = () => (mobile ? Math.min(vw() * 0.92, 560) : Math.min(vw() * 0.78, 1240));
+      const coverR = () => Math.hypot(vw(), vh()) / 2 + 2;
 
-      gsap.set(logo, { transformOrigin: "50% 50%" });
-      gsap.fromTo(logo, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: EASE, delay: 0.1 });
+      const s = { lw: logoStart(), r: 0 };
+      const apply = () => {
+        media.style.setProperty("--lw", `${s.lw}px`);
+        media.style.setProperty("--r", `${s.r}px`);
+      };
+      apply();
+      media.classList.add("is-masked");
 
       const tl = gsap.timeline({
         defaults: { ease: "none" },
-        scrollTrigger: {
-          trigger: root,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
+        scrollTrigger: { trigger: root, start: "top top", end: "bottom bottom", scrub: 1, invalidateOnRefresh: true },
       });
       tl.fromTo(
-        logo,
-        { x: () => start().x, y: () => start().y, scale: () => start().scale },
-        { x: 0, y: 0, scale: 1, duration: 0.7, ease: "power2.inOut" },
+        s,
+        { lw: () => logoStart(), r: 0 },
+        { lw: () => logoStart() * 1.6, r: () => coverR(), duration: 0.75, ease: "power2.in", onUpdate: apply },
         0,
       )
-        .fromTo(q(".hero-cue"), { opacity: 1 }, { opacity: 0, duration: 0.1 }, 0)
-        .fromTo(q(".hero-glow"), { opacity: 1 }, { opacity: 0, duration: 0.5 }, 0.1)
-        .fromTo(q(".hero-wash"), { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.2)
-        .fromTo(q(".hero-copy"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.5);
+        .fromTo(q(".hero-intro"), { opacity: 1 }, { opacity: 0, duration: 0.2 }, 0.05)
+        .fromTo(q(".hero-wash"), { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.72)
+        .fromTo(q(".hero-copy"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0.74);
+
+      return () => {
+        media.classList.remove("is-masked");
+        media.style.removeProperty("--lw");
+        media.style.removeProperty("--r");
+      };
     });
 
     return () => mm.revert();
@@ -134,66 +111,75 @@ export function Hero() {
 
   return (
     <section ref={rootRef} aria-labelledby="hero-title" className="hero-root relative">
-      <div ref={stageRef} className="sticky top-0 h-[100svh] min-h-[600px] overflow-hidden bg-green-900">
-        {/* LAYER 01 — video */}
-        <video
-          ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover"
-          poster={assets.heroPoster.src ?? undefined}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden
-          tabIndex={-1}
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
-        >
-          <source src="/assets/hero.webm" type="video/webm" />
-          <source src="/assets/hero.mp4" type="video/mp4" />
-        </video>
+      <div className="sticky top-0 h-[100svh] min-h-[600px] overflow-hidden bg-bg">
+        {/* LAYER 01 — video, seen through the logo */}
+        <div ref={mediaRef} className="hero-media absolute inset-0">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 h-full w-full object-cover"
+            poster={assets.heroPoster.src ?? undefined}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden
+            tabIndex={-1}
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+          >
+            <source src="/assets/hero.webm" type="video/webm" />
+            <source src="/assets/hero.mp4" type="video/mp4" />
+          </video>
+          <div
+            aria-hidden
+            className="hero-wash pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(251,247,239,0.97)_0%,rgba(251,247,239,0.88)_46%,rgba(251,247,239,0)_78%)] md:bg-[linear-gradient(90deg,rgba(251,247,239,0.95)_0%,rgba(251,247,239,0.82)_34%,rgba(251,247,239,0)_66%)]"
+          />
+        </div>
 
-        {/* LAYER 02 — soft light: a glow behind the big logo, then a reading wash */}
-        <div aria-hidden className="hero-glow pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_46%_32%_at_50%_45%,rgba(251,247,239,0.78)_0%,rgba(251,247,239,0.45)_45%,rgba(251,247,239,0)_100%)]" />
-        <div aria-hidden className="hero-wash pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(251,247,239,0.97)_0%,rgba(251,247,239,0.88)_46%,rgba(251,247,239,0)_78%)] md:bg-[linear-gradient(90deg,rgba(251,247,239,0.95)_0%,rgba(251,247,239,0.82)_34%,rgba(251,247,239,0)_66%)]" />
+        {/* Opening composition — line bottom-left, cue bottom-right */}
+        <div className="hero-intro pointer-events-none absolute inset-x-0 bottom-0 pb-8 md:pb-12">
+          <div className="shell flex items-end justify-between gap-6">
+            <div>
+              <p className="eyebrow flex items-center gap-3 whitespace-nowrap text-ink-soft">
+                Fruit &amp; seed bars <span aria-hidden className="h-px w-6 bg-ink-soft/40 md:w-8" /> Made at home
+              </p>
+              <p className="mt-3 max-w-md text-2xl leading-snug text-ink-soft md:text-3xl">{brand.promise.value}</p>
+            </div>
+            <a
+              href="#shop-preview"
+              className="eyebrow pointer-events-auto hidden items-center gap-2 text-ink-soft hover:text-green md:inline-flex"
+            >
+              Scroll <ArrowDown className="size-3.5" aria-hidden />
+            </a>
+          </div>
+        </div>
 
-        {/* LAYERS 03 + 04 — logo (final position) and hero copy */}
-        <div className="absolute inset-0 flex items-end pb-12 pt-24 md:items-center md:pb-0">
+        {/* Hero copy — arrives once the letters open into the full video */}
+        <div className="hero-copy absolute inset-0 flex items-end pb-12 pt-24 md:items-center md:pb-0">
           <div className="shell">
             <div className="max-w-xl">
-              <div ref={logoRef} className="hero-logo w-[min(62vw,260px)] will-change-transform md:w-[min(30vw,400px)]">
-                {/* eslint-disable-next-line @next/next/no-img-element -- supplied SVG logo, used unaltered */}
-                <img src={LOGO} alt="Mumma's Bite" width={1455} height={583} className="block h-auto w-full" />
-              </div>
-              <div className="hero-copy mt-6 md:mt-8">
-                <h1 id="hero-title" className="text-green">
-                  <span className="display block text-[clamp(2.4rem,5.2vw,4.75rem)]">Made with</span>
-                  <span className="editorial block text-[clamp(2.6rem,5vw,4.6rem)] leading-[0.95] text-brown">
-                    a mother&apos;s love.
-                  </span>
-                </h1>
-                <p className="mt-4 max-w-md text-base leading-relaxed text-ink-soft md:mt-6 md:text-lg">{brand.supporting.value}</p>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row md:mt-8">
-                  <ButtonLink href="/shop">Shop Mumma&apos;s Bite</ButtonLink>
-                  <ButtonLink href="/our-story" variant="secondary" className="bg-bg/60 backdrop-blur-sm">
-                    Our story
-                  </ButtonLink>
-                </div>
+              {/* eslint-disable-next-line @next/next/no-img-element -- supplied SVG logo, used unaltered */}
+              <img src={LOGO} alt="Mumma's Bite" width={1455} height={583} className="block h-auto w-[min(62vw,260px)] md:w-[min(30vw,380px)]" />
+              <h1 id="hero-title" className="mt-6 text-green md:mt-8">
+                <span className="display block text-[clamp(2.4rem,5.2vw,4.75rem)]">Made with</span>
+                <span className="editorial block text-[clamp(2.6rem,5vw,4.6rem)] leading-[0.95] text-brown">
+                  a mother&apos;s love.
+                </span>
+              </h1>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-ink-soft md:mt-6 md:text-lg">{brand.supporting.value}</p>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row md:mt-8">
+                <ButtonLink href="/shop">Shop Mumma&apos;s Bite</ButtonLink>
+                <ButtonLink href="/our-story" variant="secondary" className="bg-bg/60 backdrop-blur-sm">
+                  Our story
+                </ButtonLink>
               </div>
             </div>
           </div>
         </div>
 
-        <a
-          href="#shop-preview"
-          className="hero-cue eyebrow absolute bottom-5 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg/80 px-4 py-2 text-ink-soft backdrop-blur"
-        >
-          Scroll <ArrowDown className="size-3.5" aria-hidden />
-        </a>
-
         <button
           onClick={toggle}
-          className="absolute right-4 top-20 z-10 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/55 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-8 md:right-8 md:top-auto"
+          className="hero-copy absolute right-4 top-20 z-10 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/55 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-8 md:right-8 md:top-auto"
           aria-label={playing ? "Pause the background video" : "Play the background video"}
         >
           {playing ? <Pause className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}

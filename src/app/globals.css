@@ -164,19 +164,31 @@ body {
 }
 
 
-/* ── Hero: logo + video → scroll → logo settles ─────────────────
-   Default (reduced motion / no JS): finished hero, no pin, glow off.
-   .js-motion: opening composition before GSAP measures and takes over.   */
-.hero-glow { opacity: 0; }
-.js-motion .hero-root { height: 190vh; }
-@media (width >= 768px) { .js-motion .hero-root { height: 240vh; } }
-.js-motion .hero-glow { opacity: 1; }
+/* ── Hero: video seen through the logo → letters open into the world ──
+   Default (reduced motion / no JS): full video + finished copy, no pin.
+   .js-motion: opening composition (masked) before GSAP takes over.        */
+.hero-intro { display: none; }
+.js-motion .hero-intro { display: block; }
+.js-motion .hero-root { height: 200vh; }
+@media (width >= 768px) { .js-motion .hero-root { height: 250vh; } }
 .js-motion .hero-wash,
 .js-motion .hero-copy { opacity: 0; }
-.js-motion .hero-logo { opacity: 0; animation: mb-failsafe-fade 0.01s linear 2.5s forwards; }
-@keyframes mb-failsafe-fade { to { opacity: 1; } }
-.hero-cue { display: none; }
-.js-motion .hero-cue { display: inline-flex; }
+.js-motion .hero-media,
+.hero-media.is-masked {
+  --lw: min(92vw, 560px);
+  --r: 0px;
+  -webkit-mask-image: url("/assets/logo/mummas-bite-logo.svg"), radial-gradient(circle at 50% 46%, #000 var(--r), transparent calc(var(--r) + 1px));
+  mask-image: url("/assets/logo/mummas-bite-logo.svg"), radial-gradient(circle at 50% 46%, #000 var(--r), transparent calc(var(--r) + 1px));
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 50% 46%, 0 0;
+  mask-position: 50% 46%, 0 0;
+  -webkit-mask-size: var(--lw) auto, 100% 100%;
+  mask-size: var(--lw) auto, 100% 100%;
+}
+@media (width >= 768px) {
+  .js-motion .hero-media { --lw: min(78vw, 1240px); }
+}
 
 /* The navbar logo steps aside while the hero logo is on screen (no duplicate logo). */
 .nav-logo { transition: opacity 0.4s var(--mb-ease), visibility 0.4s; }

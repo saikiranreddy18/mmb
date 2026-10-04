@@ -14,7 +14,7 @@ Global rules:
 | Hero & page-intro headline (`IntroReveal`, `line`) | load | yPercent 105 inside a mask → 0 | 1.0s, 0.08s stagger, power3.out | no / no | 0.7s | static |
 | Intro supporting text / CTAs (`fade`) | load | opacity 0, y 16 → visible | 1.0s (+0.15s offset) | no | 0.7s | static |
 | Hero arch / PDP image (`clip`) | load | inset(0 0 100% 0) → inset(0) | 1.3s | no | 0.9s | static |
-| Hero — logo enters the hero | scroll through ~140vh (≈90vh mobile), Lenis-smoothed | the one SVG logo moves from large and centred over the video to its final place above the headline (translate + scale, power2.inOut, 0→0.7); centre glow out, reading wash in; copy rises in together (0.5→0.85) | scrub 1 / CSS sticky pin | dedicated composition, shorter move | no pin, no travel: logo in final place, copy visible |
+| Hero — video inside the logo | scroll through ~150vh (~100vh mobile), Lenis-smoothed | start: light page, video visible only through the logo letters (CSS mask = SVG logo); then logo mask grows ×1.6 while a circle mask opens from centre to full screen (power2.in, 0→0.75); intro line fades; wash + hero logo + copy rise in together (0.72→1) | scrub 1 / CSS sticky pin | same, logo sized to 92vw | no mask, no pin: full video poster + finished copy |
 | Hero video | load (motion allowed) | autoplay, muted, loop; never paused, faded or restarted by scroll | 10s loop | no / no | same | poster only, never autoplays · Pause/Play always available |
 | (removed) "It started at home" thread | journey list from 70% → 60% viewport | scaleY 0 → 1 | linear | scrub 0.5 / no | same | fully drawn |
 | Section text (`Reveal up`) | top hits 85% viewport, once | opacity 0, y 28 → visible | 0.9s | no | 0.6s, y 16 | static |
