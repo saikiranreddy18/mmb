@@ -26,8 +26,11 @@ Supplied as JPGs with a painted-in checkerboard (no real transparency). The neut
 | `walnut.webp` | Ingredients → Nuts |
 | `pumpkin-seed.webp`, `seed-dark.webp` | Ingredients → Seeds (grouped) |
 
-## SUPPLIED: walking gang film (`public/assets/gang-walk.*`)
-The supplied clip is trimmed to the walking part only (0–4.95s; the talking that follows is removed), its audio stripped (the clip has spoken lines), and it's cropped to a cinematic strip. It sits at the top of the Contact section at the end of Home. WebM ~0.55 MB with an MP4 fallback.
+## SUPPLIED: walking gang film (`public/assets/gang-walk-packed.*`, `gang-walk-still.webp`)
+From the supplied clip, only the steady wide walking shot is used (the talking and close-ups are removed, and so is the audio, which has spoken lines). The black background is keyed out per frame, and the shot is looped on one full stride (frames 10–34, with a crossfaded seam). The result ships as a "packed alpha" video (colour on top, transparency below; WebM ~0.57 MB, MP4 fallback) that a small WebGL shader draws straight onto the page, so the gang walks across the Contact section with no box. Reduced motion or no WebGL shows the transparent still.
+
+## Generator watermark
+The supplied films carried a visible generator "sparkle" in the bottom-right corner. It was removed from every film and still used on the site (hero, process, walking gang) by filling the small corner area from its surroundings.
 
 ## SUPPLIED: character set (`public/assets/mascot/`, used unaltered)
 | File | Used for |

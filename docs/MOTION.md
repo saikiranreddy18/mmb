@@ -23,6 +23,6 @@ Global rules:
 | Ingredient / product grid (`Reveal stagger`) | top hits 85%, once | opacity 0, y 28 → visible | 0.9s, 0.08–0.1s stagger | no | stagger ×0.6 | static |
 | Process film (`ProcessFilm`) | ≥40% visible | plays muted loop; pauses off-screen | 10s film | no / no | same, `playsInline` | never autoplays (poster + Play) · always pausable |
 | Process steps | video `timeupdate` | active step → green card | 300ms CSS | no | same | static (step 01) |
-| Walking gang film (Contact) | ≥30% visible | muted loop of the walking-only clip; pauses off-screen | 4.95s loop | no / no | same, control sits below the strip | never autoplays (poster + Play) · Pause/Play always available |
+| Walking gang (Contact) | ≥ near view | transparent walking loop (WebGL) travels left → right across the page, loops, starts on screen | 1s stride loop · 36s desktop / 22s mobile travel | no / no | same | transparent still, centred · Pause/Play always available |
 | Navbar background | scrollY > 24 | transparent → cream 90% + blur | 400ms CSS | no | same | instant |
 | Cart drawer / mobile menu | open / close | translateX 100% → 0 / opacity | 500 / 300ms CSS | no | same | instant |
