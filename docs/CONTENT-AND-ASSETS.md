@@ -13,8 +13,13 @@ The supplied 10s process film is an **illustrated / rendered animation**: its pa
 
 Read off the rendered pack, and **all UNVERIFIED** until checked against the real label: name "Dry Fruit Bar", "Dates | Nuts | Seeds", 20 g, ₹30 each, "No Added Sugar", "No Preservatives". The protein figure on the pack is illegible, so it is **not used**. The tagline above "IN EVERY BITE" is cut off.
 
-## SUPPLIED: Multi-Seed Energy Bar pack (`public/assets/multiseed-front.jpg`, `multiseed-back.jpg`)
-Cropped from the supplied front + back artwork. Product page values are transcribed from the label and stay **UNVERIFIED** until checked against the printed, approved pack: 20 g, ₹30, ingredients, the full nutrition panel, allergens (peanuts, sesame), claims, and FSSAI Lic. No. 20126052001147. Not used: the pack's phone number (+91 90000 00000) and barcode, which look like placeholders. Storage and shelf life aren't on the label, so they're marked content required.
+## SUPPLIED: product packs (`public/assets/dryfruit-*.jpg`, `multiseed-25g-*.jpg`)
+Front and back cropped from the supplied pack artwork. Product page values are transcribed from the labels and stay **UNVERIFIED** until checked against the printed, approved packs:
+- **Dry Fruit Bar**: 20 g · ₹30 · dates, almonds, cashews, walnuts, pistachios, pumpkin, sunflower and watermelon seeds · nutrition per 20 g · contains tree nuts.
+- **Multi-Seed Energy Bar**: 25 g · ₹25 · peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, dates · nutrition per 25 g · contains peanuts and sesame.
+- Both: FSSAI Lic. No. 20126052001147.
+
+Please check: the Dry Fruit Bar's nutrition panel is identical, value for value, to the earlier 20 g Multi-Seed label, which may be a copy-paste on the artwork. The Dry Fruit Bar front shows a black mark in the veg-symbol box, while the Multi-Seed pack shows the green veg mark. Not used: the phone number and barcode, which look like placeholders. Storage and shelf life aren't on either label (content required).
 
 ## SUPPLIED: logo (`public/assets/logo/mummas-bite-logo.svg`, used unaltered)
 Used in the menu bar, the home brand intro and the footer. On the dark footer it sits on a cream badge: the vector's texture is cut through, and the deep-brown "mumma's" needs a light background.

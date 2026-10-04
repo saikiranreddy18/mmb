@@ -94,12 +94,12 @@ export const assets: Record<AssetKey, BrandAsset> = {
     required: "Hero brand photograph (product or kitchen scene)",
   },
   productPack: {
-    src: "/assets/pack.jpg",
+    src: "/assets/dryfruit-front.jpg",
     alt: "Mumma's Bite Dry Fruit Bar pouch",
-    width: 800,
-    height: 1000,
+    width: 760,
+    height: 1024,
     required: "Real product packaging photograph",
-    source: `${FILM}. Replace with a real pack photo before launch.`,
+    source: "Supplied pack artwork (front). Replace with a photo of the printed pack before launch.",
   },
   barPressed: {
     src: "/assets/bar-pressed.jpg",
