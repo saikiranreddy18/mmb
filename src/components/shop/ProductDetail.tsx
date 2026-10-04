@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ImageOff } from "lucide-react";
 import { IntroReveal } from "@/components/motion/IntroReveal";
 import { ProductFacts } from "@/components/ui/ProductFacts";
 import type { Product } from "@/lib/commerce/types";
+import { ProductGallery } from "./ProductGallery";
 import { VariantPurchase } from "./VariantPurchase";
 
 export function ProductDetail({ product }: { product: Product }) {
@@ -21,37 +21,20 @@ export function ProductDetail({ product }: { product: Product }) {
 
         <IntroReveal className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
           {/* Media */}
-          {/* Mobile: swipe through the gallery. Tablet/desktop: images stacked. */}
-          <div
-            className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:block sm:space-y-4 sm:overflow-visible sm:px-0 sm:pb-0"
-            aria-label={`${product.title} images`}
-          >
-            {images.length ? (
-              images.map((img, i) => (
-                <div key={img.url} data-hero-reveal={i === 0 ? "clip" : undefined} className="relative aspect-[4/5] w-[84%] shrink-0 snap-center overflow-hidden rounded-[2rem] bg-cream sm:w-auto">
-                  <Image
-                    src={img.url}
-                    alt={img.altText ?? product.title}
-                    fill
-                    priority={i === 0}
-                    sizes="(min-width:1024px) 50vw, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))
-            ) : (
-              <div
-                data-hero-reveal="clip"
-                role="img"
-                aria-label="Image placeholder: real product photograph required"
-                className="flex aspect-[4/5] flex-col items-center justify-center gap-3 rounded-[2rem] border border-dashed border-brown/25 bg-cream text-brown"
-              >
-                <ImageOff className="size-7 opacity-70" strokeWidth={1.5} aria-hidden />
-                <span className="eyebrow">Asset required</span>
-                <span className="text-sm opacity-80">Real product photograph</span>
-              </div>
-            )}
-          </div>
+          {images.length ? (
+            <ProductGallery images={images} title={product.title} handle={product.handle} />
+          ) : (
+            <div
+              data-hero-reveal="clip"
+              role="img"
+              aria-label="Image placeholder: real product photograph required"
+              className="flex aspect-[4/5] flex-col items-center justify-center gap-3 rounded-[2rem] border border-dashed border-brown/25 bg-cream text-brown"
+            >
+              <ImageOff className="size-7 opacity-70" strokeWidth={1.5} aria-hidden />
+              <span className="eyebrow">Asset required</span>
+              <span className="text-sm opacity-80">Real product photograph</span>
+            </div>
+          )}
 
           {/* Information */}
           <div>

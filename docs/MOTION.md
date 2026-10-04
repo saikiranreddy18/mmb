@@ -25,3 +25,12 @@ Global rules:
 | Walking gang (Contact) | ≥ near view | transparent walking loop (WebGL) travels left → right across the page, loops, starts on screen | 1s stride loop · 36s desktop / 22s mobile travel | no / no | same | transparent still, centred · Pause/Play always available |
 | Navbar background | scrollY > 24 | transparent → cream 90% + blur | 400ms CSS | no | same | instant |
 | Cart drawer / mobile menu | open / close | translateX 100% → 0 / opacity | 500 / 300ms CSS | no | same | instant |
+
+## Product gallery (`components/shop/ProductGallery.tsx`)
+Thumbnail rail (left on tablet/desktop, row below on phones) + large main image.
+Thumbnails select on hover and click; the main image slides (smooth scroll) to the
+chosen photo and can be swiped on touch, with dots. Share (native share sheet,
+else copy link) and Save (heart, remembered in this browser) sit on the image.
+"Click to see full view" opens a full-screen lightbox: ←/→ and arrows step,
+Esc closes, focus is trapped and returned. Gallery is sticky beside the details
+on desktop.
