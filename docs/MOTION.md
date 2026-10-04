@@ -1,6 +1,6 @@
 # Motion contract
 
-Principle: motion only where it helps understanding, navigation or feeling. One easing (`power3.out`). No 3D, WebGL, particles or cursor effects. The only videos are the two short supplied films (hero: plays once; process: explains the product), which explains the product, is not a background, and loads only when it is about to play. The mascot is never animated beyond its image reveal.
+Principle: motion only where it helps understanding, navigation or feeling. One easing (`power3.out`). No 3D, WebGL, particles or cursor effects. The only videos are the short supplied films (hero: plays once; process: explains the product; walking gang: a short loop at the Contact section), which explains the product, is not a background, and loads only when it is about to play. The mascot is never animated beyond its image reveal.
 
 **Lenis is used** (requested). It drives the brand-intro zoom, with Lenis running on the GSAP ticker so ScrollTrigger stays in sync. It is not started under reduced motion, it pauses while the cart or menu is open, and scrollable panels opt out with `data-lenis-prevent`.
 
@@ -23,7 +23,6 @@ Global rules:
 | Ingredient / product grid (`Reveal stagger`) | top hits 85%, once | opacity 0, y 28 → visible | 0.9s, 0.08–0.1s stagger | no | stagger ×0.6 | static |
 | Process film (`ProcessFilm`) | ≥40% visible | plays muted loop; pauses off-screen | 10s film | no / no | same, `playsInline` | never autoplays (poster + Play) · always pausable |
 | Process steps | video `timeupdate` | active step → green card | 300ms CSS | no | same | static (step 01) |
-| Ingredient parade — stride | in view | legs swing from the hip in opposite phase (−18° ↔ +14°); body bobs −3.5% twice per stride, leans ±1.5° | 0.8s, ease-in-out, infinite | no / no | same | none: stands still, centred |
-| Ingredient parade — travel | in view | line walks left → right, loops, starts on screen | 42s desktop / 24s mobile, linear | no / no | 16s | none · Pause/Play button; pauses off-screen |
+| Walking gang film (Contact) | ≥30% visible | muted loop of the walking-only clip; pauses off-screen | 4.95s loop | no / no | same, control sits below the strip | never autoplays (poster + Play) · Pause/Play always available |
 | Navbar background | scrollY > 24 | transparent → cream 90% + blur | 400ms CSS | no | same | instant |
 | Cart drawer / mobile menu | open / close | translateX 100% → 0 / opacity | 500 / 300ms CSS | no | same | instant |

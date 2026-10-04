@@ -23,7 +23,11 @@ Supplied as JPGs with a painted-in checkerboard (no real transparency). The neut
 |---|---|
 | `date.webp` | Ingredients → Dates |
 | `almond.webp`, `pistachio.webp`, `cashew.webp` | Ingredients → Nuts (grouped) |
-| `seed-dark.webp` | Ingredients → Seeds |
+| `walnut.webp` | Ingredients → Nuts |
+| `pumpkin-seed.webp`, `seed-dark.webp` | Ingredients → Seeds (grouped) |
+
+## SUPPLIED: walking gang film (`public/assets/gang-walk.*`)
+The supplied clip is trimmed to the walking part only (0–4.95s; the talking that follows is removed), its audio stripped (the clip has spoken lines), and it's cropped to a cinematic strip. It sits at the top of the Contact section at the end of Home. WebM ~0.55 MB with an MP4 fallback.
 
 ## SUPPLIED: character set (`public/assets/mascot/`, used unaltered)
 | File | Used for |
@@ -32,13 +36,14 @@ Supplied as JPGs with a painted-in checkerboard (no real transparency). The neut
 | `mascot-laughing.webp` | Hero badge, Profile welcome card, Story ch. 05 "The brand" |
 | `mascot-offering.webp` | Home closing "From our home to yours", empty orders |
 | `mascot-surprised.webp` | Empty cart, 404 page |
-| `ingredient-parade.webp` | Home "All in it together": the 8 ingredient characters walking hand in hand |
 | `mascot-tasting-black-bg.webp` | **Not used.** It has a solid black background. Please resend it as a transparent PNG |
 
 ## ASSET REQUIRED (`src/content/assets.ts`)
 - [ ] **Real pack photographs** (front + back label) to replace the rendered pack
 - [ ] Story images: idea, recipe, experiments, what comes next (4)
-- [ ] Walnut, pumpkin-seed and sunflower-seed illustrations were shown in chat only. Send them as files to add them
+- [ ] Sunflower-seed illustration (optional) — shown in chat only
+- [ ] **Contact form backend**: set `NEXT_PUBLIC_CONTACT_ENDPOINT` (e.g. a Formspree form URL). Until then the form says it is not connected
+- [ ] Contact email / phone / address for the Contact section
 - [ ] Open Graph share image (1200×630)
 
 ## CONTENT REQUIRED

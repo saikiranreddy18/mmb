@@ -17,7 +17,7 @@ export function Footer() {
         <nav aria-label="Footer" className="md:justify-self-end">
           <p className="eyebrow mb-5 text-cream/60">Explore</p>
           <ul className="space-y-1">
-            {navItems.map((item) => (
+            {[...navItems, { href: "/#contact", label: "Contact" }].map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}

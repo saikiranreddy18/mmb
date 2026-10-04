@@ -132,8 +132,9 @@ export const ingredients: Ingredient[] = [
   {
     id: "nuts",
     name: "Nuts",
-    note: "Almonds, cashews and pistachios for crunch in every bite.",
+    note: "Walnuts, almonds, pistachios and cashews for crunch in every bite.",
     art: [
+      art("walnut", "A walnut", 720, 679),
       art("almond", "An almond", 452, 720),
       art("pistachio", "A pistachio in its shell", 720, 715),
       art("cashew", "A cashew", 720, 596),
@@ -143,6 +144,6 @@ export const ingredients: Ingredient[] = [
     id: "seeds",
     name: "Seeds",
     note: "A sprinkle of seeds through every piece.",
-    art: [art("seed-dark", "A seed", 701, 593)],
+    art: [art("pumpkin-seed", "A pumpkin seed", 554, 720), art("seed-dark", "A dark seed", 701, 593)],
   },
 ];

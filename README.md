@@ -23,7 +23,7 @@ src/
   app/                    routes: /, /shop, /shop/[handle], /our-story, /profile, sitemap, robots
   components/
     layout/               Navbar (mobile menu), Footer
-    home/                 Hero (brand intro zoom), ShopShowcase, ProcessFilm, IngredientSection, IngredientParade, ClosingInvite
+    home/                 Hero (brand intro zoom), ShopShowcase, ProcessFilm, IngredientSection, ClosingInvite, ContactSection
     story/                StoryChapter
     shop/                 ProductCard, ProductGrid, ProductDetail, AddToCartButton
     cart/                 CartProvider (state), CartDrawer

@@ -2,12 +2,16 @@ import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import { type Ingredient, ingredients } from "@/content/brand";
 
-/** Nuts are a little group: almond, pistachio, cashew — placed like a handful. */
-const groupLayout = [
-  "left-[9%] top-[20%] w-[27%] -rotate-12",
-  "left-[27.5%] top-[42%] z-10 w-[45%]",
-  "right-[7%] top-[14%] w-[37%] rotate-[16deg]",
-];
+/** Groups are arranged like a small handful (positions as % of the tile). */
+const groupLayouts: Record<number, string[]> = {
+  2: ["left-[10%] top-[18%] w-[34%] -rotate-12", "right-[8%] top-[34%] z-10 w-[46%] rotate-6"],
+  4: [
+    "left-[8%] top-[10%] w-[34%]", // walnut
+    "left-[10%] top-[52%] w-[20%] -rotate-[20deg]", // almond
+    "left-[34%] top-[46%] z-10 w-[40%]", // pistachio
+    "right-[6%] top-[14%] w-[36%] rotate-[16deg]", // cashew
+  ],
+};
 
 function IngredientArtwork({ ing }: { ing: Ingredient }) {
   if (ing.art.length === 1) {
@@ -33,7 +37,7 @@ function IngredientArtwork({ ing }: { ing: Ingredient }) {
           width={a.width}
           height={a.height}
           sizes="(min-width:1024px) 10vw, 20vw"
-          className={`ingredient-art absolute h-auto object-contain ${groupLayout[i] ?? ""}`}
+          className={`ingredient-art absolute h-auto object-contain ${groupLayouts[ing.art.length]?.[i] ?? ""}`}
         />
       ))}
     </>
