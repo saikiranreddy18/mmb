@@ -34,3 +34,11 @@ else copy link) and Save (heart, remembered in this browser) sit on the image.
 "Click to see full view" opens a full-screen lightbox: ←/→ and arrows step,
 Esc closes, focus is trapped and returned. Gallery is sticky beside the details
 on desktop.
+
+## Our Story journey map (`components/story/JourneyMap.tsx`)
+A dashed road winds down the page through a stop per chapter (start: "Where it
+began", finish: "The road ahead"). Scrubbed on scroll (top 65% → bottom 65%), a
+gold route draws along the road with a traveller dot at its tip; each stop's pin
+turns green with a gold ring and its big numeral fills in when the traveller
+reaches it. Desktop: road centred, cards alternate sides, curves swing ±72px.
+Mobile: road down the left edge. Reduced motion: route fully drawn, all stops lit.

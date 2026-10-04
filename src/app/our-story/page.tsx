@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { IntroReveal } from "@/components/motion/IntroReveal";
 import { Reveal } from "@/components/motion/Reveal";
-import { StoryChapter } from "@/components/story/StoryChapter";
+import { JourneyMap } from "@/components/story/JourneyMap";
 import { ButtonLink } from "@/components/ui/Button";
 import { MockNotice } from "@/components/ui/MockNotice";
 import { BrandImage } from "@/components/ui/BrandImage";
@@ -52,11 +52,9 @@ export default function OurStoryPage() {
         </IntroReveal>
       </section>
 
-      <div className="shell divide-y divide-line border-t border-line">
-        {story.chapters.map((chapter, i) => (
-          <StoryChapter key={chapter.id} chapter={chapter} flip={i % 2 === 1} />
-        ))}
-      </div>
+      <section aria-label="Our journey" className="shell border-t border-line">
+        <JourneyMap chapters={story.chapters} />
+      </section>
 
       <section aria-labelledby="story-cta" className="on-dark mt-10 bg-green py-20 text-cream md:py-28">
         <Reveal className="shell flex flex-col items-start gap-8 md:flex-row md:items-end md:justify-between">
