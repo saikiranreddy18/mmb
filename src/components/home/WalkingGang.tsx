@@ -21,20 +21,29 @@ import { MQ } from "@/lib/motion/gsap";
  */
 
 const SOURCES = [
-  { src: "/assets/gang-walk-packed.webm", type: "video/webm" },
-  { src: "/assets/gang-walk-packed.mp4", type: "video/mp4" },
+  { src: "/assets/gang-walk-hd.webm", type: "video/webm" },
+  { src: "/assets/gang-walk-hd.mp4", type: "video/mp4" },
 ];
 const STILL = "/assets/gang-walk-still.webp";
-const W = 1024;
-const H = 288;
+const W = 1280;
+const H = 360;
 
 const VERT = `attribute vec2 p; varying vec2 uv;
 void main(){ uv = vec2((p.x + 1.0) * 0.5, (1.0 - p.y) * 0.5); gl_Position = vec4(p, 0.0, 1.0); }`;
-const FRAG = `precision mediump float; varying vec2 uv; uniform sampler2D t;
+const FRAG = `precision mediump float; varying vec2 uv; uniform sampler2D t; uniform float time;
 void main(){
   vec3 c = texture2D(t, vec2(uv.x, uv.y * 0.5)).rgb;
   // clean compression noise in the matte, keep soft anti-aliased edges
   float a = smoothstep(0.08, 0.92, texture2D(t, vec2(uv.x, 0.5 + uv.y * 0.5)).r);
+  // premium finish: a touch of contrast + warmth…
+  c = clamp((c - 0.5) * 1.07 + 0.5, 0.0, 1.0);
+  c *= vec3(1.03, 1.0, 0.97);
+  // …and a soft diagonal sheen that glides across the bodies every ~4.5s.
+  float band = fract(time * 0.22) * 2.2 - 0.6;
+  float d = (uv.x * 0.55 - uv.y * 0.45) - band;
+  float sheen = exp(-d * d * 140.0) * 0.32;
+  float lum = dot(c, vec3(0.299, 0.587, 0.114));
+  c += sheen * (0.6 + 0.4 * lum) * vec3(1.0, 0.97, 0.9);
   gl_FragColor = vec4(c * a, a);
 }`;
 
@@ -66,12 +75,15 @@ function startRenderer(canvas: HTMLCanvasElement, video: HTMLVideoElement) {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
   gl.viewport(0, 0, W, H);
+  const uTime = gl.getUniformLocation(prog, "time");
+  const t0 = performance.now();
   gl.clearColor(0, 0, 0, 0);
 
   let raf = 0;
   const draw = () => {
     if (video.readyState >= 2) {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, video);
+      gl.uniform1f(uTime, (performance.now() - t0) / 1000);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
@@ -135,7 +147,7 @@ export function WalkingGang() {
             // eslint-disable-next-line @next/next/no-img-element
             <img src={STILL} alt="" width={W} height={H} className="block h-full w-full" />
           ) : (
-            <canvas ref={canvasRef} width={W} height={H} className="block h-full w-full" />
+            <canvas ref={canvasRef} width={W} height={H} className="block h-full w-full [filter:drop-shadow(0_10px_10px_rgba(74,52,30,0.22))]" />
           )}
         </div>
         <video

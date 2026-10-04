@@ -23,6 +23,12 @@ export function Navbar() {
   const closeMenu = useRef(() => setMenuOpen(false)).current;
   useDialog(menuOpen, menuRef, closeMenu, "[aria-controls='mobile-menu']");
 
+  // Any page that mounts the app marks it booted (the Home intro only plays on arrival).
+  useEffect(() => {
+    const id = window.setTimeout(() => (window.__mbBooted = true), 0);
+    return () => window.clearTimeout(id);
+  }, []);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();

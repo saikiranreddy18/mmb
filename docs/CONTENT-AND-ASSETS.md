@@ -13,13 +13,11 @@ The supplied 10s process film is an **illustrated / rendered animation**: its pa
 
 Read off the rendered pack, and **all UNVERIFIED** until checked against the real label: name "Dry Fruit Bar", "Dates | Nuts | Seeds", 20 g, ₹30 each, "No Added Sugar", "No Preservatives". The protein figure on the pack is illegible, so it is **not used**. The tagline above "IN EVERY BITE" is cut off.
 
-## SUPPLIED: product packs (`public/assets/dryfruit-*.jpg`, `multiseed-25g-*.jpg`)
-Front and back cropped from the supplied pack artwork. Product page values are transcribed from the labels and stay **UNVERIFIED** until checked against the printed, approved packs:
-- **Dry Fruit Bar**: 20 g · ₹30 · dates, almonds, cashews, walnuts, pistachios, pumpkin, sunflower and watermelon seeds · nutrition per 20 g · contains tree nuts.
-- **Multi-Seed Energy Bar**: 25 g · ₹25 · peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, dates · nutrition per 25 g · contains peanuts and sesame.
-- Both: FSSAI Lic. No. 20126052001147.
-
-Please check: the Dry Fruit Bar's nutrition panel is identical, value for value, to the earlier 20 g Multi-Seed label, which may be a copy-paste on the artwork. The Dry Fruit Bar front shows a black mark in the veg-symbol box, while the Multi-Seed pack shows the green veg mark. Not used: the phone number and barcode, which look like placeholders. Storage and shelf life aren't on either label (content required).
+## PRODUCTS (real, confirmed by the brand; `src/lib/commerce/mock/products.ts` until Shopify)
+- **Dry Fruit Energy Bar**: Pack of 10 · 200 g **₹300** (default) · single 20 g bar **₹30**. No pack discount.
+- **Multi-Seed Energy Bar**: Pack of 10 · 250 g **₹250** · single 25 g bar **₹25**. **Please confirm the ₹250 pack price**: it was inferred as 10 × ₹25, matching the Dry Fruit pack's no-discount rule.
+- Ingredients, nutrition (per bar), allergens, claims and FSSAI are taken from the supplied pack labels. Shelf life is 30 days. Storage is still needed.
+- Until Shopify checkout is connected, the cart's main button sends the order (items, packs, quantities, offers, total) to WhatsApp.
 
 ## SUPPLIED by the brand (direct)
 - Shelf life: **30 days** (both bars), marked verified

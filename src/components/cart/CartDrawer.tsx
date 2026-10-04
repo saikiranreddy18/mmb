@@ -6,11 +6,29 @@ import { useEffect, useRef } from "react";
 import { Minus, Plus, Trash2, X } from "lucide-react";
 import { useCart } from "./CartProvider";
 import { formatMoney } from "@/lib/commerce/money";
-import { Button, ButtonLink, buttonClass } from "@/components/ui/Button";
-import { MockNotice } from "@/components/ui/MockNotice";
+import { ButtonLink, buttonClass } from "@/components/ui/Button";
+import { MessageCircle } from "lucide-react";
+import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
+import type { Cart } from "@/lib/commerce/types";
 import { useDialog } from "@/components/ui/useDialog";
 import { applyOffers } from "@/lib/commerce/offers";
 import type { Money } from "@/lib/commerce/types";
+
+function orderMessage(cart: Cart) {
+  const o = applyOffers(cart.cost.subtotalAmount);
+  const lines = cart.lines.map(
+    (l) => `• ${l.merchandise.product.title} (${l.merchandise.title}) × ${l.quantity} = ${formatMoney(l.cost.totalAmount)}`,
+  );
+  return [
+    "Hi Mumma's Bite! I'd like to order:",
+    ...lines,
+    `Subtotal: ${formatMoney(cart.cost.subtotalAmount)}`,
+    o.percent ? `Offer (${o.percent}%): −${formatMoney(o.discount)}` : null,
+    `Estimated total: ${formatMoney(o.total)}${o.freeDelivery ? " + free delivery" : ""}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
 
 function CartTotals({ subtotal }: { subtotal: Money }) {
   const o = applyOffers(subtotal);
@@ -121,6 +139,7 @@ export function CartDrawer() {
                           className="font-bold leading-snug text-ink hover:text-green"
                         >
                           {line.merchandise.product.title}
+                          <span className="block text-xs font-medium text-ink-soft">{line.merchandise.title}</span>
                         </Link>
                         <span className="shrink-0 font-semibold">{formatMoney(line.cost.totalAmount)}</span>
                       </div>
@@ -174,14 +193,18 @@ export function CartDrawer() {
                 </a>
               ) : (
                 <>
-                  <Button className="w-full" disabled aria-describedby="checkout-note">
-                    Checkout
-                  </Button>
-                  <MockNotice>
-                    <span id="checkout-note">
-                      Mock cart. Checkout opens through Shopify once commerce is connected.
-                    </span>
-                  </MockNotice>
+                  <a
+                    href={cart ? whatsappLink(orderMessage(cart)) : whatsappLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonClass("primary", "w-full")}
+                  >
+                    <MessageCircle className="size-4" aria-hidden />
+                    Order on WhatsApp
+                  </a>
+                  <p className="text-center text-xs text-ink-soft">
+                    Sends your order to us on WhatsApp ({WHATSAPP_DISPLAY}). Online payment is coming soon.
+                  </p>
                 </>
               )}
             </footer>

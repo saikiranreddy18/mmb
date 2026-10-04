@@ -1,16 +1,12 @@
 /**
- * ════════════════════════════════════════════════════════════════
- *  MOCK DATA — REPLACE WITH SHOPIFY DATA
- * ════════════════════════════════════════════════════════════════
- * Stand-in products so the shop, product page and cart can be tested before
- * Shopify is connected. Every value is transcribed from the supplied pack
- * artwork (front + back label) and stays UNVERIFIED until checked against the
- * printed, approved label. The pack's phone number (+91 90000 00000) and
- * barcode look like placeholders and are deliberately not used. Storage and
- * shelf life are not on the labels, so they stay "content required".
+ * PRODUCT CATALOGUE — the brand's real products, held here until Shopify is
+ * connected (then products, prices and stock come from Shopify instead).
+ * Details are transcribed from the supplied pack labels and confirmed by the
+ * brand. The pack's phone number and barcode look like placeholders and are
+ * not used.
  */
 
-import { type ContentField, unknown, unverified, verified } from "@/content/status";
+import { type ContentField, unknown, verified } from "@/content/status";
 import type { Product, ShopifyImage } from "../types";
 
 const img = (file: string, altText: string): ShopifyImage => ({
@@ -21,38 +17,45 @@ const img = (file: string, altText: string): ShopifyImage => ({
 });
 
 const nutrition = (per: string, rows: [string, string][]): ContentField =>
-  unverified([`Per ${per} (approx.)`, ...rows.map(([k, v]) => `${k}: ${v}`)].join("\n"));
+  verified([`Per ${per} (approx.)`, ...rows.map(([k, v]) => `${k}: ${v}`)].join("\n"));
 
-const FSSAI = unverified("Lic. No. 20126052001147");
+const FSSAI = verified("Lic. No. 20126052001147");
 
 export const mockProducts: Product[] = [
   {
-    id: "gid://mock/Product/1",
-    handle: "dry-fruit-bar",
-    title: "Dry Fruit Bar",
+    id: "gid://mumma/Product/dry-fruit-energy-bar",
+    handle: "dry-fruit-energy-bar",
+    title: "Dry Fruit Energy Bar",
     shortDescription: "Dates, nuts and seeds, pressed into one honest bar.",
     description:
       "Soft dates with almonds, cashews, walnuts and pistachios, and a sprinkle of pumpkin, sunflower and watermelon seeds. A bar that tastes like something made at home.",
-    featuredImage: img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Bar pouch, front"),
+    featuredImage: img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
     images: [
-      img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Bar pouch, front"),
-      img("dryfruit-back.jpg", "Mumma's Bite Dry Fruit Bar pouch, back label with ingredients and nutrition"),
+      img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
+      img("dryfruit-back.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, back label with ingredients and nutrition"),
     ],
     priceRange: { minVariantPrice: { amount: "30.00", currencyCode: "INR" } },
     variants: [
       {
-        id: "gid://mock/ProductVariant/1",
-        title: "20 g",
+        id: "gid://mumma/ProductVariant/dry-fruit-pack-10",
+        title: "Pack of 10 · 200 g",
+        availableForSale: true,
+        price: { amount: "300.00", currencyCode: "INR" },
+        selectedOptions: [{ name: "Pack", value: "Pack of 10 (200 g)" }],
+      },
+      {
+        id: "gid://mumma/ProductVariant/dry-fruit-single",
+        title: "1 bar · 20 g",
         availableForSale: true,
         price: { amount: "30.00", currencyCode: "INR" },
-        selectedOptions: [{ name: "Size", value: "20 g" }],
+        selectedOptions: [{ name: "Pack", value: "1 bar (20 g)" }],
       },
     ],
     availableForSale: true,
     details: {
-      netQuantity: unverified("20 g"),
-      claims: unverified("No added sugar · No preservatives · 3.1 g protein per 20 g bar"),
-      ingredients: unverified(
+      netQuantity: verified("200 g (pack of 10 × 20 g bars) · single bar 20 g"),
+      claims: verified("No added sugar · No preservatives · 3.1 g protein per 20 g bar"),
+      ingredients: verified(
         "Dates, almonds, cashews, walnuts, pistachios, pumpkin seeds, sunflower seeds, watermelon seeds",
       ),
       nutrition: nutrition("20 g bar", [
@@ -68,15 +71,15 @@ export const mockProducts: Product[] = [
         ["Dietary fibre", "1.8 g"],
         ["Sodium", "10 mg"],
       ]),
-      allergens: unverified("Contains tree nuts (almonds, cashews, walnuts, pistachios)."),
+      allergens: verified("Contains tree nuts (almonds, cashews, walnuts, pistachios)."),
       storage: unknown(),
       shelfLife: verified("30 days"),
       fssai: FSSAI,
     },
-    isMock: true,
+    isMock: false,
   },
   {
-    id: "gid://mock/Product/2",
+    id: "gid://mumma/Product/multi-seed-energy-bar",
     handle: "multi-seed-energy-bar",
     title: "Multi-Seed Energy Bar",
     shortDescription: "Peanuts, six seeds and dates, pressed into one bar.",
@@ -90,18 +93,26 @@ export const mockProducts: Product[] = [
     priceRange: { minVariantPrice: { amount: "25.00", currencyCode: "INR" } },
     variants: [
       {
-        id: "gid://mock/ProductVariant/2",
-        title: "25 g",
+        id: "gid://mumma/ProductVariant/multi-seed-pack-10",
+        title: "Pack of 10 · 250 g",
+        availableForSale: true,
+        // 10 × ₹25 (no pack discount, matching the Dry Fruit pack) — confirm with the brand.
+        price: { amount: "250.00", currencyCode: "INR" },
+        selectedOptions: [{ name: "Pack", value: "Pack of 10 (250 g)" }],
+      },
+      {
+        id: "gid://mumma/ProductVariant/multi-seed-single",
+        title: "1 bar · 25 g",
         availableForSale: true,
         price: { amount: "25.00", currencyCode: "INR" },
-        selectedOptions: [{ name: "Size", value: "25 g" }],
+        selectedOptions: [{ name: "Pack", value: "1 bar (25 g)" }],
       },
     ],
     availableForSale: true,
     details: {
-      netQuantity: unverified("25 g"),
-      claims: unverified("No added sugar · No preservatives · Rich in natural nutrients · 3.5 g protein per 25 g bar"),
-      ingredients: unverified("Peanuts, pumpkin seeds, sunflower seeds, watermelon seeds, sesame seeds, flax seeds, dates"),
+      netQuantity: verified("250 g (pack of 10 × 25 g bars) · single bar 25 g"),
+      claims: verified("No added sugar · No preservatives · Rich in natural nutrients · 3.5 g protein per 25 g bar"),
+      ingredients: verified("Peanuts, pumpkin seeds, sunflower seeds, watermelon seeds, sesame seeds, flax seeds, dates"),
       nutrition: nutrition("25 g bar", [
         ["Energy", "125 kcal"],
         ["Protein", "3.5 g"],
@@ -115,11 +126,11 @@ export const mockProducts: Product[] = [
         ["Dietary fibre", "2.2 g"],
         ["Sodium", "15 mg"],
       ]),
-      allergens: unverified("Contains peanuts and sesame seeds."),
+      allergens: verified("Contains peanuts and sesame seeds."),
       storage: unknown(),
       shelfLife: verified("30 days"),
       fssai: FSSAI,
     },
-    isMock: true,
+    isMock: false,
   },
 ];

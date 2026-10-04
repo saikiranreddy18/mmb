@@ -189,6 +189,12 @@ body {
 @media (width >= 768px) {
   .js-motion .hero-media { --lw: min(78vw, 1240px); }
 }
+/* Returning to Home inside the site: finished hero, no intro. */
+.js-motion .hero-root[data-skip-intro] { height: auto; }
+.js-motion .hero-root[data-skip-intro] .hero-intro { display: none; }
+.js-motion .hero-root[data-skip-intro] .hero-wash,
+.js-motion .hero-root[data-skip-intro] .hero-copy { opacity: 1; }
+.js-motion .hero-root[data-skip-intro] .hero-media { -webkit-mask-image: none; mask-image: none; }
 
 /* The navbar logo steps aside while the hero logo is on screen (no duplicate logo). */
 .nav-logo { transition: opacity 0.4s var(--mb-ease), visibility 0.4s; }

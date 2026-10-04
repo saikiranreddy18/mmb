@@ -1,11 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ImageOff } from "lucide-react";
-import { ContentValue } from "@/components/ui/ContentValue";
-import { MockBadge } from "@/components/ui/StatusBadge";
 import { formatMoney } from "@/lib/commerce/money";
 import type { Product } from "@/lib/commerce/types";
-import { AddToCartButton } from "./AddToCartButton";
+import { VariantPurchase } from "./VariantPurchase";
 
 export function ProductCard({ product, priority }: { product: Product; priority?: boolean }) {
   const img = product.featuredImage;
@@ -32,11 +30,6 @@ export function ProductCard({ product, priority }: { product: Product; priority?
             <span className="text-xs opacity-80">Product photograph</span>
           </span>
         )}
-        {product.isMock && (
-          <span className="absolute left-4 top-4">
-            <MockBadge />
-          </span>
-        )}
       </Link>
       <div className="flex flex-1 flex-col pt-5">
         <div className="flex items-start justify-between gap-4">
@@ -45,19 +38,13 @@ export function ProductCard({ product, priority }: { product: Product; priority?
               {product.title}
             </Link>
           </h2>
-          <p className="shrink-0 text-lg font-bold text-green">{formatMoney(product.priceRange.minVariantPrice)}</p>
+          <p className="shrink-0 text-lg font-bold text-green">
+            <span className="text-xs font-semibold text-ink-soft">from </span>
+            {formatMoney(product.priceRange.minVariantPrice)}
+          </p>
         </div>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">{product.shortDescription}</p>
-        <p className="mt-3 text-xs text-ink-soft">
-          <span className="font-bold uppercase tracking-[0.14em]">Net qty</span>{" "}
-          <ContentValue field={product.details.netQuantity} />
-        </p>
-        <AddToCartButton
-          variant={product.variants[0]}
-          productTitle={product.title}
-          size="compact"
-          className="mt-5"
-        />
+        <VariantPurchase product={product} compact />
       </div>
     </article>
   );

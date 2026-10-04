@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
-import { Reveal } from "@/components/motion/Reveal";
 import { assets } from "@/content/assets";
 import { MQ } from "@/lib/motion/gsap";
 
@@ -10,39 +8,33 @@ import { MQ } from "@/lib/motion/gsap";
 const steps = [
   { at: 0, title: "Gathered", text: "Dates, nuts and seeds come together in one bowl." },
   { at: 3.2, title: "Pressed", text: "The mix is pressed into a dense, chewy bar." },
-  { at: 5.6, title: "Wrapped", text: "Each bar is sealed in its own wrapper." },
-  { at: 8.0, title: "Packed", text: "Into the pouch, ready to travel." },
+  { at: 5.6, title: "Packed", text: "Each bar is wrapped and packed, ready to travel." },
 ];
 
 /**
- * WORLD 02 → 03 bridge: how the bar is made.
+ * How it's made — the process film runs in the background as the section itself.
  *
  * MOTION CONTRACT — Process film
- * Element: 10s muted loop (1280×720; WebM ~0.6–0.9 MB, MP4 fallback), preload="none".
- * Trigger: plays only while ≥40% visible; pauses when scrolled away.
- * Steps highlight in sync with playback; clicking a step seeks to it.
- * Reduced motion: never autoplays — poster frame + Play button.
- * Always pausable (WCAG 2.2.2).
+ * Element: 10s muted loop (1280×720), full-bleed section background; plays
+ *   continuously (no pause control, per brand) and only decodes while on screen.
+ * Captions: Gathered → Pressed → Packed sit on the film and crossfade in sync
+ *   with playback (400ms opacity + 8px rise).
+ * Reduced motion: no autoplay — poster frame, all three steps listed.
  */
 export function ProcessFilm() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(false);
   const [active, setActive] = useState(0);
-  const userPaused = useRef(false);
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const allowAutoplay = window.matchMedia(MQ.motion).matches;
+    const allow = window.matchMedia(MQ.motion).matches;
+    setReduced(!allow);
+    if (!allow) return;
     const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && allowAutoplay && !userPaused.current) {
-          video.play().catch(() => {});
-        } else if (!entry.isIntersecting) {
-          video.pause();
-        }
-      },
-      { threshold: 0.4 },
+      ([e]) => (e.isIntersecting ? video.play().catch(() => {}) : video.pause()),
+      { threshold: 0.15 },
     );
     io.observe(video);
     return () => io.disconnect();
@@ -54,91 +46,85 @@ export function ProcessFilm() {
     steps.forEach((s, idx) => {
       if (t >= s.at) i = idx;
     });
-    setActive(i);
-  };
-
-  const toggle = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) {
-      userPaused.current = false;
-      v.play().catch(() => {});
-    } else {
-      userPaused.current = true;
-      v.pause();
-    }
-  };
-
-  const seek = (i: number) => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.currentTime = steps[i].at + 0.05;
-    setActive(i);
+    if (i !== active) setActive(i);
   };
 
   return (
-    <section aria-labelledby="process-title" className="py-20 md:py-32">
-      <div className="shell">
-        <Reveal className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="eyebrow mb-6 text-brown">How it&apos;s made</p>
-            <h2 id="process-title" className="display text-[clamp(2.5rem,6vw,4.75rem)] text-green">
-              From dates <span className="editorial block text-brown">to bar.</span>
+    <section aria-labelledby="process-title" className="relative isolate overflow-hidden">
+      <div className="relative h-[78svh] min-h-[520px] md:h-[88svh]">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-cover"
+          poster={assets.processPoster.src ?? undefined}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden
+          tabIndex={-1}
+          onTimeUpdate={onTime}
+        >
+          <source src="/assets/process.webm" type="video/webm" />
+          <source src="/assets/process.mp4" type="video/mp4" />
+        </video>
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(28,46,32,0.72)_0%,rgba(28,46,32,0.2)_32%,rgba(28,46,32,0)_50%,rgba(28,46,32,0.8)_100%)]"
+        />
+
+        <div className="on-dark relative flex h-full flex-col justify-between py-10 text-cream md:py-14">
+          <div className="shell">
+            <p className="eyebrow mb-4 text-gold">How it&apos;s made</p>
+            <h2 id="process-title" className="display text-[clamp(2.5rem,6vw,4.75rem)]">
+              From dates <span className="editorial text-gold">to bar.</span>
             </h2>
           </div>
-          <p className="max-w-xs text-sm leading-relaxed text-ink-soft">
-            Four simple steps, from the bowl to the pouch in your hand.
-          </p>
-        </Reveal>
 
-        <Reveal variant="clip" className="relative overflow-hidden rounded-[1.5rem] bg-cream md:rounded-[2.5rem]">
-          <video
-            ref={videoRef}
-            className="block aspect-video w-full object-cover"
-            poster={assets.processPoster.src ?? undefined}
-            muted
-            loop
-            playsInline
-            preload="none"
-            onPlay={() => setPlaying(true)}
-            onPause={() => setPlaying(false)}
-            onTimeUpdate={onTime}
-            aria-label="Process film: ingredients are gathered, pressed into a bar, wrapped and packed into a Mumma's Bite pouch."
-          >
-            <source src="/assets/process.webm" type="video/webm" />
-            <source src="/assets/process.mp4" type="video/mp4" />
-          </video>
-          <button
-            onClick={toggle}
-            className="on-dark absolute bottom-4 left-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/80 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-6 md:left-6"
-            aria-label={playing ? "Pause process film" : "Play process film"}
-          >
-            {playing ? <Pause className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}
-            {playing ? "Pause" : "Play"}
-          </button>
-        </Reveal>
-
-        <ol className="mt-8 grid gap-3 sm:grid-cols-2 md:mt-10 lg:grid-cols-4 lg:gap-5">
-          {steps.map((s, i) => (
-            <li key={s.title}>
-              <button
-                onClick={() => seek(i)}
-                aria-current={active === i ? "step" : undefined}
-                className={`group flex h-full w-full flex-col items-start rounded-2xl border p-5 text-left transition-colors duration-300 ${
-                  active === i ? "border-green bg-green text-cream" : "border-line hover:border-green/40"
-                }`}
-              >
-                <span className={`text-xs font-bold tabular-nums ${active === i ? "text-gold" : "text-gold-ink"}`}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="mt-1 text-xl font-extrabold uppercase tracking-tight">{s.title}</span>
-                <span className={`mt-1 text-sm leading-relaxed ${active === i ? "text-cream/80" : "text-ink-soft"}`}>
-                  {s.text}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ol>
+          <div className="shell">
+            {reduced ? (
+              <ol className="grid gap-4 sm:grid-cols-3">
+                {steps.map((s, i) => (
+                  <li key={s.title}>
+                    <p className="text-xs font-bold tabular-nums text-gold">{String(i + 1).padStart(2, "0")}</p>
+                    <p className="text-2xl font-extrabold uppercase tracking-tight">{s.title}</p>
+                    <p className="text-sm text-cream/85">{s.text}</p>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+                <div className="relative min-h-[7.5rem] w-full max-w-md" aria-live="polite">
+                  {steps.map((s, i) => (
+                    <div
+                      key={s.title}
+                      className={`absolute inset-x-0 bottom-0 transition-[opacity,transform] duration-500 ease-brand ${
+                        i === active ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-2 opacity-0"
+                      }`}
+                      aria-hidden={i !== active}
+                    >
+                      <p className="text-xs font-bold tabular-nums text-gold">
+                        {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+                      </p>
+                      <p className="mt-1 text-[clamp(2rem,4vw,3rem)] font-extrabold uppercase leading-none tracking-tight">
+                        {s.title}
+                      </p>
+                      <p className="mt-2 text-base text-cream/85">{s.text}</p>
+                    </div>
+                  ))}
+                </div>
+                {/* progress ticks */}
+                <div aria-hidden className="flex gap-2">
+                  {steps.map((s, i) => (
+                    <span
+                      key={s.title}
+                      className={`h-1 w-10 rounded-full transition-colors duration-500 ${i === active ? "bg-gold" : "bg-cream/30"}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

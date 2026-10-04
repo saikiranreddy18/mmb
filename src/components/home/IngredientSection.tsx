@@ -67,11 +67,7 @@ export function IngredientSection() {
             </h2>
           </div>
           <p className="max-w-xs text-sm leading-relaxed text-cream/75">
-            <span className="mb-2 inline-flex rounded-full border border-gold/50 px-2 py-0.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-gold">
-              Unverified
-            </span>
-            <br />
-            “Dates | Nuts | Seeds”, as printed on the pack in our process film. To be confirmed against the final product label.
+            Dates, nuts and seeds, with no added sugar and no preservatives. That&apos;s it.
           </p>
         </Reveal>
 

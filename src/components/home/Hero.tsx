@@ -9,6 +9,12 @@ import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
 const LOGO = "/assets/logo/mummas-bite-logo.svg";
 
+declare global {
+  interface Window {
+    __mbBooted?: boolean;
+  }
+}
+
 /**
  * WORLD 01 — THE VIDEO LIVES INSIDE THE LOGO → SCROLL → ENTER THE WORLD
  *
@@ -35,6 +41,12 @@ export function Hero() {
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
+    // Mark the app as booted after this first paint, so later in-site visits skip the intro.
+    const id = window.setTimeout(() => (window.__mbBooted = true), 0);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
     const v = videoRef.current;
     if (v && window.matchMedia(MQ.motion).matches) v.play().catch(() => {});
   }, []);
@@ -58,6 +70,12 @@ export function Hero() {
     const root = rootRef.current;
     const media = mediaRef.current;
     if (!root || !media) return;
+    // The intro is for arriving at the site (first load / reload) only. Coming
+    // back to Home from inside the site shows the finished hero straight away.
+    if (window.__mbBooted) {
+      root.setAttribute("data-skip-intro", "");
+      return;
+    }
     const q = gsap.utils.selector(root);
     const mm = gsap.matchMedia();
 
