@@ -6,14 +6,24 @@ The supplied 10s process film is an **illustrated / rendered animation**: its pa
 | File | Used for |
 |---|---|
 | `hero.webm` / `hero.mp4` + `hero-poster.jpg` | Home hero: dates, nuts and seeds falling into a wooden bowl (supplied hero film, rendered) |
-| `ingredient-seeds.jpg` | Ingredients section (from the hero film) |
 | `process.webm` / `process.mp4` + `process-poster.jpg` | Home → "From dates to bar" process film |
 | `pack.jpg` | Shop card, product page |
 | `bar-pressed.jpg` | Home product preview, product page 2nd image, Story ch. 04 |
 | `ingredients-bowl.jpg` | Spare. Not placed yet (ingredient story / social) |
-| `ingredient-dates.jpg`, `ingredient-nuts.jpg` | Ingredients section |
 
 Read off the rendered pack, and **all UNVERIFIED** until checked against the real label: name "Dry Fruit Bar", "Dates | Nuts | Seeds", 20 g, ₹30 each, "No Added Sugar", "No Preservatives". The protein figure on the pack is illegible, so it is **not used**. The tagline above "IN EVERY BITE" is cut off.
+
+## SUPPLIED: logo (`public/assets/logo/mummas-bite-logo.svg`, used unaltered)
+Used in the menu bar, the home brand intro and the footer. On the dark footer it sits on a cream badge: the vector's texture is cut through, and the deep-brown "mumma's" needs a light background.
+
+## SUPPLIED: ingredient illustrations (`public/assets/ingredients/`)
+Supplied as JPGs with a painted-in checkerboard (no real transparency). The neutral background connected to the image edges was removed and the artwork itself was left unaltered. Exported as transparent WebP.
+
+| File | Used for |
+|---|---|
+| `date.webp` | Ingredients → Dates |
+| `almond.webp`, `pistachio.webp`, `cashew.webp` | Ingredients → Nuts (grouped) |
+| `seed-dark.webp` | Ingredients → Seeds |
 
 ## SUPPLIED: character set (`public/assets/mascot/`, used unaltered)
 | File | Used for |
@@ -26,10 +36,9 @@ Read off the rendered pack, and **all UNVERIFIED** until checked against the rea
 | `mascot-tasting-black-bg.webp` | **Not used.** It has a solid black background. Please resend it as a transparent PNG |
 
 ## ASSET REQUIRED (`src/content/assets.ts`)
-- [ ] **Logo file** (PNG/SVG). Until then an interim typographic wordmark in the logo colours is used (`components/ui/Wordmark.tsx`)
 - [ ] **Real pack photographs** (front + back label) to replace the rendered pack
 - [ ] Story images: idea, recipe, experiments, what comes next (4)
-- [ ] Ingredient illustrations (date, cashew, pistachio, almond, walnut, seeds) were shared in chat only. Send them as files, with real transparency
+- [ ] Walnut, pumpkin-seed and sunflower-seed illustrations were shown in chat only. Send them as files to add them
 - [ ] Open Graph share image (1200×630)
 
 ## CONTENT REQUIRED

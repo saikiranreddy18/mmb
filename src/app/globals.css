@@ -163,34 +163,6 @@ body {
   }
 }
 
-/* ── Wordmark (modelled on the supplied logo) ─────────────────── */
-.mb-wordmark {
-  font-family: "Baloo 2", var(--font-sans);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-transform: lowercase;
-}
-.mb-wordmark__top,
-.mb-wordmark__bottom {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 0.04em 0 rgba(255, 255, 255, 0.9)) drop-shadow(0 0.06em 0.05em rgba(74, 36, 14, 0.25));
-}
-.mb-wordmark__top {
-  background-image: linear-gradient(180deg, #8a4a24 0%, #6b3417 55%, #4f240d 100%);
-}
-.mb-wordmark__bottom {
-  background-image: linear-gradient(180deg, #f7a046 0%, #ec7f27 55%, #d4611a 100%);
-  font-size: 1.12em;
-}
-.mb-wordmark--dark .mb-wordmark__top {
-  background-image: linear-gradient(180deg, #fff6e6 0%, #f3ead7 100%);
-}
-.mb-wordmark--dark .mb-wordmark__top,
-.mb-wordmark--dark .mb-wordmark__bottom {
-  filter: none;
-}
 
 /* ── Brand intro zoom (Hero) ────────────────────────────────────
    Default (reduced motion / no JS): the finished hero, no pin.

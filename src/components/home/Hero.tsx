@@ -98,7 +98,7 @@ export function Hero() {
         <div className="intro-brand absolute inset-x-0 top-[13%] flex flex-col items-center px-5 md:top-[10%]">
           <p className="intro-word eyebrow mb-4 text-brown md:mb-6">{brand.promise.value}</p>
           <div className="intro-word">
-            <Wordmark className="text-[clamp(4.4rem,19vw,7.5rem)] md:text-[clamp(6rem,11vw,10.5rem)]" />
+            <Wordmark className="!w-[min(84vw,24rem)] md:!w-[min(46vw,38rem)]" />
           </div>
         </div>
 

@@ -14,7 +14,8 @@ export type Ingredient = {
   name: string;
   /** Short, neutral description of the ingredient itself — no health claims. */
   note: string;
-  assetKey: IngredientAssetKey;
+  /** Supplied ingredient illustrations (backgrounds removed, artwork unaltered). */
+  art: IngredientArt[];
 };
 
 export type StoryChapter = {
@@ -31,7 +32,14 @@ export type BrandStory = {
   chapters: StoryChapter[];
 };
 
-export type IngredientAssetKey = "ingredientDates" | "ingredientNuts" | "ingredientSeeds";
+export type IngredientArt = { src: string; alt: string; width: number; height: number };
+
+const art = (name: string, alt: string, width: number, height: number): IngredientArt => ({
+  src: `/assets/ingredients/${name}.webp`,
+  alt,
+  width,
+  height,
+});
 
 export const brand = {
   /** As written on the supplied logo and packaging. */
@@ -115,7 +123,26 @@ export const story: BrandStory = {
 export const ingredientsStatus = unverified("Dates | Nuts | Seeds — from pack in process film");
 
 export const ingredients: Ingredient[] = [
-  { id: "dates", name: "Dates", note: "Soft, naturally sweet fruit at the heart of the bar.", assetKey: "ingredientDates" },
-  { id: "nuts", name: "Nuts", note: "Almonds, cashews, walnuts and pistachios, as shown in our process film.", assetKey: "ingredientNuts" },
-  { id: "seeds", name: "Seeds", note: "Pumpkin and sunflower seeds, as shown in our films.", assetKey: "ingredientSeeds" },
+  {
+    id: "dates",
+    name: "Dates",
+    note: "Soft, naturally sweet fruit at the heart of the bar.",
+    art: [art("date", "A glossy date", 680, 720)],
+  },
+  {
+    id: "nuts",
+    name: "Nuts",
+    note: "Almonds, cashews and pistachios for crunch in every bite.",
+    art: [
+      art("almond", "An almond", 452, 720),
+      art("pistachio", "A pistachio in its shell", 720, 715),
+      art("cashew", "A cashew", 720, 596),
+    ],
+  },
+  {
+    id: "seeds",
+    name: "Seeds",
+    note: "A sprinkle of seeds through every piece.",
+    art: [art("seed-dark", "A seed", 701, 593)],
+  },
 ];

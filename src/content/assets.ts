@@ -12,8 +12,6 @@
  * with a generated substitute.
  */
 
-import type { IngredientAssetKey } from "./brand";
-
 export type BrandAsset = {
   src: string | null;
   alt: string;
@@ -48,8 +46,7 @@ type AssetKey =
   | "heroPoster"
   | "mascotLaughing"
   | "mascotOffering"
-  | "mascotSurprised"
-  | IngredientAssetKey;
+  | "mascotSurprised";
 
 export const assets: Record<AssetKey, BrandAsset> = {
   /** Primary character: the mother feeding her child a bite. */
@@ -142,9 +139,6 @@ export const assets: Record<AssetKey, BrandAsset> = {
   storyProduct: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the product" },
   storyBrand: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the brand / character" },
   storyNext: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — what comes next" },
-  ingredientDates: { src: "/assets/ingredient-dates.jpg", alt: "Dates", width: 600, height: 600, required: "Ingredient photo — dates", source: FILM },
-  ingredientNuts: { src: "/assets/ingredient-nuts.jpg", alt: "Almonds, cashews, walnuts and pistachios", width: 600, height: 600, required: "Ingredient photo — nuts", source: FILM },
-  ingredientSeeds: { src: "/assets/ingredient-seeds.jpg", alt: "Pumpkin and sunflower seeds", width: 600, height: 600, required: "Ingredient photo — the seeds used in the bar", source: HERO_FILM },
 };
 
 export const storyAssetFor: Record<string, AssetKey> = {
