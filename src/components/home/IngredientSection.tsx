@@ -5,6 +5,11 @@ import { type Ingredient, ingredients } from "@/content/brand";
 /** Groups are arranged like a small handful (positions as % of the tile). */
 const groupLayouts: Record<number, string[]> = {
   2: ["left-[10%] top-[18%] w-[34%] -rotate-12", "right-[8%] top-[34%] z-10 w-[46%] rotate-6"],
+  3: [
+    "left-[8%] top-[12%] w-[30%] -rotate-12", // pumpkin seed
+    "left-[22%] top-[52%] z-10 w-[52%] -rotate-6", // sunflower seed
+    "right-[8%] top-[16%] w-[38%] rotate-12", // dark seed
+  ],
   4: [
     "left-[8%] top-[10%] w-[34%]", // walnut
     "left-[10%] top-[52%] w-[20%] -rotate-[20deg]", // almond

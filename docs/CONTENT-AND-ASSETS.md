@@ -32,7 +32,7 @@ Supplied as JPGs with a painted-in checkerboard (no real transparency). The neut
 | `date.webp` | Ingredients → Dates |
 | `almond.webp`, `pistachio.webp`, `cashew.webp` | Ingredients → Nuts (grouped) |
 | `walnut.webp` | Ingredients → Nuts |
-| `pumpkin-seed.webp`, `seed-dark.webp` | Ingredients → Seeds (grouped) |
+| `pumpkin-seed.webp`, `sunflower-seed.webp`, `seed-dark.webp` | Ingredients → Seeds (grouped) |
 
 ## SUPPLIED: walking gang film (`public/assets/gang-walk-packed.*`, `gang-walk-still.webp`)
 From the supplied clip, only the steady wide walking shot is used (the talking and close-ups are removed, and so is the audio, which has spoken lines). The background is removed per frame with an AI segmentation model (BiRefNet), not brightness keying, so dark details (outlines, pupils, black legs and shoes, the dark seed, the shadowed back limbs) stay exactly as drawn and no background shows between legs or arms. The original frames loop on one full stride (frames 10–33) with no blending or retouching. The result ships as a "packed alpha" video (colour on top, transparency below; WebM ~0.38 MB, MP4 fallback) that a small WebGL shader draws straight onto the page. Reduced motion or no WebGL shows the transparent still.
@@ -52,7 +52,6 @@ The supplied films carried a visible generator "sparkle" in the bottom-right cor
 ## ASSET REQUIRED (`src/content/assets.ts`)
 - [ ] **Real pack photographs** (front + back label) to replace the rendered pack
 - [ ] Story images: idea, recipe, experiments, what comes next (4)
-- [ ] Sunflower-seed illustration (optional) — shown in chat only
 - [ ] **Contact form backend**: set `NEXT_PUBLIC_CONTACT_ENDPOINT` (e.g. a Formspree form URL). Until then the form says it is not connected
 - [ ] Contact email / phone / address for the Contact section
 - [ ] Open Graph share image (1200×630)

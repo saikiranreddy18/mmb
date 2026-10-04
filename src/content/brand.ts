@@ -144,6 +144,10 @@ export const ingredients: Ingredient[] = [
     id: "seeds",
     name: "Seeds",
     note: "A sprinkle of seeds through every piece.",
-    art: [art("pumpkin-seed", "A pumpkin seed", 554, 720), art("seed-dark", "A dark seed", 701, 593)],
+    art: [
+      art("pumpkin-seed", "A pumpkin seed", 554, 720),
+      art("sunflower-seed", "A sunflower seed", 720, 419),
+      art("seed-dark", "A dark seed", 701, 593),
+    ],
   },
 ];
