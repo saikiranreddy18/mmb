@@ -47,7 +47,7 @@ export function Navbar() {
         }`}
       >
         <nav aria-label="Main" className="shell flex h-16 items-center justify-between md:h-20">
-          <Link href="/" className="relative z-10 -ml-1 rounded-md px-1 py-1.5" aria-label="Mumma's Bite — home">
+          <Link href="/" className="nav-logo relative z-10 -ml-1 rounded-md px-1 py-1.5" aria-label="Mumma's Bite — home">
             <Wordmark className="!h-10 md:!h-12" />
           </Link>
 

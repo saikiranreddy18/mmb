@@ -14,9 +14,8 @@ Global rules:
 | Hero & page-intro headline (`IntroReveal`, `line`) | load | yPercent 105 inside a mask → 0 | 1.0s, 0.08s stagger, power3.out | no / no | 0.7s | static |
 | Intro supporting text / CTAs (`fade`) | load | opacity 0, y 16 → visible | 1.0s (+0.15s offset) | no | 0.7s | static |
 | Hero arch / PDP image (`clip`) | load | inset(0 0 100% 0) → inset(0) | 1.3s | no | 0.9s | static |
-| Brand intro — entrance | load | wordmark rises in (yPercent 30 → 0, fade), then Mumma fades in | 0.9s / 0.8s, power3.out | no / no | same | static finished hero |
-| Brand intro — zoom into hero | scroll through 280vh (220vh mobile), Lenis-smoothed | window clip-path: small arch → full screen; film scale 1.18 → 1; wordmark scale 1 → 1.6 + fade; scrim + hero copy rise in from 60% | power2.inOut | scrub 0.8 / CSS sticky pin | wider starting window, shorter scroll | no pin, no zoom: finished hero |
-| Hero film | intro progress ≥ 70% | video fades in over the still and plays once, rests on full bowl | 10s, no loop | no / no | same | never autoplays · Pause/Replay always available |
+| Hero — logo enters the hero | scroll through ~140vh (≈90vh mobile), Lenis-smoothed | the one SVG logo moves from large and centred over the video to its final place above the headline (translate + scale, power2.inOut, 0→0.7); centre glow out, reading wash in; copy rises in together (0.5→0.85) | scrub 1 / CSS sticky pin | dedicated composition, shorter move | no pin, no travel: logo in final place, copy visible |
+| Hero video | load (motion allowed) | autoplay, muted, loop; never paused, faded or restarted by scroll | 10s loop | no / no | same | poster only, never autoplays · Pause/Play always available |
 | (removed) "It started at home" thread | journey list from 70% → 60% viewport | scaleY 0 → 1 | linear | scrub 0.5 / no | same | fully drawn |
 | Section text (`Reveal up`) | top hits 85% viewport, once | opacity 0, y 28 → visible | 0.9s | no | 0.6s, y 16 | static |
 | Images (`Reveal clip`) | top hits 85% viewport, once | inset(100% 0 0 0) → inset(0) | 0.9s | no | 0.6s | static |

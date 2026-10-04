@@ -1,43 +1,80 @@
 "use client";
 
-import Image from "next/image";
-import { useRef, useState } from "react";
-import { ArrowDown, Pause, Play, RotateCcw } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowDown, Pause, Play } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
-import { Wordmark } from "@/components/ui/Wordmark";
 import { assets } from "@/content/assets";
 import { brand } from "@/content/brand";
 import { EASE, MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
-type FilmState = "idle" | "playing" | "paused" | "ended";
+const LOGO = "/assets/logo/mummas-bite-logo.svg";
+
+/** Distance of `el` from the top-left of `ancestor`, ignoring CSS transforms. */
+function offsetWithin(el: HTMLElement, ancestor: HTMLElement) {
+  let x = 0;
+  let y = 0;
+  let node: HTMLElement | null = el;
+  while (node && node !== ancestor) {
+    x += node.offsetLeft;
+    y += node.offsetTop;
+    node = node.offsetParent as HTMLElement | null;
+  }
+  return { x, y };
+}
 
 /**
- * WORLD 01 — Enter Mumma's Bite. Brand intro that zooms into the hero.
+ * WORLD 01 — LOGO + VIDEO → SCROLL → LOGO SETTLES → HERO
  *
- * MOTION CONTRACT — Brand intro zoom (Lenis-smoothed, GSAP ScrollTrigger)
- * Stage A (load): the Mumma's Bite wordmark fills the screen; Mumma peeks over a
- *   small arched window that frames the hero film. Entrance: wordmark rises in
- *   (0.9s, power3.out), then Mumma fades in.
- * Scroll (pinned via CSS sticky, scrub 0.8, 280vh desktop / 220vh mobile):
- *   0 → 0.15  Mumma and the scroll cue fade away
- *   0 → 0.65  the window's clip-path opens from a small arch to full screen while
- *             the film scales 1.18 → 1 (the zoom into the hero); the wordmark
- *             scales 1 → 1.6 and fades out
- *   0.6 → 1   a soft scrim and the hero copy (headline, line, CTAs) rise in
- *   At 70% the film plays once and rests on the full bowl (Pause/Replay control).
- * Reduced motion / no JS: no pin, no zoom — the finished hero (full film frame +
- *   copy) renders immediately and the film never autoplays. Mobile: same scene,
- *   shorter scroll, wider starting window.
+ * Layers: 01 video (autoplay, muted, loop — never paused, faded or restarted by
+ * scroll) · 02 soft cream glow / wash (no boxes) · 03 the transparent SVG logo
+ * (one element, always visible) · 04 hero copy · 05 navigation.
+ *
+ * MOTION CONTRACT — Logo enters the hero
+ * Start: the logo is large and centred over the playing video (its real, final
+ *   DOM position is inside the hero copy; the start is a measured transform).
+ * Scroll (Lenis-smoothed, scrub 1, CSS-sticky pin ~140vh desktop / ~90vh mobile):
+ *   0 → 0.7   logo translate + scale into its final place (power2.inOut);
+ *             the centre glow eases out while the reading wash eases in
+ *   0.5 → 0.85 headline, line and CTAs arrive together (opacity + 30px rise)
+ *   Reverse scroll reverses everything. The video keeps its own time throughout.
+ * Load: the logo fades in at its start position (0.8s) — no separate intro screen.
+ * Mobile: dedicated composition — final block sits low; shorter movement.
+ * Reduced motion: no pin and no logo travel — logo in final place, all copy
+ *   visible; the video shows its poster and never autoplays.
  */
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const started = useRef(false);
-  const [film, setFilm] = useState<FilmState>("idle");
+  const [playing, setPlaying] = useState(false);
+
+  // Video: autoplay only when motion is welcome; it then simply loops.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v && window.matchMedia(MQ.motion).matches) v.play().catch(() => {});
+  }, []);
+
+  // While the hero logo is on screen, the navbar logo steps aside (no duplicate logo).
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const html = document.documentElement;
+    const io = new IntersectionObserver(([e]) => {
+      html.dataset.heroLogo = e.isIntersecting ? "on" : "off";
+    }, { rootMargin: "-80px 0px 0px 0px" });
+    io.observe(root);
+    return () => {
+      io.disconnect();
+      delete html.dataset.heroLogo;
+    };
+  }, []);
 
   useIsoLayoutEffect(() => {
     const root = rootRef.current;
-    if (!root) return;
+    const stage = stageRef.current;
+    const logo = logoRef.current;
+    if (!root || !stage || !logo) return;
     const q = gsap.utils.selector(root);
     const mm = gsap.matchMedia();
 
@@ -45,13 +82,23 @@ export function Hero() {
       const { motion, mobile } = ctx.conditions as { motion: boolean; mobile: boolean };
       if (!motion) return;
 
-      const startClip = mobile
-        ? "inset(50% 9% 9% 9% round 50% 50% 6% 6% / 22% 22% 6% 6%)"
-        : "inset(47% 33% 7% 33% round 50% 50% 4% 4% / 30% 30% 4% 4%)";
-      const endClip = "inset(0% 0% 0% 0% round 0% 0% 0% 0% / 0% 0% 0% 0%)";
+      // Start = logo centred in the viewport at a large width; end = its real place.
+      const start = () => {
+        const { x, y } = offsetWithin(logo, stage);
+        const w = logo.offsetWidth;
+        const h = logo.offsetHeight;
+        const vw = stage.clientWidth;
+        const vh = stage.clientHeight;
+        const startW = mobile ? Math.min(vw * 0.86, 560) : Math.min(vw * 0.6, 920);
+        return {
+          x: vw / 2 - (x + w / 2),
+          y: vh * (mobile ? 0.44 : 0.46) - (y + h / 2),
+          scale: startW / w,
+        };
+      };
 
-      gsap.fromTo(q(".intro-word"), { yPercent: 30, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.9, ease: EASE, delay: 0.1, stagger: 0.08 });
-      gsap.fromTo(q(".intro-peek-in"), { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: EASE, delay: 0.55 });
+      gsap.set(logo, { transformOrigin: "50% 50%" });
+      gsap.fromTo(logo, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: EASE, delay: 0.1 });
 
       const tl = gsap.timeline({
         defaults: { ease: "none" },
@@ -59,118 +106,99 @@ export function Hero() {
           trigger: root,
           start: "top top",
           end: "bottom bottom",
-          scrub: 0.8,
-          onUpdate: (self) => {
-            if (!started.current && self.progress > 0.7) {
-              started.current = true;
-              videoRef.current?.play().catch(() => {});
-            }
-          },
+          scrub: 1,
+          invalidateOnRefresh: true,
         },
       });
-      tl.fromTo(q(".intro-peek, .intro-cue"), { opacity: 1 }, { opacity: 0, duration: 0.15 }, 0)
-        .fromTo(q(".intro-media"), { clipPath: startClip }, { clipPath: endClip, duration: 0.65, ease: "power2.inOut" }, 0)
-        .fromTo(q(".intro-film"), { scale: 1.18 }, { scale: 1, duration: 0.65, ease: "power2.inOut" }, 0)
-        .fromTo(q(".intro-brand"), { scale: 1, opacity: 1 }, { scale: 1.6, opacity: 0, duration: 0.5, ease: "power1.in" }, 0.05)
-        .fromTo(q(".intro-scrim"), { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.6)
-        .fromTo(q(".intro-copy"), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.65);
+      tl.fromTo(
+        logo,
+        { x: () => start().x, y: () => start().y, scale: () => start().scale },
+        { x: 0, y: 0, scale: 1, duration: 0.7, ease: "power2.inOut" },
+        0,
+      )
+        .fromTo(q(".hero-cue"), { opacity: 1 }, { opacity: 0, duration: 0.1 }, 0)
+        .fromTo(q(".hero-glow"), { opacity: 1 }, { opacity: 0, duration: 0.5 }, 0.1)
+        .fromTo(q(".hero-wash"), { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.2)
+        .fromTo(q(".hero-copy"), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.5);
     });
 
     return () => mm.revert();
   }, []);
 
-  const control = () => {
+  const toggle = () => {
     const v = videoRef.current;
     if (!v) return;
-    if (film === "playing") v.pause();
-    else {
-      if (film === "ended") v.currentTime = 0;
-      v.play().catch(() => {});
-    }
+    if (v.paused) v.play().catch(() => {});
+    else v.pause();
   };
-  const label = film === "playing" ? "Pause" : film === "ended" ? "Replay" : "Play";
-  const Icon = film === "playing" ? Pause : film === "ended" ? RotateCcw : Play;
 
   return (
-    <section ref={rootRef} aria-labelledby="hero-title" className="intro-root relative">
-      <div className="intro-stage sticky top-0 h-[100svh] min-h-[560px] overflow-hidden bg-bg">
-        {/* Stage A — the brand, before the zoom */}
-        <div className="intro-brand absolute inset-x-0 top-[13%] flex flex-col items-center px-5 md:top-[10%]">
-          <p className="intro-word eyebrow mb-4 text-brown md:mb-6">{brand.promise.value}</p>
-          <div className="intro-word">
-            <Wordmark className="!w-[min(84vw,24rem)] md:!w-[min(46vw,38rem)]" />
-          </div>
-        </div>
+    <section ref={rootRef} aria-labelledby="hero-title" className="hero-root relative">
+      <div ref={stageRef} className="sticky top-0 h-[100svh] min-h-[600px] overflow-hidden bg-green-900">
+        {/* LAYER 01 — video */}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-cover"
+          poster={assets.heroPoster.src ?? undefined}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden
+          tabIndex={-1}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+        >
+          <source src="/assets/hero.webm" type="video/webm" />
+          <source src="/assets/hero.mp4" type="video/mp4" />
+        </video>
 
-        {/* Mumma peeking over the window — sits behind it so the window rim hides her lower edge */}
-        <div className="intro-peek pointer-events-none absolute left-1/2 top-[41%] w-24 -translate-x-1/2 md:left-[66%] md:top-[41%] md:w-36">
-          <div className="intro-peek-in [mask-image:linear-gradient(to_bottom,black_72%,transparent_98%)]">
-            <Image src={assets.mascotLaughing.src!} alt="" width={288} height={288} className="h-auto w-full" />
-          </div>
-        </div>
+        {/* LAYER 02 — soft light: a glow behind the big logo, then a reading wash */}
+        <div aria-hidden className="hero-glow pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_46%_32%_at_50%_45%,rgba(251,247,239,0.78)_0%,rgba(251,247,239,0.45)_45%,rgba(251,247,239,0)_100%)]" />
+        <div aria-hidden className="hero-wash pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(251,247,239,0.97)_0%,rgba(251,247,239,0.88)_46%,rgba(251,247,239,0)_78%)] md:bg-[linear-gradient(90deg,rgba(251,247,239,0.95)_0%,rgba(251,247,239,0.82)_34%,rgba(251,247,239,0)_66%)]" />
 
-        {/* The hero film — starts as a small arched window, opens to full screen */}
-        <div className="intro-media absolute inset-0">
-          <div className="intro-film absolute inset-0">
-            <Image src={assets.heroPoster.src!} alt={assets.heroPoster.alt} fill priority sizes="100vw" className="object-cover" />
-            <video
-              ref={videoRef}
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-brand ${
-                film === "idle" ? "opacity-0" : "opacity-100"
-              }`}
-              muted
-              playsInline
-              preload="metadata"
-              aria-hidden
-              tabIndex={-1}
-              onPlay={() => setFilm("playing")}
-              onPause={(e) => setFilm(e.currentTarget.ended ? "ended" : "paused")}
-              onEnded={() => setFilm("ended")}
-            >
-              <source src="/assets/hero.webm" type="video/webm" />
-              <source src="/assets/hero.mp4" type="video/mp4" />
-            </video>
+        {/* LAYERS 03 + 04 — logo (final position) and hero copy */}
+        <div className="absolute inset-0 flex items-end pb-12 pt-24 md:items-center md:pb-0">
+          <div className="shell">
+            <div className="max-w-xl">
+              <div ref={logoRef} className="hero-logo w-[min(62vw,260px)] will-change-transform md:w-[min(30vw,400px)]">
+                {/* eslint-disable-next-line @next/next/no-img-element -- supplied SVG logo, used unaltered */}
+                <img src={LOGO} alt="Mumma's Bite" width={1455} height={583} className="block h-auto w-full" />
+              </div>
+              <div className="hero-copy mt-6 md:mt-8">
+                <h1 id="hero-title" className="text-green">
+                  <span className="display block text-[clamp(2.4rem,5.2vw,4.75rem)]">Made with</span>
+                  <span className="editorial block text-[clamp(2.6rem,5vw,4.6rem)] leading-[0.95] text-brown">
+                    a mother&apos;s love.
+                  </span>
+                </h1>
+                <p className="mt-4 max-w-md text-base leading-relaxed text-ink-soft md:mt-6 md:text-lg">{brand.supporting.value}</p>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row md:mt-8">
+                  <ButtonLink href="/shop">Shop Mumma&apos;s Bite</ButtonLink>
+                  <ButtonLink href="/our-story" variant="secondary" className="bg-bg/60 backdrop-blur-sm">
+                    Our story
+                  </ButtonLink>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="intro-scrim pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(28,46,32,0.85)_0%,rgba(28,46,32,0.5)_40%,rgba(28,46,32,0)_72%)] md:bg-[linear-gradient(100deg,rgba(28,46,32,0.8)_0%,rgba(28,46,32,0.4)_45%,rgba(28,46,32,0)_72%)]" />
         </div>
 
         <a
           href="#shop-preview"
-          className="intro-cue eyebrow absolute bottom-5 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg/85 px-4 py-2 text-ink-soft backdrop-blur"
+          className="hero-cue eyebrow absolute bottom-5 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg/80 px-4 py-2 text-ink-soft backdrop-blur"
         >
           Scroll <ArrowDown className="size-3.5" aria-hidden />
         </a>
 
-        {/* Stage B — the hero, after the zoom */}
-        <div className="intro-copy on-dark absolute inset-0 flex items-end pb-20 md:items-center md:pb-0">
-          <div className="shell">
-            <div className="max-w-xl text-cream">
-              <h1 id="hero-title">
-                <span className="display block whitespace-nowrap text-[clamp(2.7rem,6.4vw,6rem)]">Made with</span>
-                <span className="editorial block whitespace-nowrap text-[clamp(2.8rem,5.8vw,5.6rem)] leading-[0.95] text-gold">
-                  a mother&apos;s love.
-                </span>
-              </h1>
-              <p className="mt-5 max-w-md text-lg leading-relaxed text-cream/90 md:mt-7 md:text-xl">{brand.supporting.value}</p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row md:mt-9">
-                <ButtonLink href="/shop" variant="light">
-                  Shop Mumma&apos;s Bite
-                </ButtonLink>
-                <ButtonLink href="/our-story" variant="ghost-light">
-                  Our story
-                </ButtonLink>
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={control}
-            className="absolute bottom-5 right-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/60 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-8 md:right-8"
-            aria-label={`${label} the hero film: dates, nuts and seeds falling into a wooden bowl`}
-          >
-            <Icon className="size-4" aria-hidden />
-            {label}
-          </button>
-        </div>
+        <button
+          onClick={toggle}
+          className="absolute right-4 top-20 z-10 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/55 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-8 md:right-8 md:top-auto"
+          aria-label={playing ? "Pause the background video" : "Play the background video"}
+        >
+          {playing ? <Pause className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}
+          {playing ? "Pause" : "Play"}
+        </button>
       </div>
     </section>
   );

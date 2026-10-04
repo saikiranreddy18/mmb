@@ -164,52 +164,20 @@ body {
 }
 
 
-/* ── Brand intro zoom (Hero) ────────────────────────────────────
-   Default (reduced motion / no JS): the finished hero, no pin.
-   .js-motion: the intro's opening frame, before GSAP takes over.   */
-.intro-brand,
-.intro-peek,
-.intro-cue {
-  display: none;
-}
-.js-motion .intro-root {
-  height: 220vh;
-}
-@media (width >= 768px) {
-  .js-motion .intro-root {
-    height: 280vh;
-  }
-}
-.js-motion .intro-brand,
-.js-motion .intro-peek,
-.js-motion .intro-cue {
-  display: flex;
-}
-.js-motion .intro-peek {
-  display: block;
-}
-.js-motion .intro-media {
-  clip-path: inset(50% 9% 9% 9% round 50% 50% 6% 6% / 22% 22% 6% 6%);
-}
-@media (width >= 768px) {
-  .js-motion .intro-media {
-    clip-path: inset(47% 33% 7% 33% round 50% 50% 4% 4% / 30% 30% 4% 4%);
-  }
-}
-.js-motion .intro-film {
-  transform: scale(1.18);
-}
-.js-motion .intro-copy,
-.js-motion .intro-scrim {
-  opacity: 0;
-}
-@keyframes mb-failsafe-fade {
-  to {
-    opacity: 1;
-  }
-}
-.js-motion .intro-word,
-.js-motion .intro-peek-in {
-  opacity: 0;
-  animation: mb-failsafe-fade 0.01s linear 2.5s forwards;
-}
+/* ── Hero: logo + video → scroll → logo settles ─────────────────
+   Default (reduced motion / no JS): finished hero, no pin, glow off.
+   .js-motion: opening composition before GSAP measures and takes over.   */
+.hero-glow { opacity: 0; }
+.js-motion .hero-root { height: 190vh; }
+@media (width >= 768px) { .js-motion .hero-root { height: 240vh; } }
+.js-motion .hero-glow { opacity: 1; }
+.js-motion .hero-wash,
+.js-motion .hero-copy { opacity: 0; }
+.js-motion .hero-logo { opacity: 0; animation: mb-failsafe-fade 0.01s linear 2.5s forwards; }
+@keyframes mb-failsafe-fade { to { opacity: 1; } }
+.hero-cue { display: none; }
+.js-motion .hero-cue { display: inline-flex; }
+
+/* The navbar logo steps aside while the hero logo is on screen (no duplicate logo). */
+.nav-logo { transition: opacity 0.4s var(--mb-ease), visibility 0.4s; }
+html[data-hero-logo="on"] .nav-logo { opacity: 0; visibility: hidden; }
