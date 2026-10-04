@@ -16,6 +16,7 @@ Read off the rendered pack, and **all UNVERIFIED** until checked against the rea
 ## PRODUCTS (real, confirmed by the brand; `src/lib/commerce/mock/products.ts` until Shopify)
 - **Dry Fruit Energy Bar**: Pack of 10 · 200 g **₹300** (default) · single 20 g bar **₹30**. No pack discount.
 - **Multi-Seed Energy Bar**: Pack of 10 · 250 g **₹250** · single 25 g bar **₹25**. **Please confirm the ₹250 pack price**: it was inferred as 10 × ₹25, matching the Dry Fruit pack's no-discount rule.
+- Gallery images: `dryfruit-ingredients.jpg`, `multiseed-ingredients.jpg` (supplied ingredient boards, bar 4 × 5 cm) and `multiseed-lifestyle.jpg` (supplied pack photo, cropped to 4:5, which also removes the generator watermark corner).
 - Ingredients, nutrition (per bar), allergens, claims and FSSAI are taken from the supplied pack labels. Shelf life is 30 days. Storage is still needed.
 - Until Shopify checkout is connected, the cart's main button sends the order (items, packs, quantities, offers, total) to WhatsApp.
 

@@ -9,11 +9,11 @@
 import { type ContentField, unknown, verified } from "@/content/status";
 import type { Product, ShopifyImage } from "../types";
 
-const img = (file: string, altText: string): ShopifyImage => ({
+const img = (file: string, altText: string, width = 760, height = 1024): ShopifyImage => ({
   url: `/assets/${file}`,
   altText,
-  width: 760,
-  height: 1024,
+  width,
+  height,
 });
 
 const nutrition = (per: string, rows: [string, string][]): ContentField =>
@@ -28,10 +28,16 @@ export const mockProducts: Product[] = [
     title: "Dry Fruit Energy Bar",
     shortDescription: "Dates, nuts and seeds, pressed into one honest bar.",
     description:
-      "Soft dates with almonds, cashews, walnuts and pistachios, and a sprinkle of pumpkin, sunflower and watermelon seeds. A bar that tastes like something made at home.",
+      "Soft dates with almonds, cashews, walnuts and pistachios, and a sprinkle of pumpkin, sunflower and watermelon seeds. A bar that tastes like something made at home. Each bar is about 4 × 5 cm.",
     featuredImage: img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
     images: [
       img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
+      img(
+        "dryfruit-ingredients.jpg",
+        "The Dry Fruit Energy Bar (about 4 × 5 cm) surrounded by its ingredients: almonds, cashews, pumpkin seeds, walnuts, dates, sunflower seeds, watermelon seeds and pistachios",
+        1145,
+        1374,
+      ),
       img("dryfruit-back.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, back label with ingredients and nutrition"),
     ],
     priceRange: { minVariantPrice: { amount: "30.00", currencyCode: "INR" } },
@@ -84,10 +90,17 @@ export const mockProducts: Product[] = [
     title: "Multi-Seed Energy Bar",
     shortDescription: "Peanuts, six seeds and dates, pressed into one bar.",
     description:
-      "Peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, held together with dates. A crunchy, seedy bar from the Mumma's Bite kitchen.",
+      "Peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, held together with dates. A crunchy, seedy bar from the Mumma's Bite kitchen. Each bar is about 4 × 5 cm.",
     featuredImage: img("multiseed-25g-front.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front"),
     images: [
       img("multiseed-25g-front.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front"),
+      img("multiseed-lifestyle.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch with a bar, peanuts and seeds", 892, 1116),
+      img(
+        "multiseed-ingredients.jpg",
+        "The Multi-Seed Energy Bar (about 4 × 5 cm) surrounded by its ingredients: peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, and dates",
+        1122,
+        1402,
+      ),
       img("multiseed-25g-back.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, back label with ingredients and nutrition"),
     ],
     priceRange: { minVariantPrice: { amount: "25.00", currencyCode: "INR" } },

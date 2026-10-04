@@ -21,10 +21,14 @@ export function ProductDetail({ product }: { product: Product }) {
 
         <IntroReveal className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
           {/* Media */}
-          <div className="space-y-4 lg:sticky lg:top-28 lg:self-start">
+          {/* Mobile: swipe through the gallery. Tablet/desktop: images stacked. */}
+          <div
+            className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:block sm:space-y-4 sm:overflow-visible sm:px-0 sm:pb-0"
+            aria-label={`${product.title} images`}
+          >
             {images.length ? (
               images.map((img, i) => (
-                <div key={img.url} data-hero-reveal={i === 0 ? "clip" : undefined} className={`${i > 0 ? "hidden sm:block" : ""} relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-cream`}>
+                <div key={img.url} data-hero-reveal={i === 0 ? "clip" : undefined} className="relative aspect-[4/5] w-[84%] shrink-0 snap-center overflow-hidden rounded-[2rem] bg-cream sm:w-auto">
                   <Image
                     src={img.url}
                     alt={img.altText ?? product.title}
