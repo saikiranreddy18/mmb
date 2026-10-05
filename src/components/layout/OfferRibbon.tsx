@@ -9,10 +9,10 @@ export function OfferRibbon() {
   return (
     <div className="offer-ribbon on-dark relative overflow-hidden bg-green text-cream" role="region" aria-label="Offers">
       <p className="sr-only">{OFFER_LINES.join(". ")}.</p>
-      <div aria-hidden className="offer-track flex w-max items-center py-2">
+      <div aria-hidden className="offer-track flex w-max items-center py-3 md:py-3.5">
         {[...items, ...items].map((t, i) => (
-          <span key={i} className="flex items-center whitespace-nowrap px-6 text-[0.7rem] font-bold uppercase tracking-[0.16em]">
-            <span className="mr-6 text-gold">✦</span>
+          <span key={i} className="flex items-center whitespace-nowrap px-7 text-[0.8rem] font-bold md:text-[0.9rem] uppercase tracking-[0.16em]">
+            <span className="mr-7 text-gold">✦</span>
             {t}
           </span>
         ))}
