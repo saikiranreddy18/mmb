@@ -25,7 +25,7 @@ const align = (i: number, n: number, cols: number) => {
  * Talk: every 3.2s, in order, one object lifts (−10px, ×1.08) and "chatters"
  *   (tiny ±3° wobble) while a speech bubble pops from its head (220ms), held
  *   2.6s. One bubble at a time. Runs only while on screen.
- * Layout: one row of nine on desktop; 3 × 3 on phones.
+ * Layout: one row on desktop; three per row on phones (a lone last item centred).
  * Reduced motion: no bob/lift/wobble; bubbles still take turns, fading only.
  * Every line is also in a visually hidden list for screen readers.
  */
@@ -34,6 +34,8 @@ export function TalkingIngredients() {
   const [talking, setTalking] = useState(-1);
   const [visible, setVisible] = useState(false);
   const n = talkingIngredients.length;
+  // On phones (3 per row) a single item left on the last row sits in the middle.
+  const lone = (i: number) => n % 3 === 1 && i === n - 1;
 
   useEffect(() => {
     const el = ref.current;
@@ -74,13 +76,13 @@ export function TalkingIngredients() {
         ))}
       </ul>
       <p className="eyebrow text-center text-brown">What goes in, in their own words</p>
-      <div aria-hidden className="talk-row grid grid-cols-3 gap-x-4 gap-y-20 pt-24 md:grid-cols-9 md:gap-x-3 md:pt-24">
+      <div aria-hidden className="talk-row grid grid-cols-3 gap-x-4 gap-y-20 pt-24 md:grid-cols-10 md:gap-x-2 md:pt-24">
         {talkingIngredients.map((t, i) => (
           <div
             key={t.id}
-            className="talk-item relative flex flex-col items-center"
+            className={`talk-item relative flex flex-col items-center ${lone(i) ? "col-start-2 md:col-start-auto" : ""}`}
             data-on={i === talking ? "true" : "false"}
-            data-malign={align(i, n, 3)}
+            data-malign={lone(i) ? "center" : align(i, n, 3)}
             data-dalign={align(i, n, n)}
             style={{ animationDelay: `${-(i * 0.47).toFixed(2)}s` }}
           >

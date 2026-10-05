@@ -149,6 +149,7 @@ export const ingredients: Ingredient[] = [
       art("sunflower-seed", "A sunflower seed", 720, 419),
       art("watermelon-seed", "A watermelon seed", 701, 593),
       art("sesame-seed", "Sesame seeds", 720, 355),
+      art("flax-seed", "Flax seeds", 366, 167),
     ],
   },
 ];
@@ -169,5 +170,6 @@ export const talkingIngredients: { id: string; name: string; line: string; art: 
   { id: "sunflower-seed", name: "Sunflower seed", line: "A nutty little crunch, from me.", art: art("sunflower-seed", "", 720, 419) },
   { id: "watermelon-seed", name: "Watermelon seed", line: "Tiny, but I add the bite.", art: art("watermelon-seed", "", 701, 593) },
   { id: "sesame", name: "Sesame", line: "Tiny seeds, big nutty flavour.", art: art("sesame-seed", "", 720, 355) },
+  { id: "flax", name: "Flax seed", line: "Small and glossy, with a gentle crunch.", art: art("flax-seed", "", 366, 167) },
 ];
 export const talkingIngredientsStatus = unverified("Speech-bubble lines written for the site — brand to approve");
