@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { brand } from "@/content/brand";
@@ -14,11 +15,12 @@ export function Footer() {
             Made with <span className="editorial block text-gold">a mother&apos;s love.</span>
           </p>
           <p className="max-w-sm text-sm leading-relaxed text-cream/80">{brand.supporting.value}</p>
-          <div className="inline-flex items-center gap-3 rounded-xl border border-cream/20 px-4 py-3">
-            <span className="text-lg font-black  tracking-tight text-cream">fssai</span>
-            <span className="h-6 w-px bg-cream/25" aria-hidden />
-            <span className="text-sm leading-tight text-cream/85">
-              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.16em] text-cream/60">FSSAI Lic. No.</span>
+          {/* Official FSSAI mark shown with the licence number (white tile keeps its colours true) */}
+          <div className="inline-flex items-center gap-4 rounded-xl bg-white px-4 py-3">
+            <Image src="/assets/fssai-logo.png" alt="FSSAI" width={480} height={267} className="h-11 w-auto" />
+            <span className="h-8 w-px bg-ink/15" aria-hidden />
+            <span className="text-sm font-semibold leading-tight text-ink">
+              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.16em] text-ink-soft">Lic. No.</span>
               20126052001147
             </span>
           </div>
