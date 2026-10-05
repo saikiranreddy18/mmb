@@ -15,8 +15,10 @@ const steps = [
  * How it's made — the process film runs in the background as the section itself.
  *
  * MOTION CONTRACT — Process film
- * Element: 10s muted loop (1280×720), full-bleed section background; plays
- *   continuously (no pause control, per brand) and only decodes while on screen.
+ * Element: 10s muted loop, full-bleed section background (1280×720 desktop,
+ *   854×480 phones). The whole file is fetched ~1200px before the section and
+ *   played from memory, so it never buffers mid-loop; plays continuously (no
+ *   pause control, per brand) and only decodes while on screen.
  * Captions: Gathered → Pressed → Packed sit on the film and crossfade in sync
  *   with playback (400ms opacity + 8px rise).
  * Reduced motion: no autoplay — poster frame, all three steps listed.
@@ -32,12 +34,52 @@ export function ProcessFilm() {
     const allow = window.matchMedia(MQ.motion).matches;
     setReduced(!allow);
     if (!allow) return;
-    const io = new IntersectionObserver(
-      ([e]) => (e.isIntersecting ? video.play().catch(() => {}) : video.pause()),
+
+    // Download the whole (small) loop before the section arrives, then play it
+    // from memory — no mid-loop buffering stalls on slow connections.
+    const small = window.matchMedia("(max-width: 767px)").matches;
+    const webm = video.canPlayType('video/webm; codecs="vp9"') !== "";
+    const file = `/assets/process${small ? "-480" : ""}.${webm ? "webm" : "mp4"}`;
+    let url: string | null = null;
+    let ready = false;
+    let onScreen = false;
+    let started = false;
+    const ctrl = new AbortController();
+    const sync = () => {
+      if (ready && onScreen) video.play().catch(() => {});
+      else video.pause();
+    };
+    const load = () => {
+      if (started) return;
+      started = true;
+      fetch(file, { signal: ctrl.signal })
+        .then((r) => (r.ok ? r.blob() : Promise.reject()))
+        .then((b) => (url = URL.createObjectURL(b)))
+        .catch(() => (ctrl.signal.aborted ? null : file)) // fall back to streaming
+        .then((src) => {
+          if (!src) return;
+          video.src = src;
+          video.addEventListener("canplay", () => ((ready = true), sync()), { once: true });
+          video.load();
+        });
+    };
+
+    const near = new IntersectionObserver(([e]) => e.isIntersecting && load(), { rootMargin: "1200px 0px" });
+    const seen = new IntersectionObserver(
+      ([e]) => {
+        onScreen = e.isIntersecting;
+        sync();
+      },
       { threshold: 0.15 },
     );
-    io.observe(video);
-    return () => io.disconnect();
+    near.observe(video);
+    seen.observe(video);
+    return () => {
+      ctrl.abort();
+      near.disconnect();
+      seen.disconnect();
+      if (url) URL.revokeObjectURL(url);
+    };
   }, []);
 
   const onTime = () => {
@@ -59,14 +101,11 @@ export function ProcessFilm() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           aria-hidden
           tabIndex={-1}
           onTimeUpdate={onTime}
-        >
-          <source src="/assets/process.webm" type="video/webm" />
-          <source src="/assets/process.mp4" type="video/mp4" />
-        </video>
+        />
         <div
           aria-hidden
           className="absolute inset-0 bg-[linear-gradient(180deg,rgba(28,46,32,0.72)_0%,rgba(28,46,32,0.2)_32%,rgba(28,46,32,0)_50%,rgba(28,46,32,0.8)_100%)]"

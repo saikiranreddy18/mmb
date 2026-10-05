@@ -42,3 +42,8 @@ gold route draws along the road with a traveller dot at its tip; each stop's pin
 turns green with a gold ring and its big numeral fills in when the traveller
 reaches it. Desktop: road centred, cards alternate sides, curves swing ±72px.
 Mobile: road down the left edge. Reduced motion: route fully drawn, all stops lit.
+
+### Process film loading
+`process.webm/.mp4` (1280×720, ~0.9 MB) on tablet/desktop, `process-480.*` (854×480,
+~0.45 MB) on phones. The file is fetched whole about 1200px before the section and
+looped from a blob URL, so playback never waits on the network.
