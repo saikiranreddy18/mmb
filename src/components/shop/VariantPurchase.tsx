@@ -53,6 +53,7 @@ export function VariantPurchase({ product, compact = false }: { product: Product
         variant={variant}
         productTitle={`${product.title} (${variant?.title ?? ""})`}
         withQuantity={!compact}
+        withBuyNow={!compact}
         size={compact ? "compact" : "default"}
         className={compact ? "mt-4" : "mt-6 max-w-md"}
       />

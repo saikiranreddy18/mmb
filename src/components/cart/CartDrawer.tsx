@@ -111,6 +111,11 @@ export function CartDrawer() {
               Nothing here <span className="editorial normal-case">yet.</span>
             </p>
             <p className="text-sm text-ink-soft">A little piece of home is only a click away.</p>
+            {error && (
+              <p role="alert" className="text-sm text-brown">
+                {error}
+              </p>
+            )}
             <ButtonLink href="/shop" onClick={close}>
               Shop Mumma's Bite
             </ButtonLink>

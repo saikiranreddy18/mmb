@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { cartAdapter } from "@/lib/commerce/cart-adapter";
+import { isShopifyConnected } from "@/lib/commerce/config";
 import type { Cart } from "@/lib/commerce/types";
 
 const CART_ID_KEY = "mb-cart-id";
@@ -14,6 +15,10 @@ type CartContextValue = {
   open: () => void;
   close: () => void;
   addItem: (merchandiseId: string, quantity?: number) => Promise<void>;
+  /** Skip the cart: go straight to Shopify checkout with just this item. */
+  buyNow: (merchandiseId: string, quantity?: number) => Promise<void>;
+  /** True while a Buy Now redirect to checkout is in flight. */
+  isRedirecting: boolean;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   removeLine: (lineId: string) => Promise<void>;
 };
@@ -38,6 +43,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState(false);
   const [isBusy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isRedirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     let id: string | null = null;
@@ -51,6 +57,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
       .get(id)
       .then((c) => (c ? setCart(c) : storeId(null)))
       .catch(() => storeId(null));
+  }, []);
+
+  // Coming back from checkout with the browser's back button restores this
+  // page from the back/forward cache; clear the "opening checkout" state.
+  useEffect(() => {
+    const reset = (e: PageTransitionEvent) => e.persisted && setRedirecting(false);
+    window.addEventListener("pageshow", reset);
+    return () => window.removeEventListener("pageshow", reset);
   }, []);
 
   const open = useCallback(() => setOpen(true), []);
@@ -77,6 +91,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setOpen(true);
     },
     [cart, run],
+  );
+
+  const buyNow = useCallback(
+    async (merchandiseId: string, quantity = 1) => {
+      // Without Shopify there is no checkout: fall back to the cart drawer,
+      // which offers the WhatsApp order flow.
+      if (!isShopifyConnected) return addItem(merchandiseId, quantity);
+      setRedirecting(true);
+      setError(null);
+      try {
+        // A separate one-line Shopify cart, so the shopper's main cart is untouched.
+        const checkoutCart = await cartAdapter.create([{ merchandiseId, quantity }]);
+        if (!checkoutCart.checkoutUrl) throw new Error("Shopify returned no checkout URL");
+        window.location.assign(checkoutCart.checkoutUrl);
+      } catch {
+        setRedirecting(false);
+        setError("We couldn't open checkout. Please try again.");
+        setOpen(true);
+      }
+    },
+    [addItem],
   );
 
   const updateQuantity = useCallback(
@@ -108,10 +143,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
       open,
       close,
       addItem,
+      buyNow,
+      isRedirecting,
       updateQuantity,
       removeLine,
     }),
-    [cart, isOpen, isBusy, error, open, close, addItem, updateQuantity, removeLine],
+    [cart, isOpen, isBusy, error, open, close, addItem, buyNow, isRedirecting, updateQuantity, removeLine],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
