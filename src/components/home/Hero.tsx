@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ArrowDown, Pause, Play } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { ArrowDown } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { assets } from "@/content/assets";
 import { brand } from "@/content/brand";
@@ -18,7 +18,7 @@ declare global {
 /**
  * WORLD 01 — THE VIDEO LIVES INSIDE THE LOGO → SCROLL → ENTER THE WORLD
  *
- * Layers: 01 video (autoplay, muted, loop — never paused/restarted by scroll),
+ * Layers: 01 video (autoplay, muted, loop, brightened — no pause control, per brand),
  * clipped by a CSS mask = the supplied SVG logo + a circle · 02 reading wash ·
  * 03 hero copy · 04 navigation.
  *
@@ -38,7 +38,6 @@ export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     // Mark the app as booted after this first paint, so later in-site visits skip the intro.
@@ -120,13 +119,6 @@ export function Hero() {
     return () => mm.revert();
   }, []);
 
-  const toggle = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) v.play().catch(() => {});
-    else v.pause();
-  };
-
   return (
     <section ref={rootRef} aria-labelledby="hero-title" className="hero-root relative">
       <div className="sticky top-0 h-[100svh] min-h-[600px] overflow-hidden bg-bg">
@@ -134,7 +126,7 @@ export function Hero() {
         <div ref={mediaRef} className="hero-media absolute inset-0">
           <video
             ref={videoRef}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover [filter:brightness(1.18)_saturate(1.08)_contrast(1.03)]"
             poster={assets.heroPoster.src ?? undefined}
             muted
             loop
@@ -142,8 +134,6 @@ export function Hero() {
             preload="auto"
             aria-hidden
             tabIndex={-1}
-            onPlay={() => setPlaying(true)}
-            onPause={() => setPlaying(false)}
           >
             <source src="/assets/hero.webm" type="video/webm" />
             <source src="/assets/hero.mp4" type="video/mp4" />
@@ -195,14 +185,6 @@ export function Hero() {
           </div>
         </div>
 
-        <button
-          onClick={toggle}
-          className="hero-copy absolute right-4 top-28 z-10 inline-flex min-h-11 items-center gap-2 rounded-full bg-green-900/55 px-4 text-xs font-bold uppercase tracking-[0.14em] text-cream backdrop-blur transition-colors hover:bg-green-900 md:bottom-8 md:right-8 md:top-auto"
-          aria-label={playing ? "Pause the background video" : "Play the background video"}
-        >
-          {playing ? <Pause className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}
-          {playing ? "Pause" : "Play"}
-        </button>
       </div>
     </section>
   );

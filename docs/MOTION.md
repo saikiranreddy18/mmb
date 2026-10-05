@@ -16,7 +16,7 @@ Global rules:
 | Hero arch / PDP image (`clip`) | load | inset(0 0 100% 0) → inset(0) | 1.3s | no | 0.9s | static |
 | Hero intro: plays only on arrival (first load / reload); in-site navigation to Home shows the finished hero (`window.__mbBooted`) |  |  |  |  |  |  |
 | Hero — video inside the logo | scroll through ~150vh (~100vh mobile), Lenis-smoothed | start: light page, video visible only through the logo letters (CSS mask = SVG logo); then logo mask grows ×1.6 while a circle mask opens from centre to full screen (power2.in, 0→0.75); intro line fades; wash + hero logo + copy rise in together (0.72→1) | scrub 1 / CSS sticky pin | same, logo sized to 92vw | no mask, no pin: full video poster + finished copy |
-| Hero video | load (motion allowed) | autoplay, muted, loop; never paused, faded or restarted by scroll | 10s loop | no / no | same | poster only, never autoplays · Pause/Play always available |
+| Hero video | load (motion allowed) | autoplay, muted, loop; never paused, faded or restarted by scroll | 10s loop | no / no | same | poster only, never autoplays · no pause control (brand request) · brightened via CSS filter (brightness 1.18, saturate 1.08) |
 | (removed) "It started at home" thread | journey list from 70% → 60% viewport | scaleY 0 → 1 | linear | scrub 0.5 / no | same | fully drawn |
 | Section text (`Reveal up`) | top hits 85% viewport, once | opacity 0, y 28 → visible | 0.9s | no | 0.6s, y 16 | static |
 | Images (`Reveal clip`) | top hits 85% viewport, once | inset(100% 0 0 0) → inset(0) | 0.9s | no | 0.6s | static |
