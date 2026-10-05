@@ -7,7 +7,7 @@ const groupLayouts: Record<string, string[]> = {
   seeds: [
     "left-[8%] top-[10%] w-[28%] -rotate-12", // pumpkin seed
     "left-[8%] top-[54%] z-10 w-[44%] -rotate-6", // sunflower seed
-    "right-[8%] top-[12%] w-[32%] rotate-12", // dark seed
+    "right-[8%] top-[12%] w-[32%] rotate-12", // watermelon seed
     "right-[6%] top-[58%] w-[42%]", // sesame
   ],
   nuts: [

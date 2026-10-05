@@ -38,7 +38,7 @@ Supplied as JPGs with a painted-in checkerboard (no real transparency). The neut
 | `date.webp` | Ingredients → Dates |
 | `almond.webp`, `pistachio.webp`, `cashew.webp` | Ingredients → Nuts (grouped) |
 | `walnut.webp` | Ingredients → Nuts |
-| `pumpkin-seed.webp`, `sunflower-seed.webp`, `seed-dark.webp`, `sesame-seed.webp` | Talking ingredients (Contact) · Ingredients → Seeds (section off) |
+| `pumpkin-seed.webp`, `sunflower-seed.webp`, `watermelon-seed.webp`, `sesame-seed.webp` | Talking ingredients (Contact) · Ingredients → Seeds (section off) |
 
 ## REMOVED: walking gang film
 The walking-gang film and its packed-alpha files were removed at the brand's request (Oct 2026). The source clip is still in git history if it is ever wanted again.
@@ -77,7 +77,7 @@ The supplied films carried a visible generator "sparkle" in the bottom-right cor
 ## Walking gang lines & ingredient section (Oct 2026)
 - The walking-gang film has been **removed** (brand request). In its place, the supplied
   3D ingredient illustrations (date, walnut, almond, pistachio, cashew, pumpkin, sunflower,
-  dark seed, sesame) float and take turns "talking" — see `talkingIngredients` in
+  watermelon seed, sesame) float and take turns "talking" — see `talkingIngredients` in
   `content/brand.ts`. **Wording is UNVERIFIED — the brand should approve it.** No health
   or medical claims. Flax will be added once a usable image is supplied.
 - The Home "Simple ingredients" illustration section is switched **off** via
