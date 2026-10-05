@@ -3,14 +3,14 @@ import { Reveal } from "@/components/motion/Reveal";
 import { type Ingredient, ingredients } from "@/content/brand";
 
 /** Groups are arranged like a small handful (positions as % of the tile). */
-const groupLayouts: Record<number, string[]> = {
-  2: ["left-[10%] top-[18%] w-[34%] -rotate-12", "right-[8%] top-[34%] z-10 w-[46%] rotate-6"],
-  3: [
-    "left-[8%] top-[12%] w-[30%] -rotate-12", // pumpkin seed
-    "left-[22%] top-[52%] z-10 w-[52%] -rotate-6", // sunflower seed
-    "right-[8%] top-[16%] w-[38%] rotate-12", // dark seed
+const groupLayouts: Record<string, string[]> = {
+  seeds: [
+    "left-[8%] top-[10%] w-[28%] -rotate-12", // pumpkin seed
+    "left-[8%] top-[54%] z-10 w-[44%] -rotate-6", // sunflower seed
+    "right-[8%] top-[12%] w-[32%] rotate-12", // dark seed
+    "right-[6%] top-[58%] w-[42%]", // sesame
   ],
-  4: [
+  nuts: [
     "left-[8%] top-[10%] w-[34%]", // walnut
     "left-[10%] top-[52%] w-[20%] -rotate-[20deg]", // almond
     "left-[34%] top-[46%] z-10 w-[40%]", // pistachio
@@ -42,7 +42,7 @@ function IngredientArtwork({ ing }: { ing: Ingredient }) {
           width={a.width}
           height={a.height}
           sizes="(min-width:1024px) 10vw, 20vw"
-          className={`ingredient-art absolute h-auto object-contain ${groupLayouts[ing.art.length]?.[i] ?? ""}`}
+          className={`ingredient-art absolute h-auto object-contain ${groupLayouts[ing.id]?.[i] ?? ""}`}
         />
       ))}
     </>

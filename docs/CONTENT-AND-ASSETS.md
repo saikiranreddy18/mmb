@@ -73,3 +73,13 @@ The supplied films carried a visible generator "sparkle" in the bottom-right cor
 - Promise: "Made with a mother's love."
 - Supporting line: "Simple ingredients. Honest nourishment. A little piece of home in every bite."
 - Brand idea: a modern food brand inspired by the food a mother makes at home
+
+## Walking gang lines & ingredient section (Oct 2026)
+- The walking gang (Contact) now "talks": one speech bubble at a time with what each
+  ingredient brings — see `gangLines` in `content/brand.ts`. **Wording is UNVERIFIED —
+  the brand should approve it.** No health or medical claims.
+- The Home "Simple ingredients" illustration section is switched **off** via
+  `content/features.ts → ingredientIllustrations`. Set it to `true` to bring it back.
+- `ingredients/sesame-seed.webp` (supplied, background removed) added to the Seeds group.
+- The supplied flax image carries a Vecteezy watermark (stock licence) and is **not used**;
+  a licensed / own photo is needed.

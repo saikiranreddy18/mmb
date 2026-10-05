@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
+import { gangLines } from "@/content/brand";
 import { MQ } from "@/lib/motion/gsap";
 
 /**
@@ -16,8 +17,13 @@ import { MQ } from "@/lib/motion/gsap";
  * Stride: the film loop (24fps). Travel: the line walks left → right across the
  *   band and loops, starting already on screen; speed matched to the stride so
  *   feet don't slide (36s desktop / 22s mobile, linear).
- * Runs only while visible; Pause/Play always available (WCAG 2.2.2).
- * Reduced motion / no WebGL: a still, transparent frame of the gang, centred.
+ * Talking: every 3.4s one character on screen "speaks" — a speech bubble pops
+ *   above its head (220ms scale + fade from the tail), holds 2.6s, then goes.
+ *   One bubble at a time, in walking order; bubbles ride along with the line.
+ * Runs only while visible; Pause/Play always available (WCAG 2.2.2) and pauses
+ *   the talking too. All lines are also in a visually hidden list.
+ * Reduced motion / no WebGL: a still, transparent frame of the gang, centred;
+ *   bubbles still take turns, fading only.
  */
 
 const SOURCES = [
@@ -100,6 +106,8 @@ export function WalkingGang() {
   const [mode, setMode] = useState<"pending" | "live" | "still">("pending");
   const [visible, setVisible] = useState(false);
   const [userPaused, setUserPaused] = useState(false);
+  const [talking, setTalking] = useState(-1);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   // Decide live (WebGL) vs still, and start the renderer.
   useEffect(() => {
@@ -125,6 +133,38 @@ export function WalkingGang() {
 
   const running = mode === "live" && visible && !userPaused;
 
+  // One character speaks at a time — the next one that's fully on screen.
+  useEffect(() => {
+    if (mode === "pending" || !visible || userPaused) {
+      setTalking(-1);
+      return;
+    }
+    let next = 0;
+    let hide = 0;
+    const speak = () => {
+      const band = bandRef.current?.getBoundingClientRect();
+      const track = trackRef.current?.getBoundingClientRect();
+      if (!band || !track) return;
+      for (let k = 0; k < gangLines.length; k++) {
+        const i = (next + k) % gangLines.length;
+        const x = track.left + (gangLines[i].x / W) * track.width;
+        if (x > band.left + 100 && x < band.right - 100) {
+          setTalking(i);
+          next = i + 1;
+          hide = window.setTimeout(() => setTalking(-1), 2600);
+          return;
+        }
+      }
+    };
+    const first = window.setTimeout(speak, 900);
+    const timer = window.setInterval(speak, 3400);
+    return () => {
+      window.clearTimeout(first);
+      window.clearTimeout(hide);
+      window.clearInterval(timer);
+    };
+  }, [mode, visible, userPaused]);
+
   useEffect(() => {
     const v = videoRef.current;
     if (!v || mode !== "live") return;
@@ -142,7 +182,19 @@ export function WalkingGang() {
         role="img"
         aria-label="The walnut, pumpkin seed, almond, sunflower seed, black seed, date, pistachio and cashew characters walking along hand in hand."
       >
-        <div className="gang-track">
+        <div ref={trackRef} className="gang-track">
+          {gangLines.map((g, i) => (
+            <div
+              key={g.id}
+              aria-hidden
+              className="gang-bubble"
+              data-on={i === talking ? "true" : "false"}
+              style={{ left: `${(g.x / W) * 100}%`, bottom: `${((H - g.top) / H) * 100}%` }}
+            >
+              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.12em] text-gold-ink">{g.name}</span>
+              {g.line}
+            </div>
+          ))}
           {mode === "still" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={STILL} alt="" width={W} height={H} className="block h-full w-full" />
@@ -168,6 +220,13 @@ export function WalkingGang() {
         {/* the ground they walk on */}
         <div aria-hidden className="absolute inset-x-0 bottom-[3%] h-px bg-line" />
       </div>
+      <ul className="sr-only">
+        {gangLines.map((g) => (
+          <li key={g.id}>
+            {g.name}: {g.line}
+          </li>
+        ))}
+      </ul>
 
       {mode === "live" && (
         <button
@@ -182,15 +241,27 @@ export function WalkingGang() {
       )}
 
       <style>{`
-        .gang-band { height: calc(var(--gw) * ${H} / ${W}); --gw: min(150vw, 620px); }
+        .gang-band { height: calc(var(--gw) * ${H} / ${W} + 5.5rem); --gw: min(150vw, 620px); }
         @media (min-width: 768px) { .gang-band { --gw: min(78vw, 980px); } }
-        .gang-track { position: absolute; left: 0; bottom: 0; width: var(--gw); height: 100%;
+        .gang-track { position: absolute; left: 0; bottom: 0; width: var(--gw); height: calc(var(--gw) * ${H} / ${W});
           animation: mb-gang 36s linear -12s infinite; animation-play-state: paused; }
         @media (max-width: 767px) { .gang-track { animation-duration: 22s; animation-delay: -7s; } }
         .gang-band[data-running="true"] .gang-track { animation-play-state: running; }
         .gang-band[data-mode="still"] .gang-track { animation: none; left: 50%; transform: translateX(-50%); max-width: 100%; }
         @keyframes mb-gang { from { transform: translateX(-100%); } to { transform: translateX(100cqw); } }
-        @media (prefers-reduced-motion: reduce) { .gang-track { animation: none !important; } }
+        .gang-bubble { position: absolute; z-index: 5; width: max-content; max-width: 10.5rem; margin-bottom: 0.6rem;
+          translate: -50% 0; transform-origin: 50% 100%; padding: 0.5rem 0.75rem; border-radius: 1rem;
+          background: var(--mb-bg); border: 1px solid var(--mb-line); color: var(--mb-ink);
+          font-size: 0.75rem; line-height: 1.3; font-weight: 600; text-align: center;
+          box-shadow: 0 10px 24px -12px rgba(60,40,20,0.35);
+          opacity: 0; transform: scale(0.7) translateY(6px); pointer-events: none;
+          transition: opacity 220ms ease, transform 220ms var(--mb-ease); }
+        .gang-bubble::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 11px; height: 11px;
+          translate: -50% 0; rotate: 45deg; background: var(--mb-bg);
+          border-right: 1px solid var(--mb-line); border-bottom: 1px solid var(--mb-line); }
+        .gang-bubble[data-on="true"] { opacity: 1; transform: none; }
+        @media (min-width: 768px) { .gang-bubble { max-width: 13rem; font-size: 0.85rem; padding: 0.6rem 0.9rem; } }
+        @media (prefers-reduced-motion: reduce) { .gang-track { animation: none !important; } .gang-bubble { transform: none; } }
       `}</style>
     </div>
   );

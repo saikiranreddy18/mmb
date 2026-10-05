@@ -148,6 +148,26 @@ export const ingredients: Ingredient[] = [
       art("pumpkin-seed", "A pumpkin seed", 554, 720),
       art("sunflower-seed", "A sunflower seed", 720, 419),
       art("seed-dark", "A dark seed", 701, 593),
+      art("sesame-seed", "Sesame seeds", 720, 355),
     ],
   },
 ];
+
+/**
+ * What each walking character says (speech bubbles in the walking gang),
+ * left → right as they appear in the film. Kept short and factual: what each
+ * ingredient brings to the bar, no health or medical claims.
+ * UNVERIFIED — written for the site; the brand should approve the wording.
+ */
+export const gangLines: { id: string; name: string; x: number; top: number; line: string }[] = [
+  // x / top: centre of the head in the 1280×360 film frame
+  { id: "walnut", name: "Walnut", x: 130, top: 40, line: "I bring the crunch and good fats." },
+  { id: "pumpkin-seed", name: "Pumpkin seed", x: 305, top: 44, line: "Small and green, packed with plant protein." },
+  { id: "almond", name: "Almond", x: 440, top: 26, line: "Protein and fibre in every bite." },
+  { id: "sunflower-seed", name: "Sunflower seed", x: 590, top: 42, line: "A nutty little crunch, from me." },
+  { id: "dark-seed", name: "Dark seed", x: 710, top: 96, line: "Tiny, but I add the bite." },
+  { id: "date", name: "Date", x: 825, top: 36, line: "I'm the sweetness. No added sugar!" },
+  { id: "pistachio", name: "Pistachio", x: 980, top: 42, line: "Colour, crunch and plant protein." },
+  { id: "cashew", name: "Cashew", x: 1130, top: 38, line: "Creamy. I hold it all together." },
+];
+export const gangLinesStatus = unverified("Speech-bubble lines written for the site — brand to approve");
