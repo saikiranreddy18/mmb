@@ -3,9 +3,19 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { cartAdapter } from "@/lib/commerce/cart-adapter";
 import { isShopifyConnected } from "@/lib/commerce/config";
-import type { Cart } from "@/lib/commerce/types";
+import type { Cart, DeliveryAddress } from "@/lib/commerce/types";
+import type { PincodeLocation } from "@/lib/shipping/types";
 
 const CART_ID_KEY = "mb-cart-id";
+const LOCATION_KEY = "mb-delivery-location";
+
+const toAddress = (l: PincodeLocation): DeliveryAddress => ({
+  zip: l.pincode,
+  city: l.city,
+  provinceCode: l.provinceCode,
+});
+
+export type PincodeResult = "ok" | "invalid" | "unavailable";
 
 type CartContextValue = {
   cart: Cart | null;
@@ -19,6 +29,10 @@ type CartContextValue = {
   buyNow: (merchandiseId: string, quantity?: number) => Promise<void>;
   /** True while a Buy Now redirect to checkout is in flight. */
   isRedirecting: boolean;
+  /** Where the shopper said they want delivery (from their PIN code). */
+  location: PincodeLocation | null;
+  /** Look up a PIN code and price delivery to it. */
+  setPincode: (pincode: string) => Promise<PincodeResult>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   removeLine: (lineId: string) => Promise<void>;
 };
@@ -44,10 +58,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isBusy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setRedirecting] = useState(false);
+  const [location, setLocation] = useState<PincodeLocation | null>(null);
 
   useEffect(() => {
     let id: string | null = null;
+    let saved: PincodeLocation | null = null;
     try {
+      const raw = window.localStorage.getItem(LOCATION_KEY);
+      saved = raw ? (JSON.parse(raw) as PincodeLocation) : null;
+      if (saved) setLocation(saved);
       id = window.localStorage.getItem(CART_ID_KEY);
     } catch {
       /* ignore */
@@ -55,6 +74,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (!id) return;
     cartAdapter
       .get(id)
+      // A cart from before the PIN code was entered gets it now, so rates show.
+      .then((c) => (c && saved && !c.delivery.address ? cartAdapter.setDeliveryAddress(c.id, toAddress(saved)) : c))
       .then((c) => (c ? setCart(c) : storeId(null)))
       .catch(() => storeId(null));
   }, []);
@@ -87,8 +108,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = useCallback(
     async (merchandiseId: string, quantity = 1) => {
       const lines = [{ merchandiseId, quantity }];
-      await run(() => (cart ? cartAdapter.addLines(cart.id, lines) : cartAdapter.create(lines)));
+      await run(() =>
+        cart ? cartAdapter.addLines(cart.id, lines) : cartAdapter.create(lines, location && toAddress(location)),
+      );
       setOpen(true);
+    },
+    [cart, location, run],
+  );
+
+  const setPincode = useCallback(
+    async (pincode: string): Promise<PincodeResult> => {
+      let found: PincodeLocation;
+      try {
+        const res = await fetch(`/api/pincode/${encodeURIComponent(pincode)}`);
+        if (res.status === 404) return "invalid";
+        if (!res.ok) return "unavailable";
+        found = (await res.json()) as PincodeLocation;
+      } catch {
+        return "unavailable";
+      }
+      setLocation(found);
+      try {
+        window.localStorage.setItem(LOCATION_KEY, JSON.stringify(found));
+      } catch {
+        /* ignore */
+      }
+      if (cart) await run(() => cartAdapter.setDeliveryAddress(cart.id, toAddress(found)));
+      return "ok";
     },
     [cart, run],
   );
@@ -102,7 +148,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setError(null);
       try {
         // A separate one-line Shopify cart, so the shopper's main cart is untouched.
-        const checkoutCart = await cartAdapter.create([{ merchandiseId, quantity }]);
+        // Carry the PIN code across so checkout opens with it filled in.
+        const checkoutCart = await cartAdapter.create([{ merchandiseId, quantity }], location && toAddress(location));
         if (!checkoutCart.checkoutUrl) throw new Error("Shopify returned no checkout URL");
         window.location.assign(checkoutCart.checkoutUrl);
       } catch {
@@ -111,7 +158,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setOpen(true);
       }
     },
-    [addItem],
+    [addItem, location],
   );
 
   const updateQuantity = useCallback(
@@ -145,10 +192,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
       addItem,
       buyNow,
       isRedirecting,
+      location,
+      setPincode,
       updateQuantity,
       removeLine,
     }),
-    [cart, isOpen, isBusy, error, open, close, addItem, buyNow, isRedirecting, updateQuantity, removeLine],
+    [cart, isOpen, isBusy, error, open, close, addItem, buyNow, isRedirecting, location, setPincode, updateQuantity, removeLine],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

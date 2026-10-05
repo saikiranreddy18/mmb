@@ -12,9 +12,16 @@ import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
 import type { Cart } from "@/lib/commerce/types";
 import { useDialog } from "@/components/ui/useDialog";
 import { applyOffers } from "@/lib/commerce/offers";
-import type { Money } from "@/lib/commerce/types";
+import { DeliveryEstimate } from "./DeliveryEstimate";
 
-function orderMessage(cart: Cart) {
+/** Cheapest delivery rate for the cart, or null when it isn't known yet. Free-delivery offers zero it. */
+function deliveryCost(cart: Cart) {
+  const cheapest = cart.delivery.options[0]?.cost;
+  if (!cheapest) return null;
+  return applyOffers(cart.cost.subtotalAmount).freeDelivery ? 0 : Number(cheapest.amount);
+}
+
+function orderMessage(cart: Cart, location: { city: string; state: string; pincode: string } | null) {
   const o = applyOffers(cart.cost.subtotalAmount);
   const lines = cart.lines.map(
     (l) => `• ${l.merchandise.product.title} (${l.merchandise.title}) × ${l.quantity} = ${formatMoney(l.cost.totalAmount)}`,
@@ -25,13 +32,17 @@ function orderMessage(cart: Cart) {
     `Subtotal: ${formatMoney(cart.cost.subtotalAmount)}`,
     o.percent ? `Offer (${o.percent}%): −${formatMoney(o.discount)}` : null,
     `Estimated total: ${formatMoney(o.total)}${o.freeDelivery ? " + free delivery" : ""}`,
+    location ? `Deliver to: ${location.city}, ${location.state} ${location.pincode}` : null,
   ]
     .filter(Boolean)
     .join("\n");
 }
 
-function CartTotals({ subtotal }: { subtotal: Money }) {
+function CartTotals({ cart }: { cart: Cart }) {
+  const subtotal = cart.cost.subtotalAmount;
   const o = applyOffers(subtotal);
+  const delivery = deliveryCost(cart);
+  const total = { amount: (Number(o.total.amount) + (delivery ?? 0)).toFixed(2), currencyCode: subtotal.currencyCode };
   return (
     <div className="space-y-2 text-sm">
       {o.next && (
@@ -52,11 +63,23 @@ function CartTotals({ subtotal }: { subtotal: Money }) {
       )}
       <div className="flex justify-between">
         <span className="text-ink-soft">Delivery</span>
-        <span className="font-semibold">{o.freeDelivery ? <span className="text-green">Free</span> : "Calculated at checkout"}</span>
+        <span className="font-semibold">
+          {o.freeDelivery || delivery === 0 ? (
+            <span className="text-green">Free</span>
+          ) : delivery !== null ? (
+            formatMoney({ amount: delivery.toFixed(2), currencyCode: subtotal.currencyCode })
+          ) : cart.isMock ? (
+            "Confirmed on WhatsApp"
+          ) : cart.delivery.address ? (
+            "Calculated at checkout"
+          ) : (
+            "Enter PIN code"
+          )}
+        </span>
       </div>
       <div className="flex items-baseline justify-between border-t border-line pt-2">
         <span className="eyebrow text-ink-soft">Estimated total</span>
-        <span className="text-xl font-extrabold">{formatMoney(o.total)}</span>
+        <span className="text-xl font-extrabold">{formatMoney(total)}</span>
       </div>
       <p className="text-xs text-ink-soft">Taxes and final offers are confirmed at checkout.</p>
     </div>
@@ -64,7 +87,7 @@ function CartTotals({ subtotal }: { subtotal: Money }) {
 }
 
 export function CartDrawer() {
-  const { cart, isOpen, close, isBusy, error, updateQuantity, removeLine } = useCart();
+  const { cart, isOpen, close, isBusy, error, location, updateQuantity, removeLine } = useCart();
   const panelRef = useRef<HTMLDivElement>(null);
   useDialog(isOpen, panelRef, close, "[data-cart-trigger]");
 
@@ -191,7 +214,8 @@ export function CartDrawer() {
                   {error}
                 </p>
               )}
-              {cart && <CartTotals subtotal={cart.cost.subtotalAmount} />}
+              {cart && <DeliveryEstimate cart={cart} />}
+              {cart && <CartTotals cart={cart} />}
               {cart?.checkoutUrl ? (
                 <a href={cart.checkoutUrl} className={buttonClass("primary", "w-full")}>
                   Checkout
@@ -199,7 +223,7 @@ export function CartDrawer() {
               ) : (
                 <>
                   <a
-                    href={cart ? whatsappLink(orderMessage(cart)) : whatsappLink()}
+                    href={cart ? whatsappLink(orderMessage(cart, location)) : whatsappLink()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={buttonClass("primary", "w-full")}

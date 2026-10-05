@@ -82,6 +82,17 @@ const cartFragment = /* GraphQL */ `
         }
       }
     }
+    delivery {
+      addresses {
+        selected
+        address { ... on CartDeliveryAddress { zip city provinceCode } }
+      }
+    }
+    deliveryGroups(first: 5) {
+      nodes {
+        deliveryOptions { handle title estimatedCost { amount currencyCode } }
+      }
+    }
   }
 `;
 
@@ -92,8 +103,11 @@ export const cartQuery = /* GraphQL */ `
 
 export const cartCreateMutation = /* GraphQL */ `
   ${cartFragment}
-  mutation CartCreate($lines: [CartLineInput!]) {
-    cartCreate(input: { lines: $lines }) { cart { ...CartFields } userErrors { message } }
+  mutation CartCreate($lines: [CartLineInput!], $addresses: [CartSelectableAddressInput!]) {
+    cartCreate(input: { lines: $lines, delivery: { addresses: $addresses } }) {
+      cart { ...CartFields }
+      userErrors { message }
+    }
   }
 `;
 
@@ -115,5 +129,16 @@ export const cartLinesRemoveMutation = /* GraphQL */ `
   ${cartFragment}
   mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
     cartLinesRemove(cartId: $cartId, lineIds: $lineIds) { cart { ...CartFields } userErrors { message } }
+  }
+`;
+
+/** Replaces the cart's delivery address; the cart comes back with delivery rates for it. */
+export const cartDeliveryAddressesReplaceMutation = /* GraphQL */ `
+  ${cartFragment}
+  mutation CartDeliveryAddressesReplace($cartId: ID!, $addresses: [CartSelectableAddressInput!]!) {
+    cartDeliveryAddressesReplace(cartId: $cartId, addresses: $addresses) {
+      cart { ...CartFields }
+      userErrors { message }
+    }
   }
 `;

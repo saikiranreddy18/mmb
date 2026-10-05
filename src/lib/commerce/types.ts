@@ -83,12 +83,31 @@ export type CartLine = {
   merchandise: CartMerchandise;
 };
 
+/** Where the cart ships to: enough to price delivery (PIN code level). */
+export type DeliveryAddress = {
+  zip: string; // Indian PIN code
+  city: string | null;
+  provinceCode: string | null; // Shopify province code, e.g. "TS"
+};
+
+/** A delivery rate Shopify offers for the cart (shipping settings or a carrier app). */
+export type DeliveryOption = {
+  handle: string;
+  title: string;
+  cost: Money;
+};
+
 export type Cart = {
   id: string;
   checkoutUrl: string | null;
   totalQuantity: number;
   cost: { subtotalAmount: Money };
   lines: CartLine[];
+  delivery: {
+    address: DeliveryAddress | null;
+    /** Cheapest first. Empty when no address is set or nothing ships there. */
+    options: DeliveryOption[];
+  };
   isMock: boolean;
 };
 
