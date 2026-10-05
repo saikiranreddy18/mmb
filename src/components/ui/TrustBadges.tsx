@@ -1,5 +1,6 @@
-import { BadgeCheck, MessageCircle, ShieldCheck, Truck } from "lucide-react";
-import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
+import { BadgeCheck, Mail, ShieldCheck, Truck } from "lucide-react";
+import { SUPPORT_EMAIL, whatsappLink } from "@/content/contact";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 import { OFFER_TIERS } from "@/lib/commerce/offers";
 
 const FSSAI_LICENCE = "20126052001147";
@@ -70,15 +71,25 @@ export function TrustBadges({ compact = false }: { compact?: boolean }) {
         ))}
       </ul>
       <PaymentMethods />
-      <a
-        href={whatsappLink("Hi Mumma's Bite! I have a question before ordering.")}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-green underline-offset-4 hover:underline"
-      >
-        <MessageCircle className="size-4" aria-hidden />
-        Questions? WhatsApp us at {WHATSAPP_DISPLAY}
-      </a>
+      <div className="flex flex-wrap items-center gap-x-5">
+        <span className="text-sm text-ink-soft">Questions?</span>
+        <a
+          href={whatsappLink("Hi Mumma's Bite! I have a question before ordering.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-green underline-offset-4 hover:underline"
+        >
+          <WhatsAppIcon className="size-4" />
+          WhatsApp us
+        </a>
+        <a
+          href={`mailto:${SUPPORT_EMAIL}`}
+          className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-green underline-offset-4 hover:underline"
+        >
+          <Mail className="size-4" aria-hidden />
+          {SUPPORT_EMAIL}
+        </a>
+      </div>
     </div>
   );
 }

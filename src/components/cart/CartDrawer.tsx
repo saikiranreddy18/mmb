@@ -8,7 +8,7 @@ import { useCart } from "./CartProvider";
 import { formatMoney } from "@/lib/commerce/money";
 import { ButtonLink, buttonClass } from "@/components/ui/Button";
 import { MessageCircle } from "lucide-react";
-import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
+import { whatsappLink } from "@/content/contact";
 import type { Cart } from "@/lib/commerce/types";
 import { useDialog } from "@/components/ui/useDialog";
 import { applyOffers } from "@/lib/commerce/offers";
@@ -245,7 +245,7 @@ export function CartDrawer() {
                     Order on WhatsApp
                   </a>
                   <p className="text-center text-xs text-ink-soft">
-                    Sends your order to us on WhatsApp ({WHATSAPP_DISPLAY}). Online payment is coming soon.
+                    Sends your order to us on WhatsApp. Online payment is coming soon.
                   </p>
                 </>
               )}

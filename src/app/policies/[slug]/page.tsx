@@ -30,7 +30,7 @@ export default async function PolicyPage({ params }: Params) {
       <h1 className="display text-[clamp(2.25rem,6vw,4rem)] text-green">{policy.title}</h1>
       {/* Merchant-authored policy HTML (Shopify Admin or src/content/policies.ts). */}
       <div
-        className="mt-10 space-y-4 text-base leading-relaxed text-ink-soft [&_h3]:mt-10 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink [&_li]:ml-5 [&_li]:list-disc [&_strong]:text-ink [&_ul]:space-y-1"
+        className="mt-10 space-y-4 text-base leading-relaxed text-ink-soft [&_h3]:mt-10 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink [&_li]:ml-5 [&_li]:list-disc [&_strong]:text-ink [&_ul]:space-y-1 [&_a]:font-semibold [&_a]:text-green [&_a]:underline"
         dangerouslySetInnerHTML={{ __html: policy.body }}
       />
       <nav aria-label="Other policies" className="mt-16 border-t border-line pt-8">

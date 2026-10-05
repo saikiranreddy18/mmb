@@ -3,7 +3,9 @@ import Link from "next/link";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { brand } from "@/content/brand";
 import { navItems } from "./nav";
-import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
+import { Mail, MapPin } from "lucide-react";
+import { ADDRESS, SUPPORT_EMAIL, whatsappLink } from "@/content/contact";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { POLICY_LINKS } from "@/content/policies";
 
 export function Footer() {
@@ -25,6 +27,24 @@ export function Footer() {
               20126052001147
             </span>
           </div>
+          <address className="space-y-2 text-sm not-italic leading-relaxed text-cream/80">
+            <p className="flex gap-2.5">
+              <MapPin className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden />
+              <span>
+                {ADDRESS.lines.map((l) => (
+                  <span key={l} className="block">
+                    {l}
+                  </span>
+                ))}
+              </span>
+            </p>
+            <p className="flex items-center gap-2.5">
+              <Mail className="size-4 shrink-0 text-gold" aria-hidden />
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="-my-2 inline-flex min-h-11 items-center underline-offset-4 hover:text-gold hover:underline">
+                {SUPPORT_EMAIL}
+              </a>
+            </p>
+          </address>
         </div>
         <nav aria-label="Footer" className="md:justify-self-end">
           <p className="eyebrow mb-5 text-cream/60">Explore</p>
@@ -56,12 +76,24 @@ export function Footer() {
               ))}
             </ul>
           </nav>
-          <p>
-            WhatsApp:{" "}
-            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="-my-2 inline-flex min-h-11 items-center underline hover:text-gold">
-              {WHATSAPP_DISPLAY}
+          <div className="flex items-center gap-1">
+            <a
+              href={whatsappLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat with us on WhatsApp"
+              className="grid size-11 place-items-center rounded-full text-cream/80 transition-colors hover:bg-cream/10 hover:text-gold"
+            >
+              <WhatsAppIcon />
             </a>
-          </p>
+            <a
+              href={`mailto:${SUPPORT_EMAIL}`}
+              aria-label={`Email us at ${SUPPORT_EMAIL}`}
+              className="grid size-11 place-items-center rounded-full text-cream/80 transition-colors hover:bg-cream/10 hover:text-gold"
+            >
+              <Mail className="size-5" aria-hidden />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

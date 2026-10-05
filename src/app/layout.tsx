@@ -6,7 +6,8 @@ import { CartProvider } from "@/components/cart/CartProvider";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
-import { contactPhone, defaultDescription, defaultTitle, keywords, siteName, siteUrl } from "@/lib/seo/site";
+import { ADDRESS, SUPPORT_EMAIL } from "@/content/contact";
+import { defaultDescription, defaultTitle, keywords, siteName, siteUrl } from "@/lib/seo/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -45,9 +46,18 @@ const organizationJsonLd = {
       url: siteUrl,
       logo: `${siteUrl}/assets/logo/mummas-bite-logo.svg`,
       slogan: "Made with a mother's love.",
+      email: SUPPORT_EMAIL,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: ADDRESS.lines[0],
+        addressLocality: ADDRESS.locality,
+        addressRegion: ADDRESS.region,
+        postalCode: ADDRESS.postalCode,
+        addressCountry: ADDRESS.country,
+      },
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: contactPhone,
+        email: SUPPORT_EMAIL,
         contactType: "customer service",
         areaServed: "IN",
         availableLanguage: ["en"],

@@ -16,6 +16,3 @@ export const keywords = [
   "homemade energy bars",
   "protein bar no sugar",
 ];
-
-/** Contact used in structured data. */
-export const contactPhone = "+91-83095-32183";

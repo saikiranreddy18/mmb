@@ -4,8 +4,9 @@ import { useState, type FormEvent } from "react";
 import { Send } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
-import { MessageCircle } from "lucide-react";
-import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
+import { Mail, MapPin } from "lucide-react";
+import { ADDRESS, SUPPORT_EMAIL, whatsappLink } from "@/content/contact";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { TalkingIngredients } from "./TalkingIngredients";
 
 /**
@@ -66,11 +67,28 @@ export function ContactSection() {
             rel="noopener noreferrer"
             className="mt-8 inline-flex min-h-12 items-center gap-3 rounded-full bg-[#1f8f4e] px-6 text-sm font-bold text-white transition-colors hover:bg-[#177a41]"
           >
-            <MessageCircle className="size-5" aria-hidden />
+            <WhatsAppIcon />
             Chat on WhatsApp
-            <span className="font-semibold opacity-85">{WHATSAPP_DISPLAY}</span>
           </a>
           <p className="mt-3 text-sm text-ink-soft">Opens WhatsApp with a message to us. Usually the quickest way to reach us.</p>
+          <address className="mt-8 space-y-3 text-base not-italic leading-relaxed text-ink-soft">
+            <p className="flex items-center gap-3">
+              <Mail className="size-5 shrink-0 text-green" aria-hidden />
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="-my-2 inline-flex min-h-11 items-center font-semibold text-green underline-offset-4 hover:underline">
+                {SUPPORT_EMAIL}
+              </a>
+            </p>
+            <p className="flex gap-3">
+              <MapPin className="mt-1 size-5 shrink-0 text-green" aria-hidden />
+              <span>
+                {ADDRESS.lines.map((l) => (
+                  <span key={l} className="block">
+                    {l}
+                  </span>
+                ))}
+              </span>
+            </p>
+          </address>
         </Reveal>
 
         <Reveal>

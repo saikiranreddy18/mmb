@@ -4,7 +4,10 @@
  * the site's own copies, used until then. Keep both in step.
  */
 
-const CONTACT = `<h3>Contact</h3><p>WhatsApp: +91 83095 32183<br>Email: mummasbite.in@gmail.com</p>`;
+import { ADDRESS, SUPPORT_EMAIL, whatsappLink } from "./contact";
+
+const ADDRESS_HTML = ADDRESS.lines.join("<br>");
+const CONTACT = `<h3>Contact</h3><p>Email: <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a><br>WhatsApp: <a href="${whatsappLink()}" target="_blank" rel="noopener noreferrer">chat with us</a></p>`;
 
 export type PolicySlug = "refund-policy" | "shipping-policy" | "terms-of-service" | "privacy-policy" | "contact-information";
 
@@ -60,7 +63,7 @@ export const POLICIES: Record<PolicySlug, Policy> = {
     slug: "contact-information",
     title: "Contact information",
     description: "How to reach Mumma's Bite.",
-    body: `<p><strong>Mumma's Bite</strong></p><p>Gajuwaka, Visakhapatnam, Andhra Pradesh 530046, India</p><p>WhatsApp / Phone: +91 83095 32183<br>Email: mummasbite.in@gmail.com</p><p>FSSAI Lic. No. 20126052001147</p>`,
+    body: `<p><strong>Mumma's Bite</strong></p><p>${ADDRESS_HTML}</p><p>Email: <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a><br>WhatsApp: <a href="${whatsappLink()}" target="_blank" rel="noopener noreferrer">chat with us</a></p><p>FSSAI Lic. No. 20126052001147</p>`,
   },
 };
 
