@@ -25,6 +25,8 @@ type CartContextValue = {
   open: () => void;
   close: () => void;
   addItem: (merchandiseId: string, quantity?: number) => Promise<void>;
+  /** Make sure the cart is still valid on Shopify, then open its checkout. */
+  checkout: () => Promise<void>;
   /** Skip the cart: go straight to Shopify checkout with just this item. */
   buyNow: (merchandiseId: string, quantity?: number) => Promise<void>;
   /** True while a Buy Now redirect to checkout is in flight. */
@@ -99,7 +101,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setCart(next);
       storeId(next.id);
     } catch {
-      setError("Something went wrong updating your cart. Please try again.");
+      // If the cart itself is gone (expired or already ordered), clear it rather than
+      // leave the shopper stuck on a cart that can no longer change.
+      const id = (() => {
+        try {
+          return window.localStorage.getItem(CART_ID_KEY);
+        } catch {
+          return null;
+        }
+      })();
+      const stillThere = id ? await cartAdapter.get(id).catch(() => undefined) : undefined;
+      if (stillThere === null) {
+        setCart(null);
+        storeId(null);
+        setError("Your previous cart expired. Please add your items again.");
+      } else {
+        setError("We couldn't update your cart. Please check your connection and try again.");
+      }
     } finally {
       setBusy(false);
     }
@@ -108,9 +126,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = useCallback(
     async (merchandiseId: string, quantity = 1) => {
       const lines = [{ merchandiseId, quantity }];
-      await run(() =>
-        cart ? cartAdapter.addLines(cart.id, lines) : cartAdapter.create(lines, location && toAddress(location)),
-      );
+      const fresh = () => cartAdapter.create(lines, location && toAddress(location));
+      await run(async () => {
+        if (!cart) return fresh();
+        try {
+          return await cartAdapter.addLines(cart.id, lines);
+        } catch {
+          // The saved cart may have expired or already been checked out: start a new one.
+          return fresh();
+        }
+      });
       setOpen(true);
     },
     [cart, location, run],
@@ -161,6 +186,32 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [addItem, location],
   );
 
+  const checkout = useCallback(async () => {
+    if (!cart?.checkoutUrl) return;
+    setRedirecting(true);
+    setError(null);
+    try {
+      // A cart left open in a tab can expire or be completed in another tab;
+      // rebuild it from what the shopper sees rather than send them to an empty checkout.
+      // If the check itself fails (network), go ahead with the cart we have; only
+      // rebuild when Shopify says the cart is gone or empty.
+      let live = await cartAdapter.get(cart.id).catch(() => cart);
+      if (!live || !live.lines.length || !live.checkoutUrl) {
+        live = await cartAdapter.create(
+          cart.lines.map((l) => ({ merchandiseId: l.merchandise.id, quantity: l.quantity })),
+          location && toAddress(location),
+        );
+        setCart(live);
+        storeId(live.id);
+      }
+      if (!live.checkoutUrl) throw new Error("No checkout URL");
+      window.location.assign(live.checkoutUrl);
+    } catch {
+      setRedirecting(false);
+      setError("We couldn't open checkout. Please check your connection and try again.");
+    }
+  }, [cart, location]);
+
   const updateQuantity = useCallback(
     async (lineId: string, quantity: number) => {
       if (!cart) return;
@@ -191,13 +242,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
       close,
       addItem,
       buyNow,
+      checkout,
       isRedirecting,
       location,
       setPincode,
       updateQuantity,
       removeLine,
     }),
-    [cart, isOpen, isBusy, error, open, close, addItem, buyNow, isRedirecting, location, setPincode, updateQuantity, removeLine],
+    [cart, isOpen, isBusy, error, open, close, addItem, buyNow, checkout, isRedirecting, location, setPincode, updateQuantity, removeLine],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { formatMoney } from "@/lib/commerce/money";
 import type { Product } from "@/lib/commerce/types";
+import { TrustBadges } from "@/components/ui/TrustBadges";
 import { AddToCartButton } from "./AddToCartButton";
 
 /**
@@ -57,6 +58,7 @@ export function VariantPurchase({ product, compact = false }: { product: Product
         size={compact ? "compact" : "default"}
         className={compact ? "mt-4" : "mt-6 max-w-md"}
       />
+      {!compact && <TrustBadges />}
     </div>
   );
 }

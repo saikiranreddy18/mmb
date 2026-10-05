@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { Minus, Plus, Trash2, X } from "lucide-react";
+import { Lock, Minus, Plus, Trash2, X } from "lucide-react";
 import { useCart } from "./CartProvider";
 import { formatMoney } from "@/lib/commerce/money";
 import { ButtonLink, buttonClass } from "@/components/ui/Button";
@@ -13,6 +13,7 @@ import type { Cart } from "@/lib/commerce/types";
 import { useDialog } from "@/components/ui/useDialog";
 import { applyOffers } from "@/lib/commerce/offers";
 import { DeliveryEstimate } from "./DeliveryEstimate";
+import { TrustBadges } from "@/components/ui/TrustBadges";
 
 /** Cheapest delivery rate for the cart, or null when it isn't known yet. Free-delivery offers zero it. */
 function deliveryCost(cart: Cart) {
@@ -87,7 +88,7 @@ function CartTotals({ cart }: { cart: Cart }) {
 }
 
 export function CartDrawer() {
-  const { cart, isOpen, close, isBusy, error, location, updateQuantity, removeLine } = useCart();
+  const { cart, isOpen, close, isBusy, error, location, updateQuantity, removeLine, checkout, isRedirecting } = useCart();
   const panelRef = useRef<HTMLDivElement>(null);
   useDialog(isOpen, panelRef, close, "[data-cart-trigger]");
 
@@ -217,9 +218,21 @@ export function CartDrawer() {
               {cart && <DeliveryEstimate cart={cart} />}
               {cart && <CartTotals cart={cart} />}
               {cart?.checkoutUrl ? (
-                <a href={cart.checkoutUrl} className={buttonClass("primary", "w-full")}>
-                  Checkout
-                </a>
+                <>
+                  <a
+                    href={cart.checkoutUrl}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (!isBusy && !isRedirecting) checkout();
+                    }}
+                    aria-disabled={isBusy || isRedirecting}
+                    className={buttonClass("primary", `w-full ${isBusy || isRedirecting ? "pointer-events-none opacity-60" : ""}`)}
+                  >
+                    <Lock className="size-4" aria-hidden />
+                    {isRedirecting ? "Opening secure checkout…" : "Secure checkout"}
+                  </a>
+                  <TrustBadges compact />
+                </>
               ) : (
                 <>
                   <a
