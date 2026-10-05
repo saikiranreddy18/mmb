@@ -38,10 +38,10 @@ Supplied as JPGs with a painted-in checkerboard (no real transparency). The neut
 | `date.webp` | Ingredients → Dates |
 | `almond.webp`, `pistachio.webp`, `cashew.webp` | Ingredients → Nuts (grouped) |
 | `walnut.webp` | Ingredients → Nuts |
-| `pumpkin-seed.webp`, `sunflower-seed.webp`, `seed-dark.webp` | Ingredients → Seeds (grouped) |
+| `pumpkin-seed.webp`, `sunflower-seed.webp`, `seed-dark.webp`, `sesame-seed.webp` | Talking ingredients (Contact) · Ingredients → Seeds (section off) |
 
-## SUPPLIED: walking gang film (`public/assets/gang-walk-packed.*`, `gang-walk-still.webp`)
-From the supplied clip, only the steady wide walking shot is used (the talking and close-ups are removed, and so is the audio, which has spoken lines). The background is removed per frame with an AI segmentation model (BiRefNet), not brightness keying, so dark details (outlines, pupils, black legs and shoes, the dark seed, the shadowed back limbs) stay exactly as drawn and no background shows between legs or arms. The original frames loop on one full stride (frames 10–33) with no blending or retouching. The result ships as a "packed alpha" video (colour on top, transparency below; WebM ~0.38 MB, MP4 fallback) that a small WebGL shader draws straight onto the page. Reduced motion or no WebGL shows the transparent still.
+## REMOVED: walking gang film
+The walking-gang film and its packed-alpha files were removed at the brand's request (Oct 2026). The source clip is still in git history if it is ever wanted again.
 
 ## Generator watermark
 The supplied films carried a visible generator "sparkle" in the bottom-right corner. It was removed from every film and still used on the site (hero, process, walking gang) by filling the small corner area from its surroundings.
@@ -75,9 +75,11 @@ The supplied films carried a visible generator "sparkle" in the bottom-right cor
 - Brand idea: a modern food brand inspired by the food a mother makes at home
 
 ## Walking gang lines & ingredient section (Oct 2026)
-- The walking gang (Contact) now "talks": one speech bubble at a time with what each
-  ingredient brings — see `gangLines` in `content/brand.ts`. **Wording is UNVERIFIED —
-  the brand should approve it.** No health or medical claims.
+- The walking-gang film has been **removed** (brand request). In its place, the supplied
+  3D ingredient illustrations (date, walnut, almond, pistachio, cashew, pumpkin, sunflower,
+  dark seed, sesame) float and take turns "talking" — see `talkingIngredients` in
+  `content/brand.ts`. **Wording is UNVERIFIED — the brand should approve it.** No health
+  or medical claims. Flax will be added once a usable image is supplied.
 - The Home "Simple ingredients" illustration section is switched **off** via
   `content/features.ts → ingredientIllustrations`. Set it to `true` to bring it back.
 - `ingredients/sesame-seed.webp` (supplied, background removed) added to the Seeds group.

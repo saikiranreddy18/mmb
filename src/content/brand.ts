@@ -154,20 +154,20 @@ export const ingredients: Ingredient[] = [
 ];
 
 /**
- * What each walking character says (speech bubbles in the walking gang),
- * left → right as they appear in the film. Kept short and factual: what each
- * ingredient brings to the bar, no health or medical claims.
+ * The talking ingredients (Contact section): the supplied 3D ingredient
+ * illustrations take turns saying what they bring to the bar.
+ * Kept short and factual, no health or medical claims.
  * UNVERIFIED — written for the site; the brand should approve the wording.
  */
-export const gangLines: { id: string; name: string; x: number; top: number; line: string }[] = [
-  // x / top: centre of the head in the 1280×360 film frame
-  { id: "walnut", name: "Walnut", x: 130, top: 40, line: "I bring the crunch and good fats." },
-  { id: "pumpkin-seed", name: "Pumpkin seed", x: 305, top: 44, line: "Small and green, packed with plant protein." },
-  { id: "almond", name: "Almond", x: 440, top: 26, line: "Protein and fibre in every bite." },
-  { id: "sunflower-seed", name: "Sunflower seed", x: 590, top: 42, line: "A nutty little crunch, from me." },
-  { id: "dark-seed", name: "Dark seed", x: 710, top: 96, line: "Tiny, but I add the bite." },
-  { id: "date", name: "Date", x: 825, top: 36, line: "I'm the sweetness. No added sugar!" },
-  { id: "pistachio", name: "Pistachio", x: 980, top: 42, line: "Colour, crunch and plant protein." },
-  { id: "cashew", name: "Cashew", x: 1130, top: 38, line: "Creamy. I hold it all together." },
+export const talkingIngredients: { id: string; name: string; line: string; art: IngredientArt }[] = [
+  { id: "date", name: "Date", line: "I'm the sweetness. No added sugar!", art: art("date", "", 680, 720) },
+  { id: "walnut", name: "Walnut", line: "I bring the crunch and good fats.", art: art("walnut", "", 720, 679) },
+  { id: "almond", name: "Almond", line: "Protein and fibre in every bite.", art: art("almond", "", 452, 720) },
+  { id: "pistachio", name: "Pistachio", line: "Colour, crunch and plant protein.", art: art("pistachio", "", 720, 715) },
+  { id: "cashew", name: "Cashew", line: "Creamy. I hold it all together.", art: art("cashew", "", 720, 596) },
+  { id: "pumpkin-seed", name: "Pumpkin seed", line: "Small and green, packed with plant protein.", art: art("pumpkin-seed", "", 554, 720) },
+  { id: "sunflower-seed", name: "Sunflower seed", line: "A nutty little crunch, from me.", art: art("sunflower-seed", "", 720, 419) },
+  { id: "dark-seed", name: "Dark seed", line: "Tiny, but I add the bite.", art: art("seed-dark", "", 701, 593) },
+  { id: "sesame", name: "Sesame", line: "Tiny seeds, big nutty flavour.", art: art("sesame-seed", "", 720, 355) },
 ];
-export const gangLinesStatus = unverified("Speech-bubble lines written for the site — brand to approve");
+export const talkingIngredientsStatus = unverified("Speech-bubble lines written for the site — brand to approve");
