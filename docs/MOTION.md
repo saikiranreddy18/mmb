@@ -47,3 +47,9 @@ Mobile: road down the left edge. Reduced motion: route fully drawn, all stops li
 `process.webm/.mp4` (1280×720, ~0.9 MB) on tablet/desktop, `process-480.*` (854×480,
 ~0.45 MB) on phones. The file is fetched whole about 1200px before the section and
 looped from a blob URL, so playback never waits on the network.
+
+## Product card slideshow (`components/shop/ProductCard.tsx`)
+Each card crossfades through all of its product photos, 3s per photo (700ms fade),
+non-stop while on screen; neighbouring cards are offset by 1.5s. The whole card
+opens the product page (stretched link); Add to cart sits above it. Cards are
+square and two per row on phones. Reduced motion: first photo only.

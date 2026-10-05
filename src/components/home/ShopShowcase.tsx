@@ -25,10 +25,10 @@ export function ShopShowcase({ products }: { products: Product[] }) {
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
           </Link>
         </Reveal>
-        <Reveal as="ul" stagger={0.1} className="grid gap-x-6 gap-y-14 sm:grid-cols-2">
+        <Reveal as="ul" stagger={0.1} className="grid max-w-2xl grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-6">
           {products.slice(0, 4).map((p, i) => (
             <li key={p.id}>
-              <ProductCard product={p} priority={i === 0} />
+              <ProductCard product={p} priority={i === 0} offset={i * 1500} />
             </li>
           ))}
         </Reveal>
