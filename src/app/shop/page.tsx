@@ -5,8 +5,9 @@ import { PromiseQuotes } from "@/components/home/PromiseQuotes";
 import { getProducts } from "@/lib/commerce/products";
 
 export const metadata: Metadata = {
-  title: "Shop",
-  description: "Shop Mumma's Bite — made with a mother's love.",
+  title: "Shop Energy Bars",
+  description:
+    "Shop Mumma's Bite energy bars: Dry Fruit and Multi-Seed bars made with dates, nuts and seeds. No added sugar, no preservatives. Delivered across India.",
   alternates: { canonical: "/shop" },
 };
 

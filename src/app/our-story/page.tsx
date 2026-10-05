@@ -10,7 +10,8 @@ import { brand, story } from "@/content/brand";
 
 export const metadata: Metadata = {
   title: "Our Story",
-  description: "How Mumma's Bite began — a modern food brand inspired by the food a mother makes at home.",
+  description:
+    "How Mumma's Bite began: energy bars made the way a mother makes food at home, with simple ingredients like dates, nuts and seeds.",
   alternates: { canonical: "/our-story" },
 };
 
