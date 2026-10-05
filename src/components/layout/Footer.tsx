@@ -20,7 +20,7 @@ export function Footer() {
             <Image src="/assets/fssai-logo.png" alt="FSSAI" width={480} height={267} className="h-11 w-auto" />
             <span className="h-8 w-px bg-ink/15" aria-hidden />
             <span className="text-sm font-semibold leading-tight text-ink">
-              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.16em] text-ink-soft">Lic. No.</span>
+              <span className="block text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-soft">Lic. No.</span>
               20126052001147
             </span>
           </div>
@@ -46,7 +46,7 @@ export function Footer() {
           <p>© {new Date().getFullYear()} Mumma's Bite</p>
           <p>
             WhatsApp:{" "}
-            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="underline hover:text-gold">
+            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="-my-2 inline-flex min-h-11 items-center underline hover:text-gold">
               {WHATSAPP_DISPLAY}
             </a>
           </p>
