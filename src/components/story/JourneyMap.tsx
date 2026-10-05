@@ -157,13 +157,13 @@ export function JourneyMap({ chapters }: { chapters: StoryChapter[] }) {
             >
               <span
                 data-pin
-                className="relative z-10 grid size-12 place-items-center self-start rounded-full border-2 border-line bg-bg font-serif text-xl italic text-ink-soft transition-all duration-500 group-data-[reached=true]:scale-110 group-data-[reached=true]:border-gold group-data-[reached=true]:bg-green group-data-[reached=true]:text-gold md:col-start-2 md:row-start-1 md:mx-auto md:self-center md:size-16 md:text-2xl"
+                className="relative z-10 grid size-12 place-items-center self-start rounded-full border-2 border-line bg-bg text-xl  text-ink-soft transition-all duration-500 group-data-[reached=true]:scale-110 group-data-[reached=true]:border-gold group-data-[reached=true]:bg-green group-data-[reached=true]:text-gold md:col-start-2 md:row-start-1 md:mx-auto md:self-center md:size-16 md:text-2xl"
               >
                 {c.index}
               </span>
               <p
                 aria-hidden
-                className={`hidden font-serif text-[clamp(5rem,9vw,8.5rem)] italic leading-none text-gold/25 transition-colors duration-700 group-data-[reached=true]:text-gold md:row-start-1 md:block ${
+                className={`hidden text-[clamp(5rem,9vw,8.5rem)]  leading-none text-gold/25 transition-colors duration-700 group-data-[reached=true]:text-gold md:row-start-1 md:block ${
                   left ? "md:col-start-3 md:pl-10" : "md:col-start-1 md:pr-10 md:text-right"
                 }`}
               >
@@ -187,7 +187,7 @@ export function JourneyMap({ chapters }: { chapters: StoryChapter[] }) {
                     {unknownBody ? (
                       <div className="mt-4 space-y-3">
                         <StatusBadge status="unknown" />
-                        <p className="text-base italic leading-relaxed text-ink-soft">{c.needs}</p>
+                        <p className="text-base  leading-relaxed text-ink-soft">{c.needs}</p>
                       </div>
                     ) : (
                       <p className="mt-4 text-lg leading-relaxed text-ink-soft">{c.body.value}</p>

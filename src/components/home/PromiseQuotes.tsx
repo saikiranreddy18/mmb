@@ -90,9 +90,9 @@ export function PromiseQuotes() {
                       <span className="text-gold">“</span>
                       {q.lead}
                     </p>
-                    <p className="mt-3 max-w-2xl font-serif text-[clamp(1.3rem,2.4vw,2rem)] italic leading-snug text-cream/80">
+                    <p className="mt-3 max-w-2xl text-[clamp(1.3rem,2.4vw,2rem)]  leading-snug text-cream/80">
                       {q.rest}
-                      <span className="not-italic text-gold">”</span>
+                      <span className="text-gold">”</span>
                     </p>
                   </blockquote>
                 );
