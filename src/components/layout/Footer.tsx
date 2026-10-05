@@ -4,6 +4,7 @@ import { Wordmark } from "@/components/ui/Wordmark";
 import { brand } from "@/content/brand";
 import { navItems } from "./nav";
 import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
+import { POLICY_LINKS } from "@/content/policies";
 
 export function Footer() {
   return (
@@ -44,6 +45,17 @@ export function Footer() {
       <div className="border-t border-cream/10">
         <div className="shell flex flex-col gap-2 py-6 text-xs text-cream/60 sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} Mumma's Bite</p>
+          <nav aria-label="Policies">
+            <ul className="flex flex-wrap gap-x-4">
+              {POLICY_LINKS.map((l) => (
+                <li key={l.slug}>
+                  <Link href={`/policies/${l.slug}`} className="-my-2 inline-flex min-h-11 items-center hover:text-gold">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
           <p>
             WhatsApp:{" "}
             <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="-my-2 inline-flex min-h-11 items-center underline hover:text-gold">
