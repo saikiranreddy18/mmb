@@ -6,7 +6,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
 import { MessageCircle } from "lucide-react";
 import { WHATSAPP_DISPLAY, whatsappLink } from "@/content/contact";
-import { WalkingGang } from "./WalkingGang";
+import { TalkingIngredients } from "./TalkingIngredients";
 
 /**
  * Where submissions go. Set NEXT_PUBLIC_CONTACT_ENDPOINT to any form backend that
@@ -19,8 +19,8 @@ const ENDPOINT = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT ?? "";
 type Status = "idle" | "sending" | "sent" | "error" | "not-connected";
 
 /**
- * Contact — the end of the journey. The ingredient gang walks across the top
- * of the section (see WalkingGang), then the form.
+ * Contact — the end of the journey. The ingredients say what they bring
+ * (see TalkingIngredients), then the form.
  */
 export function ContactSection() {
   const [status, setStatus] = useState<Status>("idle");
@@ -48,8 +48,8 @@ export function ContactSection() {
 
   return (
     <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 pb-24 pt-14 md:pb-32 md:pt-20">
-      {/* The gang, walking in across the page */}
-      <WalkingGang />
+      {/* The ingredients, taking turns to talk */}
+      <TalkingIngredients />
 
       <div className="shell mt-14 grid gap-12 md:mt-20 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
         <Reveal>

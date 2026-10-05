@@ -147,7 +147,29 @@ export const ingredients: Ingredient[] = [
     art: [
       art("pumpkin-seed", "A pumpkin seed", 554, 720),
       art("sunflower-seed", "A sunflower seed", 720, 419),
-      art("seed-dark", "A dark seed", 701, 593),
+      art("watermelon-seed", "A watermelon seed", 701, 593),
+      art("sesame-seed", "Sesame seeds", 720, 355),
+      art("flax-seed", "Flax seeds", 366, 167),
     ],
   },
 ];
+
+/**
+ * The talking ingredients (Contact section): the supplied 3D ingredient
+ * illustrations take turns saying what they bring to the bar.
+ * Kept short and factual, no health or medical claims.
+ * UNVERIFIED — written for the site; the brand should approve the wording.
+ */
+export const talkingIngredients: { id: string; name: string; line: string; art: IngredientArt }[] = [
+  { id: "date", name: "Date", line: "I'm the sweetness. No added sugar!", art: art("date", "", 680, 720) },
+  { id: "walnut", name: "Walnut", line: "I bring the crunch and good fats.", art: art("walnut", "", 720, 679) },
+  { id: "almond", name: "Almond", line: "Protein and fibre in every bite.", art: art("almond", "", 452, 720) },
+  { id: "pistachio", name: "Pistachio", line: "Colour, crunch and plant protein.", art: art("pistachio", "", 720, 715) },
+  { id: "cashew", name: "Cashew", line: "Creamy. I hold it all together.", art: art("cashew", "", 720, 596) },
+  { id: "pumpkin-seed", name: "Pumpkin seed", line: "Small and green, packed with plant protein.", art: art("pumpkin-seed", "", 554, 720) },
+  { id: "sunflower-seed", name: "Sunflower seed", line: "A nutty little crunch, from me.", art: art("sunflower-seed", "", 720, 419) },
+  { id: "watermelon-seed", name: "Watermelon seed", line: "Tiny, but I add the bite.", art: art("watermelon-seed", "", 701, 593) },
+  { id: "sesame", name: "Sesame", line: "Tiny seeds, big nutty flavour.", art: art("sesame-seed", "", 720, 355) },
+  { id: "flax", name: "Flax seed", line: "Small and glossy, with a gentle crunch.", art: art("flax-seed", "", 366, 167) },
+];
+export const talkingIngredientsStatus = unverified("Speech-bubble lines written for the site — brand to approve");
