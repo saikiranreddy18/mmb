@@ -19,7 +19,7 @@ export const POLICIES: Record<PolicySlug, Policy> = {
     title: "Shipping policy",
     description: "Where Mumma's Bite delivers, delivery charges, dispatch times and tracking.",
     body: `<h3>Where we deliver</h3><p>We currently deliver to addresses across India. We do not ship internationally at this time.</p>
-<h3>Delivery charges</h3><ul><li>Standard delivery: ₹79 per order.</li><li>Free delivery on orders of ₹1,299 and above.</li></ul><p>The delivery charge for your address is shown in your cart once you enter your PIN code, and confirmed at checkout before you pay.</p>
+<h3>Delivery charges</h3><ul><li>Standard delivery: ₹79 per order.</li><li>Free delivery when your order total, after any offer discount, is ₹1,299 or more.</li></ul><p>The delivery charge for your address is shown in your cart once you enter your PIN code, and confirmed at checkout before you pay.</p>
 <h3>Dispatch and delivery time</h3><p>Orders are packed fresh and usually dispatched within <strong>1–2 business days</strong> (Monday to Saturday, excluding public holidays) from Visakhapatnam, Andhra Pradesh. Delivery typically takes 3–7 business days after dispatch depending on your location; remote areas may take longer. An estimated delivery date is shown at checkout.</p>
 <h3>Tracking</h3><p>Once your order is dispatched, you will receive an email with the courier name and tracking number so you can follow your parcel.</p>
 <h3>Delays</h3><p>Courier delays caused by weather, strikes, public holidays or other events outside our control can occasionally happen. If your order has not arrived within the expected time, contact us and we will follow up with the courier.</p>

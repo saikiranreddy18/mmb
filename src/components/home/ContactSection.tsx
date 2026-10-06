@@ -12,12 +12,12 @@ import { TalkingIngredients } from "./TalkingIngredients";
 /**
  * Where submissions go. Set NEXT_PUBLIC_CONTACT_ENDPOINT to any form backend that
  * accepts a POSTed FormData body (e.g. Formspree, Basin, or a Shopify-app
- * endpoint). Until then the form validates but clearly says it isn't connected —
- * it never pretends a message was sent.
+ * endpoint). Until then the form opens the visitor's email app with the message
+ * addressed to support, and says so — it never pretends a message was sent.
  */
 const ENDPOINT = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT ?? "";
 
-type Status = "idle" | "sending" | "sent" | "error" | "not-connected";
+type Status = "idle" | "sending" | "sent" | "error" | "mail-app";
 
 /**
  * Contact — the end of the journey. The ingredients say what they bring
@@ -30,7 +30,14 @@ export function ContactSection() {
     e.preventDefault();
     const form = e.currentTarget;
     if (!ENDPOINT) {
-      setStatus("not-connected");
+      // No form service connected: hand the message to the visitor's email app,
+      // addressed to support, rather than pretend it was sent.
+      const d = new FormData(form);
+      const body = [`Name: ${d.get("name") ?? ""}`, `Email: ${d.get("email") ?? ""}`, d.get("phone") ? `Phone: ${d.get("phone")}` : null, "", String(d.get("message") ?? "")]
+        .filter((l) => l !== null)
+        .join("\n");
+      window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Message from mummasbite.com")}&body=${encodeURIComponent(body)}`;
+      setStatus("mail-app");
       return;
     }
     setStatus("sending");
@@ -120,9 +127,13 @@ export function ContactSection() {
               <p role="status" aria-live="polite" className="text-sm text-ink-soft">
                 {status === "sent" && <span className="font-semibold text-green">Thank you — we&apos;ll get back to you soon.</span>}
                 {status === "error" && <span className="text-brown">Something went wrong. Please try again.</span>}
-                {status === "not-connected" && (
-                  <span className="text-brown">
-                    The contact form isn&apos;t connected yet, so this message was not sent.
+                {status === "mail-app" && (
+                  <span className="text-ink-soft">
+                    Your email app should open with your message to {SUPPORT_EMAIL}; press Send there. Nothing opened? Email us at{" "}
+                    <a href={`mailto:${SUPPORT_EMAIL}`} className="font-semibold text-green underline">
+                      {SUPPORT_EMAIL}
+                    </a>{" "}
+                    or chat on WhatsApp.
                   </span>
                 )}
               </p>

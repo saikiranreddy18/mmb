@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { ArrowDown } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { assets } from "@/content/assets";
-import { brand } from "@/content/brand";
+import { brand, storyPublished } from "@/content/brand";
 import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
 const LOGO = "/assets/logo/mummas-bite-logo.svg";
@@ -146,19 +146,19 @@ export function Hero() {
 
         {/* Opening composition — line bottom-left, cue bottom-right */}
         <div className="hero-intro pointer-events-none absolute inset-x-0 bottom-0 pb-8 md:pb-12">
-          <div className="shell flex items-end justify-between gap-6">
+          <div className="shell flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
             <div>
-              <p className="eyebrow flex items-center gap-3 whitespace-nowrap text-ink-soft">
-                Fruit &amp; seed bars <span aria-hidden className="h-px w-6 bg-ink-soft/40 md:w-8" /> Made at home
+              <p className="eyebrow flex flex-wrap items-center gap-x-3 gap-y-1 text-ink-soft">
+                Dry fruit &amp; seed energy bars <span aria-hidden className="hidden h-px w-6 bg-ink-soft/40 sm:block md:w-8" /> Made at home
               </p>
               <p className="mt-3 max-w-md text-2xl leading-snug text-ink-soft md:text-3xl">{brand.promise.value}</p>
             </div>
-            <a
-              href="#shop-preview"
-              className="eyebrow pointer-events-auto hidden items-center gap-2 text-ink-soft hover:text-green md:inline-flex"
-            >
-              Scroll <ArrowDown className="size-3.5" aria-hidden />
-            </a>
+            <div className="pointer-events-auto flex shrink-0 items-center gap-5">
+              <a href="#shop-preview" className="eyebrow hidden items-center gap-2 text-ink-soft hover:text-green lg:inline-flex">
+                Scroll <ArrowDown className="size-3.5" aria-hidden />
+              </a>
+              <ButtonLink href="/shop">Shop the bars</ButtonLink>
+            </div>
           </div>
         </div>
 
@@ -177,9 +177,11 @@ export function Hero() {
               <p className="mt-4 max-w-md text-base leading-relaxed text-ink-soft md:mt-6 md:text-lg">{brand.supporting.value}</p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row md:mt-8">
                 <ButtonLink href="/shop">Shop Mumma&apos;s Bite</ButtonLink>
-                <ButtonLink href="/our-story" variant="secondary" className="bg-bg/60 backdrop-blur-sm">
-                  Our story
-                </ButtonLink>
+                {storyPublished && (
+                  <ButtonLink href="/our-story" variant="secondary" className="bg-bg/60 backdrop-blur-sm">
+                    Our story
+                  </ButtonLink>
+                )}
               </div>
             </div>
           </div>

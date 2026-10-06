@@ -1,10 +1,10 @@
 import { BadgeCheck, Mail, ShieldCheck, Truck } from "lucide-react";
 import { SUPPORT_EMAIL, whatsappLink } from "@/content/contact";
 import { WhatsAppIcon } from "./WhatsAppIcon";
-import { OFFER_TIERS } from "@/lib/commerce/offers";
+import { FREE_DELIVERY_MIN } from "@/lib/commerce/offers";
 
 const FSSAI_LICENCE = "20126052001147";
-const freeDeliveryFrom = OFFER_TIERS.find((t) => t.freeDelivery)?.min;
+const freeDeliveryFrom = FREE_DELIVERY_MIN;
 
 /** Payment methods offered at checkout (Razorpay). */
 const PAYMENT_METHODS = ["UPI", "Visa", "Mastercard", "RuPay", "Net banking"];
@@ -53,7 +53,7 @@ export function TrustBadges({ compact = false }: { compact?: boolean }) {
     {
       icon: Truck,
       title: "Ships across India",
-      body: freeDeliveryFrom ? `Free delivery above ₹${freeDeliveryFrom.toLocaleString("en-IN")}` : "Tracked delivery",
+      body: freeDeliveryFrom ? `Free delivery on ₹${freeDeliveryFrom.toLocaleString("en-IN")}+ orders` : "Tracked delivery",
     },
   ];
 

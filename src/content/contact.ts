@@ -15,3 +15,6 @@ export const ADDRESS = {
   postalCode: "530046",
   country: "IN",
 } as const;
+
+/** Shopify customer accounts (sign in, orders, addresses), on the checkout domain. */
+export const ACCOUNT_URL = "https://shop.mummasbite.com/account";

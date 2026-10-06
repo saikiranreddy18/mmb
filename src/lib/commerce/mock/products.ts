@@ -82,7 +82,7 @@ export const mockProducts: Product[] = [
     id: "gid://mumma/Product/multi-seed-energy-bar",
     handle: "multi-seed-energy-bar",
     title: "Multi-Seed Energy Bar",
-    shortDescription: "Peanuts, six seeds and dates, pressed into one bar.",
+    shortDescription: "Peanuts, five kinds of seeds and dates, pressed into one bar.",
     description:
       "Peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, held together with dates. A crunchy, seedy bar from the Mumma's Bite kitchen. Each bar is about 4 × 5 cm.",
     featuredImage: img("multiseed-25g-front.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front"),

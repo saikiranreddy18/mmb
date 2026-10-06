@@ -6,13 +6,15 @@ import { ButtonLink } from "@/components/ui/Button";
 import { MockNotice } from "@/components/ui/MockNotice";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { assets } from "@/content/assets";
-import { brand, story } from "@/content/brand";
+import { brand, story, storyPublished } from "@/content/brand";
 
 export const metadata: Metadata = {
   title: "Our Story",
   description:
     "How Mumma's Bite began: energy bars made the way a mother makes food at home, with simple ingredients like dates, nuts and seeds.",
   alternates: { canonical: "/our-story" },
+  // Kept out of search until the real story is published.
+  robots: storyPublished ? undefined : { index: false, follow: true },
 };
 
 export default function OurStoryPage() {

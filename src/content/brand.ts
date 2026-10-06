@@ -173,3 +173,9 @@ export const talkingIngredients: { id: string; name: string; line: string; art: 
   { id: "flax", name: "Flax seed", line: "Small and glossy, with a gentle crunch.", art: art("flax-seed", "", 366, 167) },
 ];
 export const talkingIngredientsStatus = unverified("Speech-bubble lines written for the site — brand to approve");
+
+/**
+ * The story page goes public (menu, links, sitemap, search engines) once at
+ * least one chapter has real, verified words from the brand.
+ */
+export const storyPublished = story.chapters.some((c) => c.body.status === "verified");
