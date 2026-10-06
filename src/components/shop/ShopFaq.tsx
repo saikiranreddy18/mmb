@@ -7,7 +7,7 @@ import { FREE_DELIVERY_MIN } from "@/lib/commerce/offers";
 const FAQ = [
   {
     q: "What's in Mumma's Bite bars?",
-    a: "The Dry Fruit Energy Bar is mostly dates (43%), with almonds (19%), cashews (14%), and pumpkin, sunflower and watermelon seeds, pistachios and walnuts (5% each). The Multi-Seed Energy Bar is dates, peanuts and pumpkin, sunflower, watermelon, sesame and flax seeds. Nothing else.",
+    a: "The Dry Fruit Energy Bar is mostly dates (45%), with cashews (15%), almonds (12.5%), pumpkin, sunflower and watermelon seeds, walnuts and pistachios (5% each), and a little ghee (2.5%). The Multi-Seed Energy Bar is dates, peanuts and pumpkin, sunflower, watermelon, sesame and flax seeds.",
   },
   {
     q: "Do the bars have added sugar?",
@@ -19,7 +19,7 @@ const FAQ = [
   },
   {
     q: "Are they a good snack for kids and for travel?",
-    a: "Each bar is about 4 × 5 cm, small enough for a school tiffin, an office drawer, a gym bag or a travel bag. Please note they contain tree nuts, peanuts and/or sesame.",
+    a: "Each bar is about 4 × 5 cm, small enough for a school tiffin, an office drawer, a gym bag or a travel bag. Please note they contain tree nuts, peanuts and/or sesame, and the Dry Fruit bar contains a little ghee (milk).",
   },
   {
     q: "How long do they last?",
