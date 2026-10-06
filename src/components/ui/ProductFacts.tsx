@@ -7,7 +7,7 @@ import type { ContentField } from "@/content/status";
 function FactTable({ field }: { field: ContentField }) {
   const lines = (field.value ?? "").split("\n").filter(Boolean);
   const [caption, ...rows] = lines[0]?.includes(":") ? ["", ...lines] : lines;
-  const indent = /^(total sugars|added sugars|saturated fat|trans fat)/i;
+  const indent = /^(total sugars|added sugars|saturated fat|trans fat|polyunsaturated fat|monounsaturated fat|dietary fibre)/i;
   return (
     <div>
       {field.status !== "verified" && <StatusBadge status={field.status} />}
