@@ -87,7 +87,7 @@ export function TalkingIngredients() {
             style={{ animationDelay: `${-(i * 0.47).toFixed(2)}s` }}
           >
             <div className="talk-bubble">
-              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.12em] text-gold-ink">{t.name}</span>
+              <span className="block text-[0.7rem] font-bold uppercase tracking-[0.12em] text-gold-ink">{t.name}</span>
               {t.line}
             </div>
             <div className="talk-body relative h-20 w-full md:h-24">

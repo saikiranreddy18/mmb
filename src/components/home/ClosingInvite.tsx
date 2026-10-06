@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/Reveal";
+import { storyPublished } from "@/content/brand";
 import { ButtonLink } from "@/components/ui/Button";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { assets } from "@/content/assets";
@@ -15,9 +16,11 @@ export function ClosingInvite() {
           </h2>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="/shop">Shop Mumma's Bite</ButtonLink>
-            <ButtonLink href="/our-story" variant="secondary">
-              Our story
-            </ButtonLink>
+            {storyPublished && (
+              <ButtonLink href="/our-story" variant="secondary">
+                Our story
+              </ButtonLink>
+            )}
           </div>
         </Reveal>
         <Reveal variant="clip" className="relative mx-auto aspect-[4/5] w-60 overflow-hidden rounded-t-full bg-cream md:w-80">

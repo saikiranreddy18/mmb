@@ -1,15 +1,7 @@
-import type { Metadata } from "next";
-import { Profile } from "@/components/profile/Profile";
-import { getCustomerSession } from "@/lib/commerce/customer";
+import { redirect } from "next/navigation";
+import { ACCOUNT_URL } from "@/content/contact";
 
-export const metadata: Metadata = {
-  title: "Profile",
-  description: "Your Mumma's Bite account.",
-  alternates: { canonical: "/profile" },
-  robots: { index: false, follow: true },
-};
-
-export default async function ProfilePage() {
-  const session = await getCustomerSession();
-  return <Profile session={session} />;
+/** Accounts live on Shopify (sign in, orders, addresses); old /profile links go there. */
+export default function ProfilePage() {
+  redirect(ACCOUNT_URL);
 }

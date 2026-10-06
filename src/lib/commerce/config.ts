@@ -6,7 +6,7 @@
 export const shopifyConfig = {
   domain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ?? "",
   storefrontToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN ?? "",
-  apiVersion: process.env.NEXT_PUBLIC_SHOPIFY_API_VERSION || "2025-07",
+  apiVersion: process.env.NEXT_PUBLIC_SHOPIFY_API_VERSION || "2026-07",
 };
 
 export const isShopifyConnected = Boolean(

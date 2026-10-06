@@ -3,10 +3,12 @@ import { IntroReveal } from "@/components/motion/IntroReveal";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { PromiseQuotes } from "@/components/home/PromiseQuotes";
 import { getProducts } from "@/lib/commerce/products";
+import { ShopFaq } from "@/components/shop/ShopFaq";
 
 export const metadata: Metadata = {
-  title: "Shop",
-  description: "Shop Mumma's Bite — made with a mother's love.",
+  title: "Buy Dry Fruit & Seed Energy Bars Online",
+  description:
+    "Shop Mumma's Bite energy bars: Dry Fruit and Multi-Seed bars made with dates, nuts and seeds. No added sugar, no preservatives. Delivered across India.",
   alternates: { canonical: "/shop" },
 };
 
@@ -25,10 +27,16 @@ export default async function ShopPage() {
             </span>
           </span>
         </h1>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
+          Dry fruit bars and multi-seed energy bars made from dates, nuts and seeds. A healthy snack with no added
+          sugar and no preservatives, with 3–3.5 g of protein in every bar. For school tiffins, office desks, the gym
+          and travel, delivered across India.
+        </p>
       </IntroReveal>
       <div className="shell">
         <ProductGrid products={products} />
       </div>
+      <ShopFaq />
       <div className="mt-20 md:mt-28">
         <PromiseQuotes />
       </div>

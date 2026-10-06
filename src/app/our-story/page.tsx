@@ -6,12 +6,15 @@ import { ButtonLink } from "@/components/ui/Button";
 import { MockNotice } from "@/components/ui/MockNotice";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { assets } from "@/content/assets";
-import { brand, story } from "@/content/brand";
+import { brand, story, storyPublished } from "@/content/brand";
 
 export const metadata: Metadata = {
   title: "Our Story",
-  description: "How Mumma's Bite began — a modern food brand inspired by the food a mother makes at home.",
+  description:
+    "How Rajeswari turned her family's date, nut and seed laddus into Mumma's Bite energy bars: natural ingredients, no added sugar, made with a mother's love.",
   alternates: { canonical: "/our-story" },
+  // Kept out of search until the real story is published.
+  robots: storyPublished ? undefined : { index: false, follow: true },
 };
 
 export default function OurStoryPage() {
@@ -39,12 +42,14 @@ export default function OurStoryPage() {
           <p data-hero-reveal="fade" className="mt-8 max-w-xl text-xl leading-relaxed text-ink-soft">
             {brand.idea.value}
           </p>
+          {!storyPublished && (
           <div data-hero-reveal="fade" className="mt-10 max-w-xl">
             <MockNotice>
               The real Mumma's Bite story hasn&apos;t been supplied yet. Each chapter below shows what it needs — nothing
               here has been invented.
             </MockNotice>
           </div>
+          )}
           </div>
           <div data-hero-reveal="fade" className="mx-auto aspect-[1312/1199] w-full max-w-sm lg:max-w-none">
             <BrandImage asset={assets.mascot} priority sizes="(min-width:1024px) 34vw, 80vw" />

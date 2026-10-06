@@ -52,7 +52,11 @@ export function ProductFacts({
   only?: (keyof ProductDetails)[];
   className?: string;
 }) {
-  const rows = only ? LABELS.filter((r) => only.includes(r.key)) : LABELS;
+  // Customers see only what is known; missing facts are tracked in the content
+  // files, not shown as placeholders.
+  const rows = (only ? LABELS.filter((r) => only.includes(r.key)) : LABELS).filter(
+    (r) => details[r.key].status !== "unknown" && details[r.key].value,
+  );
   return (
     <dl className={`divide-y divide-line border-y border-line ${className}`}>
       {rows.map(({ key, label }) => (

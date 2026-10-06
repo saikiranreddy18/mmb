@@ -138,7 +138,7 @@ export function JourneyMap({ chapters }: { chapters: StoryChapter[] }) {
 
       <ol className="relative space-y-6 md:space-y-0">
         {/* start */}
-        <li data-stop className="group grid grid-cols-[3rem_1fr] items-center gap-4 md:grid-cols-[1fr_9rem_1fr] md:gap-0">
+        <li data-stop className="group grid grid-cols-[3rem_minmax(0,1fr)] items-center gap-4 md:grid-cols-[1fr_9rem_1fr] md:gap-0">
           <span data-pin className="relative z-10 grid size-12 place-items-center rounded-full border-2 border-gold bg-bg text-brown md:col-start-2 md:mx-auto">
             <Home className="size-5" aria-hidden />
           </span>
@@ -153,7 +153,7 @@ export function JourneyMap({ chapters }: { chapters: StoryChapter[] }) {
             <li
               key={c.id}
               data-stop
-              className={`group grid grid-cols-[3rem_1fr] items-center gap-4 md:grid-cols-[1fr_9rem_1fr] md:gap-0 md:py-8 ${i ? "lg:-mt-28" : ""}`}
+              className={`group grid grid-cols-[3rem_minmax(0,1fr)] items-center gap-4 md:grid-cols-[1fr_9rem_1fr] md:gap-0 md:py-8 ${i ? "lg:-mt-28" : ""}`}
             >
               <span
                 data-pin
@@ -170,7 +170,7 @@ export function JourneyMap({ chapters }: { chapters: StoryChapter[] }) {
                 {c.index}
               </p>
               <Reveal
-                className={`md:row-start-1 ${left ? "md:col-start-1 md:pr-6" : "md:col-start-3 md:pl-6"}`}
+                className={`min-w-0 md:row-start-1 ${left ? "md:col-start-1 md:pr-6" : "md:col-start-3 md:pl-6"}`}
               >
                 <article
                   aria-labelledby={`chapter-${c.id}`}
@@ -181,7 +181,7 @@ export function JourneyMap({ chapters }: { chapters: StoryChapter[] }) {
                   </div>
                   <div className="p-6 md:p-8">
                     <p className="eyebrow text-gold">Stop {c.index}</p>
-                    <h2 id={`chapter-${c.id}`} className="display mt-2 text-[clamp(1.9rem,3.4vw,2.75rem)] text-green">
+                    <h2 id={`chapter-${c.id}`} className="display mt-2 text-[clamp(1.5rem,7vw,1.9rem)] text-green md:text-[clamp(1.9rem,3.4vw,2.75rem)]">
                       {c.title}
                     </h2>
                     {unknownBody ? (
@@ -200,7 +200,7 @@ export function JourneyMap({ chapters }: { chapters: StoryChapter[] }) {
         })}
 
         {/* finish */}
-        <li data-stop className="group grid grid-cols-[3rem_1fr] items-center gap-4 md:grid-cols-[1fr_9rem_1fr] md:gap-0">
+        <li data-stop className="group grid grid-cols-[3rem_minmax(0,1fr)] items-center gap-4 md:grid-cols-[1fr_9rem_1fr] md:gap-0">
           <span
             data-pin
             className="relative z-10 grid size-12 place-items-center rounded-full border-2 border-line bg-bg text-ink-soft transition-colors duration-500 group-data-[reached=true]:border-gold group-data-[reached=true]:bg-gold group-data-[reached=true]:text-green md:col-start-2 md:row-start-1 md:mx-auto"
