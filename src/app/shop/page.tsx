@@ -29,7 +29,7 @@ export default async function ShopPage() {
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
           Dry fruit bars and multi-seed energy bars made from dates, nuts and seeds. A healthy snack with no added
-          sugar and no preservatives, with 3.1–3.5 g of protein in every bar. For school tiffins, office desks, the gym
+          sugar and no preservatives, with 3–3.5 g of protein in every bar. For school tiffins, office desks, the gym
           and travel, delivered across India.
         </p>
       </IntroReveal>

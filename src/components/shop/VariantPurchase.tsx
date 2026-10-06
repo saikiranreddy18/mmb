@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { formatMoney } from "@/lib/commerce/money";
 
-/** "Pack of 10 · 200 g" → price per bar, e.g. ₹30 per bar. */
+/** "Pack of 10 · 220 g" → price per bar, e.g. ₹35 per bar. */
 function perBar(v: ProductVariant | undefined) {
   const count = Number(v?.title.match(/pack of (\d+)/i)?.[1]);
   if (!v || !count) return null;
   const each = Number(v.price.amount) / count;
-  // Whole rupees as "₹30"; otherwise always two decimals ("₹27.80", not "₹27.8").
+  // Whole rupees as "₹35"; otherwise always two decimals ("₹27.80", not "₹27.8").
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: v.price.currencyCode,
