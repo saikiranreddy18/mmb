@@ -7,7 +7,14 @@ import { formatMoney } from "@/lib/commerce/money";
 function perBar(v: ProductVariant | undefined) {
   const count = Number(v?.title.match(/pack of (\d+)/i)?.[1]);
   if (!v || !count) return null;
-  return formatMoney({ amount: (Number(v.price.amount) / count).toFixed(2), currencyCode: v.price.currencyCode });
+  const each = Number(v.price.amount) / count;
+  // Whole rupees as "₹30"; otherwise always two decimals ("₹27.80", not "₹27.8").
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: v.price.currencyCode,
+    minimumFractionDigits: Number.isInteger(each) ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).format(each);
 }
 import type { Product, ProductVariant } from "@/lib/commerce/types";
 import { TrustBadges } from "@/components/ui/TrustBadges";
