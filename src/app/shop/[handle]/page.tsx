@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductDetail } from "@/components/shop/ProductDetail";
 import { getProduct, getProducts } from "@/lib/commerce/products";
-import { formatMoney } from "@/lib/commerce/money";
+import { formatMoney, lowestPerBarPrice, wasPrice } from "@/lib/commerce/money";
 import type { Product } from "@/lib/commerce/types";
 import { siteName, siteUrl } from "@/lib/seo/site";
 import { GOOGLE_PRODUCT_CATEGORY } from "@/lib/seo/google-category";
-import { lowestPerBarPrice, perBarPrice } from "@/lib/commerce/money";
 import { summarise } from "@/lib/seo/product-summary";
 
 const absolute = (url: string) => (url.startsWith("/") ? `${siteUrl}${url}` : url);
@@ -60,6 +59,7 @@ export default async function ProductPage({ params }: Params) {
   // Label facts as name/value pairs, so answer engines can quote them precisely.
   const properties = (
     [
+      ["Price per bar", facts.perBar && `from ${facts.perBar}`],
       ["Bar weight", facts.barWeight],
       ["Calories per bar", facts.calories],
       ["Protein per bar", facts.protein],
@@ -97,15 +97,18 @@ export default async function ProductPage({ params }: Params) {
               name: v.title,
               price: v.price.amount,
               priceCurrency: v.price.currencyCode,
-              // Price of one bar in this pack: what "affordable" searches compare.
-              ...(perBarPrice(v)
+              // Offer running: tell Google the regular price too (shown struck through in results).
+              ...(wasPrice(v.price, v.compareAtPrice)
                 ? {
-                    priceSpecification: {
-                      "@type": "UnitPriceSpecification",
-                      price: perBarPrice(v)!.amount,
-                      priceCurrency: v.price.currencyCode,
-                      referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitText: "bar" },
-                    },
+                    priceSpecification: [
+                      { "@type": "UnitPriceSpecification", price: v.price.amount, priceCurrency: v.price.currencyCode },
+                      {
+                        "@type": "UnitPriceSpecification",
+                        priceType: "https://schema.org/StrikethroughPrice",
+                        price: v.compareAtPrice!.amount,
+                        priceCurrency: v.compareAtPrice!.currencyCode,
+                      },
+                    ],
                   }
                 : {}),
               itemCondition: "https://schema.org/NewCondition",

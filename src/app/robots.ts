@@ -1,15 +1,11 @@
 import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/seo/site";
 
-/**
- * AI search and assistant crawlers are welcomed by name, so answer engines
- * (ChatGPT search, Perplexity, Claude, Gemini, Copilot) can read and cite the
- * site. They get the same access as everyone else.
- */
+/** AI search and assistant crawlers, named so it's explicit they're welcome (GEO). */
 const AI_CRAWLERS = [
+  "GPTBot",
   "OAI-SearchBot",
   "ChatGPT-User",
-  "GPTBot",
   "PerplexityBot",
   "Perplexity-User",
   "ClaudeBot",
@@ -19,15 +15,16 @@ const AI_CRAWLERS = [
   "Applebot-Extended",
   "Bingbot",
   "CCBot",
+  "meta-externalagent",
 ];
 
-const DISALLOW = ["/profile", "/api/"];
+const PRIVATE = ["/profile", "/api/"];
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: DISALLOW },
-      { userAgent: AI_CRAWLERS, allow: "/", disallow: DISALLOW },
+      { userAgent: "*", allow: "/", disallow: PRIVATE },
+      { userAgent: AI_CRAWLERS, allow: "/", disallow: PRIVATE },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,

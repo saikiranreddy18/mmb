@@ -1,62 +1,98 @@
 import { getProducts } from "@/lib/commerce/products";
-import { FREE_DELIVERY_MIN, OFFER_LINES } from "@/lib/commerce/offers";
-import { POLICY_LINKS } from "@/content/policies";
-import { SUPPORT_EMAIL } from "@/content/contact";
-import { lowestPerBarAcross, summarise } from "@/lib/seo/product-summary";
-import { siteUrl } from "@/lib/seo/site";
-
-export const revalidate = 3600;
+import { formatMoney, lowestPerBarPrice, wasPrice } from "@/lib/commerce/money";
+import { OFFER_LINES } from "@/lib/commerce/offers";
+import type { ContentField } from "@/content/status";
+import { brand } from "@/content/brand";
+import { ADDRESS, SUPPORT_EMAIL, whatsappLink } from "@/content/contact";
+import { FAQ } from "@/content/faq";
+import { POLICY_LINKS, POLICIES } from "@/content/policies";
+import { defaultDescription, siteName, siteUrl } from "@/lib/seo/site";
 
 /**
- * /llms.txt — a plain-language summary of the brand and products for AI
- * assistants and answer engines (llmstxt.org format). Built from the same
- * verified label data and live prices as the product pages.
+ * /llms.txt — a plain-text brief for AI assistants and AI search (ChatGPT,
+ * Gemini, Perplexity, Claude, Google AI Overviews), following llmstxt.org.
+ * Built from the live catalogue and the site's own copy, so it never says
+ * anything the site doesn't. Only VERIFIED product facts are included.
  */
+export const revalidate = 3600;
+
+const fact = (label: string, f: ContentField) =>
+  f.status === "verified" && f.value ? `- ${label}: ${f.value.replace(/\n+/g, "; ")}` : null;
+
 export async function GET() {
   const products = (await getProducts()).filter((p) => !p.isMock);
-  const s = products.map(summarise);
-  const from = lowestPerBarAcross(s);
 
-  const productBlocks = s.map((p) =>
-    [
+  const productBlocks = products.map((p) => {
+    const d = p.details;
+    const prices = p.variants
+      .filter((v) => v.availableForSale)
+      .map((v) => {
+        const was = wasPrice(v.price, v.compareAtPrice);
+        return `${v.title === "Default Title" ? "Price" : v.title}: ${formatMoney(v.price)}${was ? ` (offer price; regular ${formatMoney(was)})` : ""}`;
+      });
+    return [
       `### [${p.title}](${siteUrl}/shop/${p.handle})`,
-      p.perBar && `- Price: from ${p.perBar} per bar${p.barWeight ? ` (${p.barWeight} bar)` : ""}, sold in packs`,
-      p.claims && `- On the pack: ${p.claims}`,
-      p.ingredients && `- Ingredients: ${p.ingredients}`,
-      (p.calories || p.protein) &&
-        `- Per bar: ${[p.calories, p.protein && `${p.protein} protein`, p.fibre && `${p.fibre} fibre`, p.totalSugars && `${p.totalSugars} natural sugars`, p.addedSugars && `${p.addedSugars} added sugar`].filter(Boolean).join(", ")}`,
-      p.allergens && `- Allergens: ${p.allergens}`,
-      p.shelfLife && `- Shelf life: ${p.shelfLife}${p.storage ? `. ${p.storage}` : ""}`,
+      p.description,
+      ...prices.map((x) => `- ${x}`),
+      lowestPerBarPrice(p.variants) && `- From ${formatMoney(lowestPerBarPrice(p.variants)!)} per bar`,
+      fact("Net quantity", d.netQuantity),
+      fact("Ingredients", d.ingredients),
+      fact("On the pack", d.claims),
+      fact("Nutrition", d.nutrition),
+      fact("Allergens", d.allergens),
+      fact("Storage", d.storage),
+      fact("Shelf life", d.shelfLife),
+      fact("FSSAI", d.fssai),
     ]
       .filter(Boolean)
-      .join("\n"),
-  );
+      .join("\n");
+  });
 
-  const body = `# Mumma's Bite
+  const body = [
+    `# ${siteName}`,
+    "",
+    `> ${defaultDescription}`,
+    "",
+    `${siteName} is an Indian food brand from ${ADDRESS.locality}, ${ADDRESS.region}. ${brand.idea.value} Tagline: "${brand.promise.value}" ${brand.supporting.value}`,
+    "",
+    "Key facts:",
+    "- Products: dry fruit and multi-seed energy bars made from dates, nuts and seeds.",
+    "- No added sugar and no preservatives (sweetness comes from dates).",
+    "- Sold online at https://mummasbite.com with delivery across India.",
+    `- Based in ${ADDRESS.lines.join(", ")}.`,
+    "- FSSAI Lic. No. 20126052001147.",
+    "",
+    "## Products",
+    "",
+    productBlocks.join("\n\n"),
+    "",
+    "## Offers",
+    "",
+    ...OFFER_LINES.map((l) => `- ${l}`),
+    "",
+    "## Frequently asked questions",
+    "",
+    ...FAQ.flatMap(({ q, a }) => [`### ${q}`, a, ""]),
+    "## Pages",
+    "",
+    `- [Home](${siteUrl}/): the brand and both bars`,
+    `- [Shop](${siteUrl}/shop): all products, prices and FAQs`,
+    `- [Affordable healthy snack bars and dry fruit bars](${siteUrl}/healthy-snack-bars): comparison, price per bar, nutrition and FAQ`,
+    `- [Our story](${siteUrl}/our-story): how Mumma's Bite began`,
+    "",
+    "## Policies",
+    "",
+    ...POLICY_LINKS.map(({ slug, label }) => `- [${label}](${siteUrl}/policies/${slug}): ${POLICIES[slug].description}`),
+    "",
+    "## Contact",
+    "",
+    `- Email: ${SUPPORT_EMAIL}`,
+    `- WhatsApp: ${whatsappLink()}`,
+    `- Address: ${ADDRESS.lines.join(", ")}`,
+    "",
+  ].join("\n");
 
-> Mumma's Bite makes affordable, healthy snack bars in India: dry fruit and multi-seed energy bars made from dates, nuts and seeds, with no added sugar and no preservatives${from ? `, from ${from} per bar` : ""}. Made in Visakhapatnam, Andhra Pradesh, sold online at mummasbite.com and delivered across India.
-
-Mumma's Bite is a home-grown Indian brand started by a mother, Rajeswari, who turned her family's date, nut and seed laddus into convenient snack bars. The bars are sweetened only by dates. They suit school tiffins, office snacking, workouts and travel. FSSAI Lic. No. 20126052001147.
-
-## Products
-
-${productBlocks.join("\n\n")}
-
-## Buying
-
-- Order online: ${siteUrl}/shop
-- Offers: ${OFFER_LINES.join("; ")}
-- Delivery anywhere in India: ₹79, free when the order total after offers is ₹${FREE_DELIVERY_MIN.toLocaleString("en-IN")} or more
-- Payment: UPI, cards, net banking and wallets through Razorpay
-- Contact: ${SUPPORT_EMAIL}
-
-## Pages
-
-- [Affordable healthy snack bars and dry fruit bars](${siteUrl}/healthy-snack-bars): comparison, prices and FAQ
-- [Shop](${siteUrl}/shop)
-- [Our story](${siteUrl}/our-story)
-${POLICY_LINKS.map((l) => `- [${l.label}](${siteUrl}/policies/${l.slug})`).join("\n")}
-`;
-
-  return new Response(body, { headers: { "Content-Type": "text/plain; charset=utf-8" } });
+  return new Response(body, {
+    headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=0, s-maxage=3600" },
+  });
 }

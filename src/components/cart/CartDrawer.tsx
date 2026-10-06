@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { Lock, Minus, Plus, Trash2, X } from "lucide-react";
 import { useCart } from "./CartProvider";
-import { formatMoney } from "@/lib/commerce/money";
+import { formatMoney, multiplyMoney, wasPrice } from "@/lib/commerce/money";
 import { ButtonLink, buttonClass } from "@/components/ui/Button";
 import { MessageCircle } from "lucide-react";
 import { whatsappLink } from "@/content/contact";
@@ -170,7 +170,15 @@ export function CartDrawer() {
                           {line.merchandise.product.title}
                           <span className="block text-xs font-medium text-ink-soft">{line.merchandise.title}</span>
                         </Link>
-                        <span className="shrink-0 font-semibold">{formatMoney(line.cost.totalAmount)}</span>
+                        <span className="flex shrink-0 flex-col items-end">
+                          {wasPrice(line.merchandise.price, line.merchandise.compareAtPrice) && (
+                            <del className="text-xs font-semibold text-ink-soft/70">
+                              <span className="sr-only">Regular price </span>
+                              {formatMoney(multiplyMoney(line.merchandise.compareAtPrice!, line.quantity))}
+                            </del>
+                          )}
+                          <span className="font-semibold">{formatMoney(line.cost.totalAmount)}</span>
+                        </span>
                       </div>
                       <div className="mt-auto flex items-center justify-between">
                         <div className="flex items-center rounded-full border border-line">

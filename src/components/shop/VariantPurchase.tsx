@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { formatMoney, perBarPrice } from "@/lib/commerce/money";
+import { formatMoney, perBarPrice, wasPrice } from "@/lib/commerce/money";
 import type { Product, ProductVariant } from "@/lib/commerce/types";
 import { TrustBadges } from "@/components/ui/TrustBadges";
 import { AddToCartButton } from "./AddToCartButton";
@@ -20,12 +20,29 @@ export function VariantPurchase({ product, compact = false }: { product: Product
   const [selectedId, setSelectedId] = useState(product.variants[0]?.id);
   const variant = product.variants.find((v) => v.id === selectedId) ?? product.variants[0];
   const groupName = `pack-${product.handle}${compact ? "-card" : ""}`;
+  const was = variant ? wasPrice(variant.price, variant.compareAtPrice) : null;
 
   return (
     <div className={compact ? "mt-4" : "mt-8"}>
       {!compact && (
-        <p className="flex flex-wrap items-baseline gap-x-3 text-3xl font-extrabold text-green">
-          {variant && formatMoney(variant.price)}
+        <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-3xl font-extrabold text-green">
+          {was && (
+            <del className="text-xl font-semibold text-ink-soft/70">
+              <span className="sr-only">Regular price </span>
+              {formatMoney(was)}
+            </del>
+          )}
+          {variant && (
+            <span>
+              {was && <span className="sr-only">Offer price </span>}
+              {formatMoney(variant.price)}
+            </span>
+          )}
+          {was && (
+            <span className="self-center rounded-full bg-brown px-2.5 py-1 text-xs font-bold uppercase tracking-[0.12em] text-cream">
+              Offer
+            </span>
+          )}
           {perBar(variant) && <span className="text-base font-semibold text-ink-soft">{perBar(variant)} per bar</span>}
         </p>
       )}
@@ -54,6 +71,12 @@ export function VariantPurchase({ product, compact = false }: { product: Product
                     className="sr-only"
                   />
                   {v.title}
+                  {wasPrice(v.price, v.compareAtPrice) && (
+                    <del className={on ? "text-cream/60" : "text-ink-soft/60"}>
+                      <span className="sr-only">Regular price </span>
+                      {formatMoney(wasPrice(v.price, v.compareAtPrice)!)}
+                    </del>
+                  )}
                   <span className={on ? "text-cream/80" : "text-ink-soft"}>{formatMoney(v.price)}</span>
                 </label>
               );

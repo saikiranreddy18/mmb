@@ -62,7 +62,7 @@ function faq(s: ProductSummary[], from: string | null) {
     },
     {
       q: "Is there a nut-free option?",
-      a: `No. The Dry Fruit bar contains tree nuts, and the Multi-Seed bar contains peanuts and sesame${seed?.ingredients && /ghee/i.test(seed.ingredients) ? ", and is made with ghee" : ""}. Please avoid them if you have these allergies.`,
+      a: `No. ${[dry?.allergens && `Dry Fruit bar: ${dry.allergens}`, seed?.allergens && `Multi-Seed bar: ${seed.allergens}`].filter(Boolean).join(" ") || "Both bars contain nuts or seeds."} Please avoid them if you have these allergies.`,
     },
     {
       q: "Where can I buy healthy snack bars online in India?",

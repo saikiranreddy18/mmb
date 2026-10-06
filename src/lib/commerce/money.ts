@@ -12,6 +12,11 @@ export function formatMoney({ amount, currencyCode }: Money): string {
   }).format(value);
 }
 
+/** The regular ("was") price when an offer is running — i.e. compare-at is set and higher than the price. */
+export function wasPrice(price: Money, compareAt?: Money | null): Money | null {
+  return compareAt && Number(compareAt.amount) > Number(price.amount) ? compareAt : null;
+}
+
 export function multiplyMoney(money: Money, qty: number): Money {
   return { amount: (Number(money.amount) * qty).toFixed(2), currencyCode: money.currencyCode };
 }
