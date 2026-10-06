@@ -133,6 +133,7 @@ function hydrateMock(state: MockState): Cart {
         id: variant.id,
         title: variant.title,
         price: variant.price,
+        compareAtPrice: variant.compareAtPrice ?? null,
         product: { handle: product.handle, title: product.title, featuredImage: product.featuredImage },
       },
     });

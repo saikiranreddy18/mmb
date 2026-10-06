@@ -40,6 +40,7 @@ export const productFragment = /* GraphQL */ `
         title
         availableForSale
         price { amount currencyCode }
+        compareAtPrice { amount currencyCode }
         selectedOptions { name value }
       }
     }
@@ -80,6 +81,7 @@ const cartFragment = /* GraphQL */ `
             id
             title
             price { amount currencyCode }
+            compareAtPrice { amount currencyCode }
             product { handle title featuredImage { ${imageFields} } }
           }
         }

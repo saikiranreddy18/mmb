@@ -28,7 +28,7 @@ export const mockProducts: Product[] = [
     title: "Dry Fruit Energy Bar",
     shortDescription: "Dates, nuts and seeds, pressed into one honest bar.",
     description:
-      "Soft dates with almonds, cashews, pistachios and walnuts, and a sprinkle of pumpkin, sunflower and watermelon seeds. A bar that tastes like something made at home. Each bar is about 4 × 5 cm.",
+      "Soft dates with cashews, almonds, walnuts and pistachios, a sprinkle of pumpkin, sunflower and watermelon seeds, and a touch of ghee. A bar that tastes like something made at home. Each bar is about 4 × 5 cm.",
     featuredImage: img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
     images: [
       img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
@@ -41,13 +41,15 @@ export const mockProducts: Product[] = [
       ),
       img("dryfruit-back.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, back label with ingredients and nutrition"),
     ],
-    priceRange: { minVariantPrice: { amount: "350.00", currencyCode: "INR" } },
+    priceRange: { minVariantPrice: { amount: "310.00", currencyCode: "INR" } },
     variants: [
       {
         id: "gid://mumma/ProductVariant/dry-fruit-pack-10",
         title: "Pack of 10 · 220 g",
         availableForSale: true,
-        price: { amount: "350.00", currencyCode: "INR" },
+        // Offer: ₹31 a bar (regular ₹35). Mirrors the Shopify price / compare-at price.
+        price: { amount: "310.00", currencyCode: "INR" },
+        compareAtPrice: { amount: "350.00", currencyCode: "INR" },
         selectedOptions: [{ name: "Pack", value: "Pack of 10 (220 g)" }],
       },
     ],
@@ -56,10 +58,10 @@ export const mockProducts: Product[] = [
       netQuantity: verified("22 g per bar · packs of 10 (220 g), 25 (550 g) or 50 (1.1 kg)"),
       claims: verified("No added sugar · No preservatives · 3 g protein per 22 g bar"),
       ingredients: verified(
-        "Dates (43%), almonds (19%), cashews (14%), pumpkin seeds (5%), sunflower seeds (5%), watermelon seeds (5%), pistachios (5%), walnuts (5%)",
+        "Dates (45%), cashews (15%), almonds (12.5%), pumpkin seeds (5%), sunflower seeds (5%), watermelon seeds (5%), walnuts (5%), pistachios (5%), ghee (2.5%)",
       ),
       nutrition: nutrition("22 g bar", [
-        ["Energy", "110 kcal"],
+        ["Energy", "100 kcal"],
         ["Protein", "3 g"],
         ["Total carbohydrate", "10 g"],
         ["Total sugars", "7 g"],
@@ -69,9 +71,12 @@ export const mockProducts: Product[] = [
         ["Saturated fat", "1 g"],
         ["Trans fat", "0 g"],
         ["Cholesterol", "0 mg"],
-        ["Sodium", "15 mg"],
+        ["Sodium", "5 mg"],
+        ["Calcium", "10 mg"],
+        ["Iron", "0.6 mg"],
+        ["Potassium", "80 mg"],
       ]),
-      allergens: verified("Contains tree nuts (almonds, cashews, walnuts, pistachios)."),
+      allergens: verified("Contains tree nuts (almonds, cashews, walnuts, pistachios) and milk (ghee)."),
       storage: unknown(),
       shelfLife: verified("30 days"),
       fssai: FSSAI,
