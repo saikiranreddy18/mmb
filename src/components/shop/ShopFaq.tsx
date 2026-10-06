@@ -38,7 +38,7 @@ export function ShopFaq() {
     mainEntity: FAQ.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
   };
   return (
-    <section aria-labelledby="shop-faq-title" className="shell mt-20 max-w-3xl md:mt-28">
+    <section id="faq" aria-labelledby="shop-faq-title" className="shell mt-20 scroll-mt-28 max-w-3xl md:mt-28">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <h2 id="shop-faq-title" className="display text-[clamp(2rem,5vw,3.25rem)] text-green">
         Good to <span className="editorial text-brown">know.</span>
