@@ -108,7 +108,7 @@ export const story: BrandStory = {
       id: "next",
       index: "06",
       title: "What comes next",
-      body: verified("This is only the beginning. I'm still learning, and I hope to keep creating more healthy, honest snacks for your family, made the way a mother makes them."),
+      body: verified("This is only the beginning. My dream is to take a recipe from my home kitchen to homes around the world, so that wherever you are, one bite tastes like home. I'm still learning, and I'll keep creating healthy, honest snacks made the way a mother makes them."),
       needs: "Where the brand is heading — only plans you are happy to share publicly.",
     },
   ],
