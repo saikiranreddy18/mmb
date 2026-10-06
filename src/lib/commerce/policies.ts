@@ -8,7 +8,6 @@ type RawPolicy = { title: string; body: string } | null;
 const query = /* GraphQL */ `
   query Policies @inContext(country: IN, language: EN) {
     shop {
-      privacyPolicy { title body }
       refundPolicy { title body }
       shippingPolicy { title body }
       termsOfService { title body }
@@ -16,8 +15,9 @@ const query = /* GraphQL */ `
   }
 `;
 
-const SHOPIFY_FIELD: Partial<Record<PolicySlug, "privacyPolicy" | "refundPolicy" | "shippingPolicy" | "termsOfService">> = {
-  "privacy-policy": "privacyPolicy",
+const SHOPIFY_FIELD: Partial<Record<PolicySlug, "refundPolicy" | "shippingPolicy" | "termsOfService">> = {
+  // Privacy is always the site's own copy: it describes this storefront's actual
+  // providers (Vercel, Shopify, Razorpay) and its single support address.
   "refund-policy": "refundPolicy",
   "shipping-policy": "shippingPolicy",
   "terms-of-service": "termsOfService",

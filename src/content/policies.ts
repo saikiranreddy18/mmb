@@ -55,9 +55,13 @@ export const POLICIES: Record<PolicySlug, Policy> = {
     slug: "privacy-policy",
     title: "Privacy policy",
     description: "How Mumma's Bite collects and uses your information.",
-    body: `<p>We collect only what we need to take and deliver your order: your name, contact details, delivery address and order details. Payments are handled by Razorpay; we never see or store your card or bank details. Orders and checkout are run on Shopify.</p>
-<p>We use your information to process and deliver orders, send order and shipping updates, and answer your questions. We share it only with the services that make this possible (Shopify, Razorpay and our courier partners). We do not sell your information.</p>
-<p>To ask about, correct or delete your information, contact us.</p>${CONTACT}`,
+    body: `<p>This policy explains what Mumma's Bite ("we", "us") collects when you visit mummasbite.com or order from us, and how we use it. We collect only what we need to take, deliver and support your order.</p>
+<h3>What we collect</h3><p>Your name, email address, phone number, delivery address and order details when you check out or sign in; the PIN code you enter to check delivery charges; and anything you send us by email, WhatsApp or the contact form. We never see or store your card, UPI or bank details.</p>
+<h3>Who runs the services</h3><p>The website is hosted on Vercel. Products, cart, checkout, customer accounts and order emails are run by Shopify. Payments are processed by Razorpay. Parcels are delivered by our courier partners. Each receives only the information it needs to do its part, and processes it under its own privacy policy. We do not sell your information or use it for third-party advertising.</p>
+<h3>Cookies and storage</h3><p>The site stores your cart ID and your delivery PIN code in your browser so your cart is still there when you come back, and a sign-in cookie if you log in to your account. Shopify's checkout uses its own cookies to complete your order. We do not use advertising trackers.</p>
+<h3>How long we keep it</h3><p>We keep order records for as long as needed to fulfil orders, handle returns and meet tax and legal requirements, then delete them.</p>
+<h3>Your choices</h3><p>You can ask us to show, correct or delete the personal information we hold about you, or stop marketing messages, at any time by writing to <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>. This address handles all privacy requests.</p>
+<h3>Changes</h3><p>If we change this policy we will update this page.</p>${CONTACT}`,
   },
   "contact-information": {
     slug: "contact-information",
