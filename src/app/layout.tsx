@@ -40,6 +40,15 @@ const organizationJsonLd = {
   name: siteName,
   url: siteUrl,
   slogan: "Made with a mother's love.",
+  logo: `${siteUrl}/assets/logo/mummas-bite-square.png`,
+};
+
+/** Tells Google the site's name (shown above the result instead of the bare domain). */
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteName,
+  url: siteUrl,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -51,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       </head>
       <body>
         <SmoothScroll />
