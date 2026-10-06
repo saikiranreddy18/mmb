@@ -94,7 +94,7 @@ export const story: BrandStory = {
       id: "product",
       index: "04",
       title: "The product",
-      body: verified("Today there are two bars: Dry Fruit, with dates, almonds, cashews, walnuts and pistachios, and Multi-Seed, with dates, peanuts and five kinds of seeds. Natural ingredients, no added sugar and no preservatives, at a price everyone can try."),
+      body: verified("Today there are two bars: Dry Fruit, with dates, cashews, almonds, walnuts and pistachios, and Multi-Seed, with dates, peanuts and five kinds of seeds. Natural ingredients, no added sugar and no preservatives, at a price everyone can try."),
       needs: "What the final product is today and how it is made.",
     },
     {

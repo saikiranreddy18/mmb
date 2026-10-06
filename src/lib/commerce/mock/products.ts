@@ -28,7 +28,7 @@ export const mockProducts: Product[] = [
     title: "Dry Fruit Energy Bar",
     shortDescription: "Dates, nuts and seeds, pressed into one honest bar.",
     description:
-      "Soft dates with almonds, cashews, walnuts and pistachios, and a sprinkle of pumpkin, sunflower and watermelon seeds. A bar that tastes like something made at home. Each bar is about 4 × 5 cm.",
+      "Soft dates with cashews, almonds, walnuts and pistachios, and a sprinkle of pumpkin, sunflower and watermelon seeds. A bar that tastes like something made at home. Each bar is about 4 × 5 cm.",
     featuredImage: img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
     images: [
       img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
@@ -56,7 +56,7 @@ export const mockProducts: Product[] = [
       netQuantity: verified("200 g (pack of 10 × 20 g bars)"),
       claims: verified("No added sugar · No preservatives · 3.1 g protein per 20 g bar"),
       ingredients: verified(
-        "Dates, almonds, cashews, walnuts, pistachios, pumpkin seeds, sunflower seeds, watermelon seeds",
+        "Dates (46%), cashews (15%), almonds (13%), walnuts (5%), pistachios (5%), pumpkin seeds (5%), sunflower seeds (5%), watermelon seeds (5%)",
       ),
       nutrition: nutrition("20 g bar", [
         ["Energy", "100 kcal"],
