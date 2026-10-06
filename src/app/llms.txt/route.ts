@@ -1,5 +1,5 @@
 import { getProducts } from "@/lib/commerce/products";
-import { formatMoney } from "@/lib/commerce/money";
+import { formatMoney, wasPrice } from "@/lib/commerce/money";
 import { OFFER_LINES } from "@/lib/commerce/offers";
 import type { ContentField } from "@/content/status";
 import { brand } from "@/content/brand";
@@ -26,7 +26,10 @@ export async function GET() {
     const d = p.details;
     const prices = p.variants
       .filter((v) => v.availableForSale)
-      .map((v) => `${v.title === "Default Title" ? "Price" : v.title}: ${formatMoney(v.price)}`);
+      .map((v) => {
+        const was = wasPrice(v.price, v.compareAtPrice);
+        return `${v.title === "Default Title" ? "Price" : v.title}: ${formatMoney(v.price)}${was ? ` (offer price; regular ${formatMoney(was)})` : ""}`;
+      });
     return [
       `### [${p.title}](${siteUrl}/shop/${p.handle})`,
       p.description,

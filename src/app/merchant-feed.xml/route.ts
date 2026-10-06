@@ -37,7 +37,8 @@ ${tag("link", link)}
 ${main ? tag("image_link", abs(main.url)) : ""}
 ${more.slice(0, 10).map((i) => tag("additional_image_link", abs(i.url))).join("\n")}
 ${tag("availability", v.availableForSale ? "in_stock" : "out_of_stock")}
-${tag("price", `${Number(v.price.amount).toFixed(2)} ${v.price.currencyCode}`)}
+${tag("price", `${Number((v.compareAtPrice && Number(v.compareAtPrice.amount) > Number(v.price.amount) ? v.compareAtPrice : v.price).amount).toFixed(2)} ${v.price.currencyCode}`)}
+${v.compareAtPrice && Number(v.compareAtPrice.amount) > Number(v.price.amount) ? tag("sale_price", `${Number(v.price.amount).toFixed(2)} ${v.price.currencyCode}`) : ""}
 ${tag("brand", siteName)}
 ${tag("condition", "new")}
 ${tag("identifier_exists", "no")}

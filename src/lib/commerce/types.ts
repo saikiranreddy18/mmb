@@ -28,6 +28,8 @@ export type ProductVariant = {
   title: string;
   availableForSale: boolean;
   price: Money;
+  /** Shopify "Compare-at price": the regular price while an offer runs (null when there's no offer). */
+  compareAtPrice?: Money | null;
   selectedOptions: SelectedOption[];
 };
 
@@ -69,6 +71,7 @@ export type CartMerchandise = {
   id: string; // variant id
   title: string;
   price: Money;
+  compareAtPrice?: Money | null;
   product: {
     handle: string;
     title: string;

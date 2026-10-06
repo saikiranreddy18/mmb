@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ImageOff } from "lucide-react";
-import { formatMoney } from "@/lib/commerce/money";
+import { formatMoney, wasPrice } from "@/lib/commerce/money";
 import type { Product } from "@/lib/commerce/types";
 import { MQ } from "@/lib/motion/gsap";
 import { VariantPurchase } from "./VariantPurchase";
@@ -21,6 +21,10 @@ const SLIDE_MS = 3000;
  * Reduced motion: first photo only.
  */
 export function ProductCard({ product, priority, offset = 0 }: { product: Product; priority?: boolean; offset?: number }) {
+  // Offer: Shopify compare-at price above the price (shown crossed out, with a badge).
+  const cheapest = [...product.variants].sort((a, b) => Number(a.price.amount) - Number(b.price.amount))[0];
+  const cheapestWas = cheapest ? wasPrice(cheapest.price, cheapest.compareAtPrice) : null;
+  const onOffer = product.variants.some((v) => wasPrice(v.price, v.compareAtPrice));
   const images = product.images.length ? product.images : product.featuredImage ? [product.featuredImage] : [];
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLElement>(null);
@@ -51,6 +55,11 @@ export function ProductCard({ product, priority, offset = 0 }: { product: Produc
   return (
     <article ref={ref} className="group relative flex h-full flex-col">
       <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-cream">
+        {onOffer && (
+          <span className="absolute left-3 top-3 z-[2] rounded-full bg-brown px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-cream shadow-sm">
+            Offer
+          </span>
+        )}
         {images.length ? (
           images.map((img, i) => (
             <Image
@@ -90,9 +99,15 @@ export function ProductCard({ product, priority, offset = 0 }: { product: Produc
             {product.title}
           </Link>
         </h2>
-        <p className="mt-1 text-base font-bold text-green md:text-lg">
+        <p className="mt-1 flex flex-wrap items-baseline gap-x-2 text-base font-bold text-green md:text-lg">
           {product.variants.length > 1 && <span className="text-xs font-semibold text-ink-soft">from </span>}
-          {formatMoney(product.priceRange.minVariantPrice)}
+          {cheapestWas && (
+            <del className="text-sm font-semibold text-ink-soft/70">
+              <span className="sr-only">Regular price </span>
+              {formatMoney(cheapestWas)}
+            </del>
+          )}
+          <span>{formatMoney(product.priceRange.minVariantPrice)}</span>
         </p>
         <p className="mt-1 hidden text-sm leading-relaxed text-ink-soft sm:block">{product.shortDescription}</p>
         <div className="relative z-[2] mt-auto">

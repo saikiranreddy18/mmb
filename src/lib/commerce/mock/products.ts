@@ -41,13 +41,15 @@ export const mockProducts: Product[] = [
       ),
       img("dryfruit-back.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, back label with ingredients and nutrition"),
     ],
-    priceRange: { minVariantPrice: { amount: "350.00", currencyCode: "INR" } },
+    priceRange: { minVariantPrice: { amount: "310.00", currencyCode: "INR" } },
     variants: [
       {
         id: "gid://mumma/ProductVariant/dry-fruit-pack-10",
         title: "Pack of 10 · 220 g",
         availableForSale: true,
-        price: { amount: "350.00", currencyCode: "INR" },
+        // Offer: ₹31 a bar (regular ₹35). Mirrors the Shopify price / compare-at price.
+        price: { amount: "310.00", currencyCode: "INR" },
+        compareAtPrice: { amount: "350.00", currencyCode: "INR" },
         selectedOptions: [{ name: "Pack", value: "Pack of 10 (220 g)" }],
       },
     ],
