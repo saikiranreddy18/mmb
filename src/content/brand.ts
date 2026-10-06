@@ -2,9 +2,8 @@
  * BRAND CONTENT — single source of truth for copy.
  *
  * Only information supplied in the build brief is marked `verified`.
- * The real founding story has NOT been supplied yet, so every story beat is
- * `unknown` and carries a prompt describing what the brand needs to provide.
- * Do not fill these with invented history, numbers, people or claims.
+ * The founding story below is the founder's own (Rajeswari, supplied 6 Oct 2026),
+ * edited for length. Do not add invented history, numbers, people or claims.
  */
 
 import { type ContentField, unknown, unverified, verified } from "./status";
@@ -74,42 +73,42 @@ export const story: BrandStory = {
       id: "idea",
       index: "01",
       title: "The idea",
-      body: unknown(),
+      body: verified("I'm Rajeswari. At 44 I'm still learning new things: travelling to new places, cooking, trying what I haven't tried before. The pandemic changed how so many of us think about food, and it changed me too. I started cooking healthier, and that became a new beginning."),
       needs: "The moment the idea appeared. Who had it, and what prompted it?",
     },
     {
       id: "recipe",
       index: "02",
       title: "The recipe",
-      body: unknown(),
+      body: verified("At home I made laddus with dates, nuts and seeds. No added sugar, just the natural sweetness of dates holding everything together. My family reached for them every day, and that simple recipe is the heart of every Mumma's Bite bar."),
       needs: "The original home recipe — what made it special in your family?",
     },
     {
       id: "experiments",
       index: "03",
       title: "The experiments",
-      body: unknown(),
+      body: verified("Laddus are perfect at home, but hard to carry. So I kept making batch after batch, changing the mix of nuts and seeds and how firmly to press it, until it became a bar you can slip into a school bag, an office desk or a travel bag."),
       needs: "What was tried, what failed, what changed along the way?",
     },
     {
       id: "product",
       index: "04",
       title: "The product",
-      body: unknown(),
+      body: verified("Today there are two bars: Dry Fruit, with dates, almonds, cashews, walnuts and pistachios, and Multi-Seed, with dates, peanuts and five kinds of seeds. Natural ingredients, no added sugar and no preservatives, at a price everyone can try."),
       needs: "What the final product is today and how it is made.",
     },
     {
       id: "brand",
       index: "05",
       title: "The brand",
-      body: unknown(),
+      body: verified("Mumma's Bite is my first step into something new. The name says what it is: made with a mother's love. Have a bite, and remember your mother."),
       needs: "Why “Mumma's Bite”, and the story behind the mother-and-child character.",
     },
     {
       id: "next",
       index: "06",
       title: "What comes next",
-      body: unknown(),
+      body: verified("This is only the beginning. I'm still learning, and I hope to keep creating more healthy, honest snacks for your family, made the way a mother makes them."),
       needs: "Where the brand is heading — only plans you are happy to share publicly.",
     },
   ],
