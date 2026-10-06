@@ -53,7 +53,7 @@ export function TrustBadges({ compact = false }: { compact?: boolean }) {
     {
       icon: Truck,
       title: "Ships across India",
-      body: freeDeliveryFrom ? `Free delivery on ₹${freeDeliveryFrom.toLocaleString("en-IN")}+ orders` : "Tracked delivery",
+      body: freeDeliveryFrom ? `Free delivery on orders of ₹${freeDeliveryFrom.toLocaleString("en-IN")} or more (after offers)` : "Tracked delivery",
     },
   ];
 

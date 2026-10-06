@@ -14,5 +14,4 @@ export const keywords = [
   "dates and nuts bar",
   "healthy snacks India",
   "homemade energy bars",
-  "protein bar no sugar",
 ];
