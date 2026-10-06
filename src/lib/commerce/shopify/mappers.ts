@@ -1,4 +1,5 @@
 import { type ContentField, unknown, verified } from "@/content/status";
+import { mockProducts } from "../mock/products";
 import type { Cart, DeliveryAddress, DeliveryOption, Money, Product, ShopifyImage } from "../types";
 
 /* Raw Storefront shapes (only the fields we query). */
@@ -14,16 +15,22 @@ export type RawCart = Omit<Cart, "lines" | "delivery" | "isMock"> & {
   deliveryGroups: Raw<{ deliveryOptions: { handle: string; title: string | null; estimatedCost: Money }[] }>;
 };
 
-/** A metafield the merchant filled in Shopify is treated as verified; absent = unknown. */
-function field(meta: Map<string, string>, key: string): ContentField {
+/**
+ * A metafield the merchant filled in Shopify is treated as verified. When it is
+ * empty, the brand-confirmed label facts in the local catalogue (same handle)
+ * are used, so a missing metafield never hides known information.
+ */
+function field(meta: Map<string, string>, key: string, fallback?: ContentField): ContentField {
   const value = meta.get(key)?.trim();
-  return value ? verified(value) : unknown();
+  if (value) return verified(value);
+  return fallback?.status === "verified" ? fallback : unknown();
 }
 
 export function mapProduct(raw: RawProduct): Product {
   const meta = new Map(
     raw.metafields.filter((m): m is { key: string; value: string } => Boolean(m)).map((m) => [m.key, m.value]),
   );
+  const local = mockProducts.find((p) => p.handle === raw.handle)?.details;
   return {
     id: raw.id,
     handle: raw.handle,
@@ -36,14 +43,14 @@ export function mapProduct(raw: RawProduct): Product {
     variants: raw.variants.nodes,
     availableForSale: raw.availableForSale,
     details: {
-      netQuantity: field(meta, "net_quantity"),
-      claims: field(meta, "claims"),
-      ingredients: field(meta, "ingredients"),
-      nutrition: field(meta, "nutrition"),
-      allergens: field(meta, "allergens"),
-      storage: field(meta, "storage"),
-      shelfLife: field(meta, "shelf_life"),
-      fssai: field(meta, "fssai"),
+      netQuantity: field(meta, "net_quantity", local?.netQuantity),
+      claims: field(meta, "claims", local?.claims),
+      ingredients: field(meta, "ingredients", local?.ingredients),
+      nutrition: field(meta, "nutrition", local?.nutrition),
+      allergens: field(meta, "allergens", local?.allergens),
+      storage: field(meta, "storage", local?.storage),
+      shelfLife: field(meta, "shelf_life", local?.shelfLife),
+      fssai: field(meta, "fssai", local?.fssai),
     },
     isMock: false,
   };

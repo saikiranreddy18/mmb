@@ -6,7 +6,7 @@
  * not used.
  */
 
-import { type ContentField, unknown, verified } from "@/content/status";
+import { type ContentField, verified } from "@/content/status";
 import type { Product, ShopifyImage } from "../types";
 
 const img = (file: string, altText: string, width = 760, height = 1024): ShopifyImage => ({
@@ -72,7 +72,7 @@ export const mockProducts: Product[] = [
         ["Sodium", "15 mg"],
       ]),
       allergens: verified("Contains tree nuts (almonds, cashews, walnuts, pistachios)."),
-      storage: unknown(),
+      storage: verified("Store in a cool, dry place."),
       shelfLife: verified("30 days"),
       fssai: FSSAI,
     },
@@ -132,7 +132,7 @@ export const mockProducts: Product[] = [
         ["Potassium", "90 mg"],
       ]),
       allergens: verified("Contains peanuts and sesame seeds."),
-      storage: unknown(),
+      storage: verified("Store in a cool, dry place."),
       shelfLife: verified("30 days"),
       fssai: FSSAI,
     },

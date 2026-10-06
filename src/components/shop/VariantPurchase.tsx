@@ -83,8 +83,11 @@ export function VariantPurchase({ product, compact = false }: { product: Product
           {product.details.shelfLife.status === "verified" && product.details.shelfLife.value && (
             <>
               {" "}
-              <span className="font-bold text-ink">Shelf life:</span> {product.details.shelfLife.value}
+              <span className="font-bold text-ink">Shelf life:</span> {product.details.shelfLife.value}.
             </>
+          )}
+          {product.details.storage.status === "verified" && product.details.storage.value && (
+            <> {product.details.storage.value}</>
           )}
         </p>
       )}
