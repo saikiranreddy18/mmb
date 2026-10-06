@@ -5,6 +5,7 @@ import { getProduct, getProducts } from "@/lib/commerce/products";
 import { formatMoney } from "@/lib/commerce/money";
 import type { Product } from "@/lib/commerce/types";
 import { siteName, siteUrl } from "@/lib/seo/site";
+import { GOOGLE_PRODUCT_CATEGORY } from "@/lib/seo/google-category";
 
 const absolute = (url: string) => (url.startsWith("/") ? `${siteUrl}${url}` : url);
 
@@ -63,7 +64,7 @@ export default async function ProductPage({ params }: Params) {
             url,
             image: product.images.map((i) => absolute(i.url)),
             brand: { "@type": "Brand", name: siteName },
-            category: "Food, Beverages & Tobacco > Food Items > Snack Foods > Granola Bars",
+            category: GOOGLE_PRODUCT_CATEGORY,
             offers: product.variants.map((v) => ({
               "@type": "Offer",
               name: v.title,
