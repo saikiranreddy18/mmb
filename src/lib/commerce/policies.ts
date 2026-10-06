@@ -23,6 +23,18 @@ const SHOPIFY_FIELD: Partial<Record<PolicySlug, "privacyPolicy" | "refundPolicy"
   "terms-of-service": "termsOfService",
 };
 
+/**
+ * Shopify's policy HTML, tidied for this site: drops editor comments, and the
+ * branded block's own heading (the page already shows the title as its h1).
+ */
+function forSite(body: string) {
+  return body
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<p[^>]*>\s*Made with a mother(?:'|&#39;|&rsquo;|’)s love\s*<\/p>/i, "")
+    .replace(/<h2[^>]*>[\s\S]*?<\/h2>/i, "")
+    .trim();
+}
+
 /** The Shopify version of a policy when the merchant has written one there, otherwise the site's copy. */
 export async function getPolicy(slug: PolicySlug): Promise<Policy> {
   const local = POLICIES[slug];
@@ -31,7 +43,7 @@ export async function getPolicy(slug: PolicySlug): Promise<Policy> {
   try {
     const data = await storefrontFetch<{ shop: Record<string, RawPolicy> }>(query, {}, { revalidate: 3600 });
     const remote = data.shop[field];
-    return remote?.body?.trim() ? { ...local, body: remote.body } : local;
+    return remote?.body?.trim() ? { ...local, body: forSite(remote.body) } : local;
   } catch {
     return local;
   }
