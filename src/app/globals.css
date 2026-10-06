@@ -3,7 +3,7 @@
 /* ──────────────────────────────────────────────────────────────
    MUMMA'S BITE — DESIGN TOKENS
    Nature + motherly love + homemade origin + modern Indian food brand.
-   One primary family (Manrope) + one editorial family (Instrument Serif).
+   One family throughout: Manrope (display, editorial accents and body).
    ────────────────────────────────────────────────────────────── */
 
 :root {
@@ -47,7 +47,7 @@
   --color-line: var(--mb-line);
 
   --font-sans: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-serif: var(--font-sans); /* single-family site: no serif */
 
   --ease-brand: var(--mb-ease);
 
@@ -106,11 +106,12 @@ body {
   text-transform: uppercase;
 }
 
+/* Accent words: same family, lighter weight and lower case for contrast. */
 @utility editorial {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-weight: 400;
-  font-style: italic;
-  letter-spacing: -0.01em;
+  font-style: normal;
+  letter-spacing: -0.03em;
   text-transform: none;
 }
 

@@ -14,7 +14,7 @@ npm run build && npm start   # production
 npm run typecheck
 ```
 
-Stack: Next.js (App Router) · React · TypeScript · Tailwind CSS v4 with CSS-variable tokens · GSAP + ScrollTrigger · Lenis · Lucide · self-hosted fonts (Manrope + Instrument Serif). Works on Vercel as-is.
+Stack: Next.js (App Router) · React · TypeScript · Tailwind CSS v4 with CSS-variable tokens · GSAP + ScrollTrigger · Lenis · Lucide · self-hosted font (Manrope, one family throughout). Works on Vercel as-is.
 
 ## Architecture
 
@@ -46,10 +46,28 @@ The UI depends only on `lib/commerce`. The types mirror the Storefront API.
 | Products | `mock/products.ts` (**MOCK DATA: REPLACE WITH SHOPIFY DATA**) | `products.ts` → Storefront `products` / `product(handle)` |
 | Product facts | mock: `unknown` / `unverified` | metafields `mummas.{net_quantity, ingredients, nutrition, allergens, storage, shelf_life, fssai, short_description}` |
 | Cart | mock adapter (localStorage), same `CartAdapter` interface | Storefront `cartCreate` / `cartLinesAdd/Update/Remove`; only the cart id is stored locally |
-| Checkout | disabled, labelled | `cart.checkoutUrl` (Shopify checkout) |
+| Checkout | cart drawer offers "Order on WhatsApp"; Buy Now adds to cart | cart drawer **Checkout** → `cart.checkoutUrl`; product page **Buy now** creates a one-line Shopify cart and redirects straight to Shopify checkout (payment, shipping, order confirmation all happen on Shopify) |
+| Delivery charge | cart shows the place for a PIN code (India Post lookup, `/api/pincode/[pin]`); charge confirmed on WhatsApp | PIN code is set on the Shopify cart (`cartDeliveryAddressesReplace`) and the cart shows Shopify's real delivery rates (`cart.deliveryGroups`), the same ones checkout charges. Buy Now carries the PIN code into checkout |
 | Customer / orders / addresses | `customer.ts` returns `not-connected` | implement Customer Account API (OAuth + PKCE) in `getCustomerSession()` |
 
-To connect: set `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` and `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN`, then create the `mummas.*` product metafield definitions and expose them to the Storefront API. Mock products are `noindex`, they're kept out of the sitemap, and they never get Product structured data.
+To connect: set `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` and `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN`, then create the `mummas.*` product metafield definitions and expose them to the Storefront API.
+
+### Shopify store setup (h2w8qc-az.myshopify.com)
+
+Already done in Shopify Admin:
+- Products **Dry Fruit Energy Bar** (₹300) and **Multi-Seed Energy Bar** (₹250) with images, the same handles as the site, and every `mummas.*` metafield filled in.
+- The `mummas.*` metafield definitions, with Storefront read access.
+- Both products published to the Online Store.
+
+Still to do in Shopify Admin:
+1. **Install the Headless sales channel** (Shopify App Store → "Headless"). Create a storefront and copy its **public access token**.
+2. Make both products available on the **Headless** channel (Product → Publishing).
+3. Set the env vars on Vercel (Production + Preview) and redeploy:
+   `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=h2w8qc-az.myshopify.com`, `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN=<public token>`.
+4. **Payments**: Settings → Payments, activate a provider (Shopify Payments where available, or Razorpay / PayU / Cashfree for India).
+5. **Shipping / courier**: the cart's delivery estimate is whatever Shopify would charge, so set it up there. Either add flat India rates (Settings → Shipping and delivery), or install a courier app such as **Shiprocket** (or Delhivery) and turn on its carrier-calculated rates for live, PIN-code-based courier prices. The store's Advanced plan includes carrier-calculated shipping.
+6. **Offers**: create automatic discounts matching `lib/commerce/offers.ts` (5% off ≥ ₹799, 10% off ≥ ₹2000, free shipping ≥ ₹1299; let the free shipping one combine with order discounts). Without them, checkout won't apply the offers that the cart shows.
+7. Remove the store password (Online Store → Preferences) when you're ready to take real orders, because checkout won't open while it's set. Mock products are `noindex`, they're kept out of the sitemap, and they never get Product structured data.
 
 ## Content & assets
 

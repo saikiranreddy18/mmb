@@ -133,12 +133,12 @@ export const assets: Record<AssetKey, BrandAsset> = {
     required: "Hero film final frame",
     source: HERO_FILM,
   },
-  storyKitchen: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the idea / home" },
-  storyRecipe: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the recipe" },
-  storyExperiments: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the experiments" },
-  storyProduct: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the product" },
-  storyBrand: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — the brand / character" },
-  storyNext: { src: null, alt: "", width: 1200, height: 1500, required: "Story image — what comes next" },
+  storyKitchen: { src: "/assets/hero-poster.jpg", alt: "A wooden bowl of dates, nuts and seeds on a table", width: 1280, height: 720, required: "Story photo (a real kitchen or family photo would be even better)" },
+  storyRecipe: { src: "/assets/ingredients-bowl.jpg", alt: "Dates in a bowl with almonds, cashews, walnuts and pistachios falling in", width: 864, height: 1080, required: "Story photo (a real kitchen or family photo would be even better)" },
+  storyExperiments: { src: "/assets/bar-pressed.jpg", alt: "A dry fruit bar of dates and nuts, freshly pressed", width: 864, height: 1080, required: "Story photo (a real kitchen or family photo would be even better)" },
+  storyProduct: { src: "/assets/dryfruit-lifestyle.jpg", alt: "Mumma's Bite Dry Fruit Energy Bar pouches with a bar, dates and nuts", width: 750, height: 937, required: "Story photo (a real kitchen or family photo would be even better)" },
+  storyBrand: { src: "/assets/mascot/mascot-feeding.webp", alt: "The Mumma's Bite mother feeding her little boy a bite", width: 1312, height: 1199, required: "Story photo (a real kitchen or family photo would be even better)" },
+  storyNext: { src: "/assets/multiseed-lifestyle.jpg", alt: "Mumma's Bite Multi-Seed Energy Bar pouch with a bar, peanuts and seeds", width: 892, height: 1116, required: "Story photo (a real kitchen or family photo would be even better)" },
 };
 
 export const storyAssetFor: Record<string, AssetKey> = {

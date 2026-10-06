@@ -47,7 +47,7 @@ export function ProductDetail({ product }: { product: Product }) {
               </span>
             </h1>
 
-            <div data-hero-reveal="fade">
+            <div>
               <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink-soft">{product.description}</p>
 
               <VariantPurchase product={product} />

@@ -2,7 +2,22 @@
 
 import { useState } from "react";
 import { formatMoney } from "@/lib/commerce/money";
-import type { Product } from "@/lib/commerce/types";
+
+/** "Pack of 10 · 220 g" → price per bar, e.g. ₹35 per bar. */
+function perBar(v: ProductVariant | undefined) {
+  const count = Number(v?.title.match(/pack of (\d+)/i)?.[1]);
+  if (!v || !count) return null;
+  const each = Number(v.price.amount) / count;
+  // Whole rupees as "₹35"; otherwise always two decimals ("₹27.80", not "₹27.8").
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: v.price.currencyCode,
+    minimumFractionDigits: Number.isInteger(each) ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).format(each);
+}
+import type { Product, ProductVariant } from "@/lib/commerce/types";
+import { TrustBadges } from "@/components/ui/TrustBadges";
 import { AddToCartButton } from "./AddToCartButton";
 
 /**
@@ -16,7 +31,12 @@ export function VariantPurchase({ product, compact = false }: { product: Product
 
   return (
     <div className={compact ? "mt-4" : "mt-8"}>
-      {!compact && <p className="text-3xl font-extrabold text-green">{variant && formatMoney(variant.price)}</p>}
+      {!compact && (
+        <p className="flex flex-wrap items-baseline gap-x-3 text-3xl font-extrabold text-green">
+          {variant && formatMoney(variant.price)}
+          {perBar(variant) && <span className="text-base font-semibold text-ink-soft">{perBar(variant)} per bar</span>}
+        </p>
+      )}
       {product.variants.length === 1 && variant && (
         <p className={`text-sm font-semibold text-ink-soft ${compact ? "" : "mt-2"}`}>{variant.title}</p>
       )}
@@ -53,9 +73,22 @@ export function VariantPurchase({ product, compact = false }: { product: Product
         variant={variant}
         productTitle={`${product.title} (${variant?.title ?? ""})`}
         withQuantity={!compact}
+        withBuyNow={!compact}
         size={compact ? "compact" : "default"}
         className={compact ? "mt-4" : "mt-6 max-w-md"}
       />
+      {!compact && product.details.allergens.status === "verified" && product.details.allergens.value && (
+        <p className="mt-4 max-w-md text-sm text-ink-soft">
+          <span className="font-bold text-ink">Allergens:</span> {product.details.allergens.value}
+          {product.details.shelfLife.status === "verified" && product.details.shelfLife.value && (
+            <>
+              {" "}
+              <span className="font-bold text-ink">Shelf life:</span> {product.details.shelfLife.value}
+            </>
+          )}
+        </p>
+      )}
+      {!compact && <TrustBadges />}
     </div>
   );
 }

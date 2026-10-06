@@ -13,6 +13,8 @@ export async function storefrontFetch<T>(
 ): Promise<T> {
   const endpoint = `https://${shopifyConfig.domain}/api/${shopifyConfig.apiVersion}/graphql.json`;
   const res = await fetch(endpoint, {
+    // A slow network must never leave a button spinning forever.
+    signal: AbortSignal.timeout(15000),
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,21 +1,21 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/manrope";
-import "@fontsource/instrument-serif/400.css";
-import "@fontsource/instrument-serif/400-italic.css";
 import "./globals.css";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
-import { defaultDescription, defaultTitle, siteName, siteUrl } from "@/lib/seo/site";
+import { ADDRESS, SUPPORT_EMAIL } from "@/content/contact";
+import { defaultDescription, defaultTitle, keywords, siteName, siteUrl } from "@/lib/seo/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: defaultTitle, template: "%s | Mumma's Bite" },
   description: defaultDescription,
+  keywords,
   applicationName: siteName,
-  alternates: { canonical: "/" },
+  category: "food",
   openGraph: {
     type: "website",
     siteName,
@@ -38,10 +38,40 @@ const motionScript = `try{if(!matchMedia('(prefers-reduced-motion: reduce)').mat
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: siteName,
-  url: siteUrl,
-  slogan: "Made with a mother's love.",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+      logo: `${siteUrl}/assets/logo/mummas-bite-logo.svg`,
+      slogan: "Made with a mother's love.",
+      email: SUPPORT_EMAIL,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: ADDRESS.lines[0],
+        addressLocality: ADDRESS.locality,
+        addressRegion: ADDRESS.region,
+        postalCode: ADDRESS.postalCode,
+        addressCountry: ADDRESS.country,
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        email: SUPPORT_EMAIL,
+        contactType: "customer service",
+        areaServed: "IN",
+        availableLanguage: ["en"],
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      name: siteName,
+      url: siteUrl,
+      inLanguage: "en-IN",
+      publisher: { "@id": `${siteUrl}/#organization` },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

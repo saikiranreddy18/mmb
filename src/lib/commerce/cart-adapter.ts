@@ -15,24 +15,44 @@ import { mapCart, type RawCart } from "./shopify/mappers";
 import { storefrontFetch } from "./shopify/client";
 import {
   cartCreateMutation,
+  cartDeliveryAddressesReplaceMutation,
   cartLinesAddMutation,
   cartLinesRemoveMutation,
   cartLinesUpdateMutation,
   cartQuery,
 } from "./shopify/queries";
-import type { Cart, CartLine, CartLineInput, CartLineUpdateInput } from "./types";
+import type { Cart, CartLine, CartLineInput, CartLineUpdateInput, DeliveryAddress } from "./types";
 
 export interface CartAdapter {
   get(cartId: string): Promise<Cart | null>;
-  create(lines: CartLineInput[]): Promise<Cart>;
+  create(lines: CartLineInput[], address?: DeliveryAddress | null): Promise<Cart>;
   addLines(cartId: string, lines: CartLineInput[]): Promise<Cart>;
   updateLines(cartId: string, lines: CartLineUpdateInput[]): Promise<Cart>;
   removeLines(cartId: string, lineIds: string[]): Promise<Cart>;
+  /** Set where the cart ships to; the returned cart carries delivery rates for it. */
+  setDeliveryAddress(cartId: string, address: DeliveryAddress): Promise<Cart>;
 }
 
 /* ── Shopify ─────────────────────────────────────────────────── */
 
 type Payload = { cart: RawCart | null; userErrors: { message: string }[] };
+
+/** Shopify's selectable-address input. PIN code level is enough to price delivery. */
+const addressInput = (a: DeliveryAddress) => [
+  {
+    selected: true,
+    oneTimeUse: false,
+    validationStrategy: "COUNTRY_CODE_ONLY",
+    address: {
+      deliveryAddress: {
+        countryCode: "IN",
+        zip: a.zip,
+        ...(a.city ? { city: a.city } : {}),
+        ...(a.provinceCode ? { provinceCode: a.provinceCode } : {}),
+      },
+    },
+  },
+];
 
 function unwrap(p: Payload): Cart {
   if (p.userErrors.length) throw new Error(p.userErrors.map((e) => e.message).join("; "));
@@ -45,8 +65,11 @@ const shopifyCart: CartAdapter = {
     const d = await storefrontFetch<{ cart: RawCart | null }>(cartQuery, { id: cartId }, { cache: "no-store" });
     return d.cart ? mapCart(d.cart) : null;
   },
-  async create(lines) {
-    const d = await storefrontFetch<{ cartCreate: Payload }>(cartCreateMutation, { lines });
+  async create(lines, address) {
+    const d = await storefrontFetch<{ cartCreate: Payload }>(cartCreateMutation, {
+      lines,
+      addresses: address ? addressInput(address) : [],
+    });
     return unwrap(d.cartCreate);
   },
   async addLines(cartId, lines) {
@@ -61,12 +84,23 @@ const shopifyCart: CartAdapter = {
     const d = await storefrontFetch<{ cartLinesRemove: Payload }>(cartLinesRemoveMutation, { cartId, lineIds });
     return unwrap(d.cartLinesRemove);
   },
+  async setDeliveryAddress(cartId, address) {
+    const d = await storefrontFetch<{ cartDeliveryAddressesReplace: Payload }>(cartDeliveryAddressesReplaceMutation, {
+      cartId,
+      addresses: addressInput(address),
+    });
+    return unwrap(d.cartDeliveryAddressesReplace);
+  },
 };
 
 /* ── MOCK DATA — REPLACE WITH SHOPIFY DATA ───────────────────── */
 
 const MOCK_KEY = "mb-mock-cart";
-type MockState = { id: string; lines: { id: string; merchandiseId: string; quantity: number }[] };
+type MockState = {
+  id: string;
+  lines: { id: string; merchandiseId: string; quantity: number }[];
+  address?: DeliveryAddress | null;
+};
 
 function readMock(): MockState | null {
   try {
@@ -111,6 +145,8 @@ function hydrateMock(state: MockState): Cart {
     totalQuantity: lines.reduce((s, l) => s + l.quantity, 0),
     cost: { subtotalAmount: { amount: subtotal.toFixed(2), currencyCode } },
     lines,
+    // No shipping rates without Shopify; the address is kept so the cart can show it.
+    delivery: { address: state.address ?? null, options: [] },
     isMock: true,
   };
 }
@@ -139,8 +175,8 @@ const mockCart: CartAdapter = {
     const s = loadMock(cartId);
     return s ? hydrateMock(s) : null;
   },
-  async create(lines) {
-    const state: MockState = { id: `mock-cart-${Date.now()}`, lines: [] };
+  async create(lines, address) {
+    const state: MockState = { id: `mock-cart-${Date.now()}`, lines: [], address };
     mergeLines(state, lines);
     return saveMock(state);
   },
@@ -161,6 +197,11 @@ const mockCart: CartAdapter = {
   async removeLines(cartId, lineIds) {
     const state = loadMock(cartId) ?? { id: cartId, lines: [] };
     state.lines = state.lines.filter((l) => !lineIds.includes(l.id));
+    return saveMock(state);
+  },
+  async setDeliveryAddress(cartId, address) {
+    const state = loadMock(cartId) ?? { id: cartId, lines: [] };
+    state.address = address;
     return saveMock(state);
   },
 };

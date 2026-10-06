@@ -144,7 +144,7 @@ export function Navbar() {
             );
           })}
         </ul>
-        <p className="mt-auto font-serif text-2xl italic text-green">Made with a mother&apos;s love.</p>
+        <p className="mt-auto text-2xl  text-green">Made with a mother&apos;s love.</p>
       </div>
     </>
   );

@@ -22,7 +22,7 @@ Global rules:
 | Images (`Reveal clip`) | top hits 85% viewport, once | inset(100% 0 0 0) → inset(0) | 0.9s | no | 0.6s | static |
 | Ingredient / product grid (`Reveal stagger`) | top hits 85%, once | opacity 0, y 28 → visible | 0.9s, 0.08–0.1s stagger | no | stagger ×0.6 | static |
 | Process film (`ProcessFilm`) | on screen | full-bleed background loop, no controls (brand request); captions Gathered → Pressed → Packed crossfade on the film in sync with playback (500ms) | 10s loop | no / no | same | poster + all three steps listed, no autoplay |
-| Walking gang (Contact) | ≥ near view | transparent walking loop (WebGL) travels left → right across the page, loops, starts on screen | 1s stride loop · 36s desktop / 22s mobile travel | no / no | same | transparent still, centred · Pause/Play always available |
+| Talking ingredients (Contact) | on screen (35%) | 9 ingredient illustrations bob with a slight 3D tilt; every 3.2s one lifts, chatters and shows a speech bubble (2.6s) | 4.2s bob · 220ms bubble | no / no | 3 × 3 grid | static; bubbles fade in turn |
 | Navbar background | scrollY > 24 | transparent → cream 90% + blur | 400ms CSS | no | same | instant |
 | Cart drawer / mobile menu | open / close | translateX 100% → 0 / opacity | 500 / 300ms CSS | no | same | instant |
 
