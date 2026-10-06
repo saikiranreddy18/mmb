@@ -23,7 +23,7 @@ const FAQ = [
   },
   {
     q: "How long do they last?",
-    a: "Each pack has a shelf life of 30 days. The best-before date is printed on the pack.",
+    a: "Each pack is best within 30 days from the date of manufacture (printed on the pack). Store in a cool, dry place.",
   },
   {
     q: "Do you deliver across India?",
