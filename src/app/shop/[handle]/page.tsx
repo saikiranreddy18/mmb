@@ -6,15 +6,19 @@ import { formatMoney } from "@/lib/commerce/money";
 import type { Product } from "@/lib/commerce/types";
 import { siteName, siteUrl } from "@/lib/seo/site";
 import { GOOGLE_PRODUCT_CATEGORY } from "@/lib/seo/google-category";
+import { lowestPerBarPrice, perBarPrice } from "@/lib/commerce/money";
+import { summarise } from "@/lib/seo/product-summary";
 
 const absolute = (url: string) => (url.startsWith("/") ? `${siteUrl}${url}` : url);
 
-/** Search snippet: the product's own line, its verified claims, pack size and price, kept under ~160 chars. */
+/** Search snippet: the product's own line, its price per bar, then its verified claims, kept under ~160 chars. */
 function seoDescription(p: Product) {
   const parts = [p.shortDescription];
-  if (p.details.claims.status === "verified" && p.details.claims.value) parts.push(`${p.details.claims.value}.`);
+  const each = lowestPerBarPrice(p.variants);
   const v = p.variants[0];
-  if (v) parts.push(`${v.title}, ${formatMoney(v.price)}.`);
+  if (each) parts.push(`From ${formatMoney(each)} per bar.`);
+  else if (v) parts.push(`${v.title}, ${formatMoney(v.price)}.`);
+  if (p.details.claims.status === "verified" && p.details.claims.value) parts.push(`${p.details.claims.value}.`);
   let text = parts.join(" ").replace(/\s+/g, " ").trim();
   if (text.length > 160) text = `${text.slice(0, 157).replace(/\s+\S*$/, "")}…`;
   return text;
@@ -34,7 +38,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const description = seoDescription(product);
   const images = product.featuredImage ? [{ url: absolute(product.featuredImage.url), alt: product.featuredImage.altText ?? product.title }] : undefined;
   return {
-    title: product.title,
+    // "Dry Fruit Energy Bar – Healthy Snack Bar, No Added Sugar | Mumma's Bite"
+    title: `${product.title} – Healthy Snack Bar, No Added Sugar`,
     description,
     alternates: { canonical: `/shop/${product.handle}` },
     // Mock products must never be indexed as real products.
@@ -51,6 +56,24 @@ export default async function ProductPage({ params }: Params) {
 
   // Product structured data only from live Shopify data — never from mock data.
   const url = `${siteUrl}/shop/${product.handle}`;
+  const facts = summarise(product);
+  // Label facts as name/value pairs, so answer engines can quote them precisely.
+  const properties = (
+    [
+      ["Bar weight", facts.barWeight],
+      ["Calories per bar", facts.calories],
+      ["Protein per bar", facts.protein],
+      ["Dietary fibre per bar", facts.fibre],
+      ["Total sugars per bar", facts.totalSugars],
+      ["Added sugars", facts.addedSugars],
+      ["Ingredients", facts.ingredients],
+      ["Allergens", facts.allergens],
+      ["Shelf life", facts.shelfLife],
+      ["Storage", facts.storage],
+    ] as const
+  )
+    .filter(([, v]) => v)
+    .map(([name, value]) => ({ "@type": "PropertyValue", name, value }));
   const jsonLd = product.isMock
     ? null
     : {
@@ -64,12 +87,27 @@ export default async function ProductPage({ params }: Params) {
             url,
             image: product.images.map((i) => absolute(i.url)),
             brand: { "@type": "Brand", name: siteName },
+            manufacturer: { "@id": `${siteUrl}/#organization` },
+            countryOfOrigin: "IN",
+            ...(facts.claims ? { slogan: facts.claims } : {}),
+            additionalProperty: properties,
             category: GOOGLE_PRODUCT_CATEGORY,
             offers: product.variants.map((v) => ({
               "@type": "Offer",
               name: v.title,
               price: v.price.amount,
               priceCurrency: v.price.currencyCode,
+              // Price of one bar in this pack: what "affordable" searches compare.
+              ...(perBarPrice(v)
+                ? {
+                    priceSpecification: {
+                      "@type": "UnitPriceSpecification",
+                      price: perBarPrice(v)!.amount,
+                      priceCurrency: v.price.currencyCode,
+                      referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitText: "bar" },
+                    },
+                  }
+                : {}),
               itemCondition: "https://schema.org/NewCondition",
               availability: v.availableForSale ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
               url,

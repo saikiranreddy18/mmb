@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { IntroReveal } from "@/components/motion/IntroReveal";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { PromiseQuotes } from "@/components/home/PromiseQuotes";
@@ -6,9 +7,9 @@ import { getProducts } from "@/lib/commerce/products";
 import { ShopFaq } from "@/components/shop/ShopFaq";
 
 export const metadata: Metadata = {
-  title: "Buy Dry Fruit & Seed Energy Bars Online",
+  title: "Buy Healthy Snack Bars & Dry Fruit Bars Online",
   description:
-    "Shop Mumma's Bite energy bars: Dry Fruit and Multi-Seed bars made with dates, nuts and seeds. No added sugar, no preservatives. Delivered across India.",
+    "Shop affordable healthy snack bars: Mumma's Bite Dry Fruit and Multi-Seed energy bars made with dates, nuts and seeds. No added sugar, no preservatives. Delivered across India.",
   alternates: { canonical: "/shop" },
 };
 
@@ -29,8 +30,12 @@ export default async function ShopPage() {
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
           Dry fruit bars and multi-seed energy bars made from dates, nuts and seeds. A healthy snack with no added
-          sugar and no preservatives, with 3–3.5 g of protein in every bar. For school tiffins, office desks, the gym
-          and travel, delivered across India.
+          sugar and no preservatives, with 3 g of protein in every bar. For school tiffins, office desks, the gym
+          and travel, delivered across India.{" "}
+          <Link href="/healthy-snack-bars" className="font-semibold text-green underline underline-offset-4">
+            Compare the bars
+          </Link>
+          .
         </p>
       </IntroReveal>
       <div className="shell">

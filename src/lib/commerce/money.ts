@@ -15,3 +15,23 @@ export function formatMoney({ amount, currencyCode }: Money): string {
 export function multiplyMoney(money: Money, qty: number): Money {
   return { amount: (Number(money.amount) * qty).toFixed(2), currencyCode: money.currencyCode };
 }
+
+/** Bars in a pack, from its title ("Pack of 10 · 220 g", "40 bars"). */
+export function barsInPack(variantTitle: string): number | null {
+  const m = variantTitle.match(/pack of (\d+)|(\d+)\s*bars?\b/i);
+  const n = Number(m?.[1] ?? m?.[2]);
+  return n > 0 ? n : null;
+}
+
+/** Price of one bar in a pack, or null when the pack size is not in its title. */
+export function perBarPrice(variant: { title: string; price: Money }): Money | null {
+  const count = barsInPack(variant.title);
+  if (!count) return null;
+  return { amount: (Number(variant.price.amount) / count).toFixed(2), currencyCode: variant.price.currencyCode };
+}
+
+/** Lowest per-bar price across a product's packs (bigger packs are usually cheaper per bar). */
+export function lowestPerBarPrice(variants: { title: string; price: Money }[]): Money | null {
+  const prices = variants.map(perBarPrice).filter((m): m is Money => m !== null);
+  return prices.sort((a, b) => Number(a.amount) - Number(b.amount))[0] ?? null;
+}

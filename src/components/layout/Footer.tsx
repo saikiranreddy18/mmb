@@ -23,6 +23,7 @@ const QUICK_LINKS: FooterLink[] = [
 
 const SHOP_LINKS: FooterLink[] = [
   ...mockProducts.map((p) => ({ href: `/shop/${p.handle}`, label: p.title })),
+  { href: "/healthy-snack-bars", label: "Healthy Snack Bars Guide" },
   { href: "/shop", label: "All Products" },
 ];
 

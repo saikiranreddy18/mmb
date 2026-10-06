@@ -1,24 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { formatMoney } from "@/lib/commerce/money";
-
-/** "Pack of 10 · 220 g" → price per bar, e.g. ₹35 per bar. */
-function perBar(v: ProductVariant | undefined) {
-  const count = Number(v?.title.match(/pack of (\d+)/i)?.[1]);
-  if (!v || !count) return null;
-  const each = Number(v.price.amount) / count;
-  // Whole rupees as "₹35"; otherwise always two decimals ("₹27.80", not "₹27.8").
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: v.price.currencyCode,
-    minimumFractionDigits: Number.isInteger(each) ? 0 : 2,
-    maximumFractionDigits: 2,
-  }).format(each);
-}
+import { formatMoney, perBarPrice } from "@/lib/commerce/money";
 import type { Product, ProductVariant } from "@/lib/commerce/types";
 import { TrustBadges } from "@/components/ui/TrustBadges";
 import { AddToCartButton } from "./AddToCartButton";
+
+/** "Pack of 10 · 220 g" → price per bar, e.g. ₹35 per bar. */
+function perBar(v: ProductVariant | undefined) {
+  const each = v && perBarPrice(v);
+  return each ? formatMoney(each) : null;
+}
 
 /**
  * Pack picker (shown only when there is more than one pack) + price + add to cart.

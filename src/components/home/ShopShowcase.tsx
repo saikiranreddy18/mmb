@@ -15,7 +15,8 @@ export function ShopShowcase({ products }: { products: Product[] }) {
             From our <span className="editorial block text-brown">kitchen to yours.</span>
           </h2>
           <p className="mt-6 max-w-sm text-lg leading-relaxed text-ink-soft">
-            Dates, nuts and seeds, pressed into honest bars.
+            Affordable, healthy snack bars: dates, nuts and seeds, pressed into honest bars with no added sugar and
+            no preservatives.
           </p>
           <Link
             href="/shop"
@@ -23,6 +24,12 @@ export function ShopShowcase({ products }: { products: Product[] }) {
           >
             Visit the shop
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
+          </Link>
+          <Link
+            href="/healthy-snack-bars"
+            className="mt-1 block text-sm text-ink-soft underline underline-offset-4 hover:text-green"
+          >
+            Compare our dry fruit and seed bars
           </Link>
         </Reveal>
         <Reveal as="ul" stagger={0.1} className="grid max-w-2xl grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-6">

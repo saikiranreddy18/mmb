@@ -10,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: `${siteUrl}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${siteUrl}/shop`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
+    { url: `${siteUrl}/healthy-snack-bars`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     ...(storyPublished ? [{ url: `${siteUrl}/our-story`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 }] : []),
     ...POLICY_LINKS.map((l) => ({ url: `${siteUrl}/policies/${l.slug}`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.3 })),
     // Mock products are excluded so placeholder data is never submitted to search engines.
