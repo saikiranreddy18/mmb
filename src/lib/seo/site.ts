@@ -1,5 +1,5 @@
-/** Public site URL. Set NEXT_PUBLIC_SITE_URL in the deploy environment (https://mummasbite.com). */
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+/** Production domain. NEXT_PUBLIC_SITE_URL can override it (e.g. for a staging deploy). */
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://mummasbite.com").replace(/\/$/, "");
 
 export const siteName = "Mumma's Bite";
 export const defaultTitle = "Mumma's Bite | Homemade Dry Fruit & Seed Energy Bars, No Added Sugar";
