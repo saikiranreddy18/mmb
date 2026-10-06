@@ -44,7 +44,7 @@ const organizationJsonLd = {
       "@id": `${siteUrl}/#organization`,
       name: siteName,
       url: siteUrl,
-      logo: `${siteUrl}/assets/logo/mummas-bite-logo.svg`,
+      logo: `${siteUrl}/assets/logo/mummas-bite-square.png`,
       slogan: "Made with a mother's love.",
       email: SUPPORT_EMAIL,
       address: {
