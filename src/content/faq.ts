@@ -15,7 +15,7 @@ export const FAQ = [
   },
   {
     q: "How much protein is in each bar?",
-    a: "A 22 g Dry Fruit bar has 2.6 g of protein and a 25 g Multi-Seed bar has 3 g, from the nuts and seeds. They're everyday snack bars, not high-protein supplements.",
+    a: "A 22 g Dry Fruit bar has 2.6 g of protein and a 25 g Multi-Seed bar has 2.5 g, from the nuts and seeds. They're everyday snack bars, not high-protein supplements.",
   },
   {
     q: "Are they a good snack for kids and for travel?",
