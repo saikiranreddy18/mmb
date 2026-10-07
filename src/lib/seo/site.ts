@@ -4,7 +4,7 @@ export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://mummasbite.
 export const siteName = "Mumma's Bite";
 export const defaultTitle = "Mumma's Bite | Affordable Healthy Snack Bars & Dry Fruit Bars, No Added Sugar";
 export const defaultDescription =
-  "Affordable healthy snack bars made with dates, nuts and seeds: dry fruit and multi-seed energy bars with no added sugar and no preservatives. Order online, delivered across India.";
+  "Affordable healthy snack bars made from dates, nuts and seeds. Dry fruit and multi-seed bars, no added sugar or preservatives. Delivered across India.";
 
 export const keywords = [
   "Mumma's Bite",

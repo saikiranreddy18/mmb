@@ -114,7 +114,7 @@ export function ProductGallery({ images, title, handle }: { images: ShopifyImage
               i === active ? "border-green" : "border-line hover:border-green/50"
             }`}
           >
-            <Image src={img.url} alt="" fill sizes="72px" className="object-cover" />
+            <Image src={img.url} alt={img.altText ?? `Product image ${i + 1}`} fill sizes="72px" className="object-cover" />
           </button>
         ))}
         {extra > 0 && (
@@ -293,7 +293,7 @@ function Lightbox({
               i === index ? "border-green" : "border-line"
             }`}
           >
-            <Image src={img.url} alt="" fill sizes="64px" className="object-cover" />
+            <Image src={img.url} alt={img.altText ?? `Product image ${i + 1}`} fill sizes="64px" className="object-cover" />
           </button>
         ))}
       </div>

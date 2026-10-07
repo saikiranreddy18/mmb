@@ -93,7 +93,7 @@ export function TalkingIngredients() {
             <div className="talk-body relative h-20 w-full md:h-24">
               <Image
                 src={t.art.src}
-                alt=""
+                alt={`${t.name} illustration`}
                 width={t.art.width}
                 height={t.art.height}
                 sizes="(min-width:768px) 10vw, 28vw"

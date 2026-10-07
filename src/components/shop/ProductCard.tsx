@@ -65,7 +65,7 @@ export function ProductCard({ product, priority, offset = 0 }: { product: Produc
             <Image
               key={img.url}
               src={img.url}
-              alt={i === 0 ? (img.altText ?? product.title) : ""}
+              alt={img.altText ?? product.title}
               fill
               priority={priority && i === 0}
               sizes="(min-width:1024px) 22vw, (min-width:640px) 40vw, 46vw"

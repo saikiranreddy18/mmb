@@ -9,7 +9,7 @@ import { ShopFaq } from "@/components/shop/ShopFaq";
 export const metadata: Metadata = {
   title: "Buy Healthy Snack Bars & Dry Fruit Bars Online",
   description:
-    "Shop affordable healthy snack bars: Mumma's Bite Dry Fruit and Multi-Seed energy bars made with dates, nuts and seeds. No added sugar, no preservatives. Delivered across India.",
+    "Buy affordable healthy snack bars online: Mumma's Bite dry fruit and multi-seed bars, made from dates, nuts and seeds. No added sugar. Delivered across India.",
   alternates: { canonical: "/shop" },
 };
 

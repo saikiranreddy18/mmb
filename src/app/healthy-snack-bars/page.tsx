@@ -16,7 +16,7 @@ import { siteName, siteUrl } from "@/lib/seo/site";
 const PATH = "/healthy-snack-bars";
 const TITLE = "Affordable Healthy Snack Bars & Dry Fruit Bars in India";
 const DESCRIPTION =
-  "Affordable healthy snack bars from Mumma's Bite: dry fruit and multi-seed energy bars made with dates, nuts and seeds. No added sugar, no preservatives, delivered across India.";
+  "Affordable healthy snack bars and dry fruit bars from Mumma's Bite: price per bar, nutrition and FAQs. Dates, nuts and seeds, no added sugar.";
 
 export const metadata: Metadata = {
   title: TITLE,

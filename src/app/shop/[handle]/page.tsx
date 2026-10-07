@@ -10,7 +10,7 @@ import { summarise } from "@/lib/seo/product-summary";
 
 const absolute = (url: string) => (url.startsWith("/") ? `${siteUrl}${url}` : url);
 
-/** Search snippet: the product's own line, its price per bar, then its verified claims, kept under ~160 chars. */
+/** Search snippet: the product's own line, its price per bar, then its verified claims, kept under ~155 chars. */
 function seoDescription(p: Product) {
   const parts = [p.shortDescription];
   const each = lowestPerBarPrice(p.variants);
@@ -19,7 +19,7 @@ function seoDescription(p: Product) {
   else if (v) parts.push(`${v.title}, ${formatMoney(v.price)}.`);
   if (p.details.claims.status === "verified" && p.details.claims.value) parts.push(`${p.details.claims.value}.`);
   let text = parts.join(" ").replace(/\s+/g, " ").trim();
-  if (text.length > 160) text = `${text.slice(0, 157).replace(/\s+\S*$/, "")}…`;
+  if (text.length > 155) text = `${text.slice(0, 152).replace(/\s+\S*$/, "")}…`;
   return text;
 }
 

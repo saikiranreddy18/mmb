@@ -130,7 +130,7 @@ export function CartDrawer() {
 
         {isEmpty ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-5 px-8 text-center">
-            <Image src="/assets/mascot/mascot-surprised.webp" alt="" width={160} height={160} className="size-36" />
+            <Image src="/assets/mascot/mascot-surprised.webp" alt="The Mumma\'s Bite mother looking surprised at an empty cart" width={160} height={160} className="size-36" />
             <p className="text-2xl font-extrabold uppercase tracking-tight text-green">
               Nothing here <span className="editorial normal-case">yet.</span>
             </p>
