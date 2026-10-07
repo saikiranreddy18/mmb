@@ -42,7 +42,7 @@ function faq(s: ProductSummary[], from: string | null) {
     {
       q: "How much does a dry fruit bar cost?",
       a: dry?.perBar
-        ? `A Mumma's Bite Dry Fruit Energy Bar costs from ${dry.perBar} per bar${dry.barWeight ? ` (${dry.barWeight})` : ""}, sold in packs. Bigger packs cost less per bar, and orders of ${inr(firstOffer.min)} or more get ${firstOffer.percent}% off.`
+        ? `A Mumma's Bite Dry Fruit Energy Bar costs from ${dry.perBar} per bar${dry.barWeight ? ` (${dry.barWeight})` : ""}${dry.biggerPacksCheaper ? ", and bigger packs cost less per bar" : ", the same price per bar in every pack size"}. Orders of ${inr(firstOffer.min)} or more get ${firstOffer.percent}% off.`
         : "Prices for each pack, and the price per bar, are shown on the product page.",
     },
     {
@@ -54,10 +54,10 @@ function faq(s: ProductSummary[], from: string | null) {
       a: "No. There is no added sugar, no jaggery or syrup, and no preservatives. Dates hold the bars together and sweeten them.",
     },
     {
-      q: "Which bar has more protein?",
+      q: "How much protein is in each bar?",
       a:
         dry?.protein && seed?.protein
-          ? `Each Dry Fruit bar has ${dry.protein} of protein and each Multi-Seed bar has ${seed.protein}, from the nuts and seeds. They are a wholesome snack, not a high-protein supplement.`
+          ? `Each Dry Fruit bar has ${dry.protein} of protein and each Multi-Seed bar has ${seed.protein}, from the nuts and seeds. They are everyday snack bars, not high-protein supplements.`
           : "Both bars get their protein from nuts and seeds; see each product's nutrition table.",
     },
     {
@@ -216,7 +216,13 @@ export default async function HealthySnackBarsPage() {
           <h2 className="text-2xl font-bold text-green">Why they&apos;re affordable</h2>
           <ul className="mt-4 list-disc space-y-2 pl-5 leading-relaxed text-ink-soft">
             {from && <li>Bars start from {from} each.</li>}
-            <li>Bigger packs cost less per bar.</li>
+            {summaries
+              .filter((s) => s.biggerPacksCheaper)
+              .map((s) => (
+                <li key={s.handle}>
+                  {s.title}: bigger packs cost less per bar ({s.perBarMax} down to {s.perBar}).
+                </li>
+              ))}
             <li>
               {firstOffer.percent}% off orders of {inr(firstOffer.min)} or more, and {maxOffer.percent}% off from{" "}
               {inr(maxOffer.min)}.

@@ -3,6 +3,7 @@ import { ArrowLeft, ImageOff } from "lucide-react";
 import { IntroReveal } from "@/components/motion/IntroReveal";
 import { ProductFacts } from "@/components/ui/ProductFacts";
 import type { Product } from "@/lib/commerce/types";
+import { FAQ } from "@/content/faq";
 import { ProductGallery } from "./ProductGallery";
 import { VariantPurchase } from "./VariantPurchase";
 
@@ -48,12 +49,46 @@ export function ProductDetail({ product }: { product: Product }) {
             </h1>
 
             <div>
-              <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink-soft">{product.description}</p>
+              {/* 1. What it tastes like, in one line */}
+              {product.shortDescription && (
+                <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-soft">{product.shortDescription}</p>
+              )}
 
+              {/* 2–4. Pack, price and price per bar; quantity and buttons; allergens and delivery */}
               <VariantPurchase product={product} />
+              <p className="mt-4 max-w-md text-sm text-ink-soft">
+                <Link href="/policies/shipping-policy" className="font-semibold text-green underline underline-offset-4">
+                  Delivery
+                </Link>{" "}
+                ·{" "}
+                <Link href="/policies/refund-policy" className="font-semibold text-green underline underline-offset-4">
+                  Replacements &amp; refunds
+                </Link>
+              </p>
 
-              <h2 className="eyebrow mb-2 mt-14 text-green">Product information</h2>
+              {/* 5. Full description */}
+              <h2 className="eyebrow mb-3 mt-14 text-green">About this bar</h2>
+              <p className="max-w-lg leading-relaxed text-ink-soft">{product.description}</p>
+
+              {/* 6–7. Ingredients, nutrition, storage and shelf life */}
+              <h2 className="eyebrow mb-2 mt-12 text-green">Product information</h2>
               <ProductFacts details={product.details} />
+
+              {/* 7. Questions */}
+              <h2 className="eyebrow mb-2 mt-12 text-green">Questions</h2>
+              <div className="divide-y divide-line border-y border-line">
+                {FAQ.map(({ q, a }) => (
+                  <details key={q} className="group py-4">
+                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-semibold text-ink">
+                      {q}
+                      <span aria-hidden className="text-green transition-transform group-open:rotate-45">
+                        +
+                      </span>
+                    </summary>
+                    <p className="mt-2 leading-relaxed text-ink-soft">{a}</p>
+                  </details>
+                ))}
+              </div>
             </div>
           </div>
         </IntroReveal>

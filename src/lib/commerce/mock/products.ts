@@ -26,9 +26,9 @@ export const mockProducts: Product[] = [
     id: "gid://mumma/Product/dry-fruit-energy-bar",
     handle: "dry-fruit-energy-bar",
     title: "Dry Fruit Energy Bar",
-    shortDescription: "Dates, nuts and seeds, pressed into one honest bar.",
+    shortDescription: "Soft, chewy dates with almonds, cashews, walnuts and pistachios, a sprinkle of seeds and a touch of ghee.",
     description:
-      "Soft dates with cashews, almonds, walnuts and pistachios, a sprinkle of pumpkin, sunflower and watermelon seeds, and a touch of ghee. A bar that tastes like something made at home. Each bar is about 4 × 5 cm.",
+      "A soft, chewy mix of dates and nuts, finished with seeds and a touch of ghee. Almonds, cashews, walnuts and pistachios bring a nutty bite and dates bring the sweetness, with no added sugar. Each 22 g bar (about 4 × 5 cm) is easy to pack for work, school or travel.",
     featuredImage: img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
     images: [
       img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
@@ -87,9 +87,9 @@ export const mockProducts: Product[] = [
     id: "gid://mumma/Product/multi-seed-energy-bar",
     handle: "multi-seed-energy-bar",
     title: "Multi-Seed Energy Bar",
-    shortDescription: "Peanuts, five kinds of seeds and dates, pressed into one bar.",
+    shortDescription: "Crunchy roasted peanuts and five kinds of seeds, held together with the natural sweetness of dates.",
     description:
-      "Peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, held together with dates and a touch of ghee. A crunchy, seedy bar from the Mumma's Bite kitchen. Each bar is about 4 × 5 cm.",
+      "A crunchy mix of roasted peanuts and seeds, brought together with dates and a touch of ghee. Pumpkin, sunflower, watermelon, sesame and flax seeds give it a varied, nutty crunch, with no added sugar. Each 25 g bar (about 4 × 5 cm) is an easy snack for your desk, bag or journey.",
     featuredImage: img("multiseed-25g-front.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front"),
     images: [
       img("multiseed-25g-front.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front"),

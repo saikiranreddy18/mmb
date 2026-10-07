@@ -7,6 +7,7 @@ import { ImageOff } from "lucide-react";
 import { formatMoney, wasPrice } from "@/lib/commerce/money";
 import type { Product } from "@/lib/commerce/types";
 import { MQ } from "@/lib/motion/gsap";
+import { shortAllergens, summarise } from "@/lib/seo/product-summary";
 import { VariantPurchase } from "./VariantPurchase";
 
 const SLIDE_MS = 3000;
@@ -29,6 +30,8 @@ export function ProductCard({ product, priority, offset = 0 }: { product: Produc
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLElement>(null);
   const href = `/shop/${product.handle}`;
+  const facts = summarise(product);
+  const meta = [facts.barWeight && `${facts.barWeight} per bar`, shortAllergens(facts.allergens)].filter(Boolean).join(" · ");
 
   useEffect(() => {
     const el = ref.current;
@@ -110,6 +113,7 @@ export function ProductCard({ product, priority, offset = 0 }: { product: Produc
           <span>{formatMoney(product.priceRange.minVariantPrice)}</span>
         </p>
         <p className="mt-1 hidden text-sm leading-relaxed text-ink-soft sm:block">{product.shortDescription}</p>
+        {meta && <p className="mt-1.5 text-xs font-semibold text-ink-soft">{meta}</p>}
         <div className="relative z-[2] mt-auto">
           <VariantPurchase product={product} compact />
         </div>

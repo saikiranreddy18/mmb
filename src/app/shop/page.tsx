@@ -29,9 +29,9 @@ export default async function ShopPage() {
           </span>
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
-          Dry fruit bars and multi-seed energy bars made from dates, nuts and seeds. A healthy snack with no added
-          sugar and no preservatives, with 3 g of protein in every bar. For school tiffins, office desks, the gym
-          and travel, delivered across India.{" "}
+          Find your everyday bite. Choose a soft, nutty Dry Fruit Bar or a crunchy Multi-Seed Bar, both made with dates
+          and no added sugar or preservatives. Pick your favourite, choose a pack, and keep a little taste of home close
+          by. Delivered across India.{" "}
           <Link href="/healthy-snack-bars" className="font-semibold text-green underline underline-offset-4">
             Compare the bars
           </Link>
