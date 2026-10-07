@@ -56,13 +56,13 @@ export const mockProducts: Product[] = [
     availableForSale: true,
     details: {
       netQuantity: verified("22 g per bar · packs of 10 (220 g), 25 (550 g) or 50 (1.1 kg)"),
-      claims: verified("No added sugar · No preservatives · 3 g protein per 22 g bar"),
+      claims: verified("No added sugar · No preservatives · Rich in fibre · 2.6 g protein per 22 g bar"),
       ingredients: verified(
         "Dates (45%), cashews (15%), almonds (12.5%), pumpkin seeds (5%), sunflower seeds (5%), watermelon seeds (5%), walnuts (5%), pistachios (5%), ghee (2.5%)",
       ),
       nutrition: nutrition("22 g bar", [
         ["Energy", "100 kcal"],
-        ["Protein", "3 g"],
+        ["Protein", "2.6 g"],
         ["Total carbohydrate", "10 g"],
         ["Total sugars", "7 g"],
         ["Added sugars", "0 g"],
