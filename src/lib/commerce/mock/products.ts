@@ -34,8 +34,8 @@ export const mockProducts: Product[] = [
       img("dryfruit-front.jpg", "Mumma's Bite Dry Fruit Energy Bar pouch, front"),
       img("dryfruit-lifestyle.jpg", "Two Mumma's Bite Dry Fruit Energy Bar pouches with a bar, dates and nuts", 750, 937),
       img(
-        "dryfruit-ingredients.jpg",
-        "The Dry Fruit Energy Bar (about 4 × 5 cm) surrounded by its ingredients: almonds, cashews, pumpkin seeds, walnuts, dates, sunflower seeds, watermelon seeds and pistachios",
+        "dryfruit-ingredients-ghee.jpg",
+        "The Dry Fruit Energy Bar (about 4 × 5 cm) surrounded by its ingredients: almonds, ghee, cashews, pumpkin seeds, walnuts, dates, sunflower seeds, watermelon seeds and pistachios",
         1145,
         1374,
       ),
@@ -95,8 +95,8 @@ export const mockProducts: Product[] = [
       img("multiseed-25g-front.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front"),
       img("multiseed-lifestyle.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch with a bar, peanuts and seeds", 892, 1116),
       img(
-        "multiseed-ingredients.jpg",
-        "The Multi-Seed Energy Bar (about 4 × 5 cm) surrounded by its ingredients: peanuts, pumpkin, sunflower, watermelon, sesame and flax seeds, and dates",
+        "multiseed-ingredients-ghee.jpg",
+        "The Multi-Seed Energy Bar (about 4 × 5 cm) surrounded by its ingredients: peanuts, ghee, sunflower seeds, pumpkin seeds, watermelon seeds, sesame seeds, flax seeds and dates",
         1122,
         1402,
       ),
