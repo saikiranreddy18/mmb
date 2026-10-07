@@ -3,9 +3,46 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Check, ChevronLeft, ChevronRight, Heart, Maximize2, Share2, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Heart, Maximize2, Play, Share2, X } from "lucide-react";
 import { useDialog } from "@/components/ui/useDialog";
 import type { ShopifyImage } from "@/lib/commerce/types";
+import type { ProductVideo } from "@/content/product-videos";
+import { MQ } from "@/lib/motion/gsap";
+
+/** A gallery slide: a product photo or the product film. */
+type Item = { kind: "image"; key: string; img: ShopifyImage } | { kind: "video"; key: string; video: ProductVideo };
+
+const thumbSrc = (it: Item) => (it.kind === "image" ? it.img.url : it.video.poster);
+const itemAlt = (it: Item, title: string) => (it.kind === "image" ? (it.img.altText ?? title) : it.video.alt);
+
+/** Muted looping film that plays only while its slide is showing (and motion is allowed). */
+function FilmSlide({ video, playing, contain }: { video: ProductVideo; playing: boolean; contain?: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => setReduced(!window.matchMedia(MQ.motion).matches), []);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || reduced) return;
+    if (playing) v.play().catch(() => {});
+    else v.pause();
+  }, [playing, reduced]);
+  return (
+    <video
+      ref={ref}
+      className={`absolute inset-0 h-full w-full ${contain ? "object-contain p-2 md:p-6" : "object-cover"}`}
+      poster={video.poster}
+      muted
+      loop
+      playsInline
+      preload={playing ? "auto" : "none"}
+      controls={reduced}
+      aria-label={video.alt}
+    >
+      {video.webm && <source src={video.webm} type="video/webm" />}
+      <source src={video.mp4} type="video/mp4" />
+    </video>
+  );
+}
 
 const MAX_THUMBS = 6;
 const SAVED_KEY = "mb-saved";
@@ -49,9 +86,24 @@ function useTrack(index: number, onSwipe: (i: number) => void) {
  * Product gallery: thumbnail rail + large main image (swipe on touch), with
  * share / save buttons and a full-view lightbox.
  * Thumbnails select on hover (desktop) and click/tap. Lightbox: Esc closes,
- * ←/→ step through images, focus is trapped and returned to the trigger.
+ * ←/→ step through slides, focus is trapped and returned to the trigger.
+ * A product film (if any) is the second slide: muted loop, plays only while shown;
+ * reduced motion shows its poster with controls instead of autoplay.
  */
-export function ProductGallery({ images, title, handle }: { images: ShopifyImage[]; title: string; handle: string }) {
+export function ProductGallery({
+  images,
+  title,
+  handle,
+  video,
+}: {
+  images: ShopifyImage[];
+  title: string;
+  handle: string;
+  /** Optional product film, shown as the second slide. */
+  video?: ProductVideo;
+}) {
+  const items: Item[] = images.map((img) => ({ kind: "image", key: img.url, img }));
+  if (video) items.splice(Math.min(1, items.length), 0, { kind: "video", key: video.mp4, video });
   const [active, setActive] = useState(0);
   const [full, setFull] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -65,7 +117,7 @@ export function ProductGallery({ images, title, handle }: { images: ShopifyImage
     return () => window.clearTimeout(t);
   }, [toast]);
 
-  const step = useCallback((d: number) => setActive((i) => (i + d + images.length) % images.length), [images.length]);
+  const step = useCallback((d: number) => setActive((i) => (i + d + items.length) % items.length), [items.length]);
 
   const toggleSaved = () => {
     const next = !saved;
@@ -93,8 +145,8 @@ export function ProductGallery({ images, title, handle }: { images: ShopifyImage
     }
   };
 
-  const shown = images.slice(0, MAX_THUMBS);
-  const extra = images.length - shown.length;
+  const shown = items.slice(0, MAX_THUMBS);
+  const extra = items.length - shown.length;
   const iconBtn =
     "grid size-11 place-items-center rounded-full bg-bg/90 text-ink shadow-[0_2px_10px_rgba(40,30,20,0.15)] backdrop-blur transition-colors hover:text-green";
 
@@ -102,19 +154,26 @@ export function ProductGallery({ images, title, handle }: { images: ShopifyImage
     <div className="grid gap-3 self-start sm:grid-cols-[4.5rem_1fr] sm:gap-4 lg:sticky lg:top-32" aria-label={`${title} images`} role="group">
       {/* Thumbnail rail */}
       <div className="order-2 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] sm:order-1 sm:flex-col sm:overflow-visible sm:pb-0">
-        {shown.map((img, i) => (
+        {shown.map((it, i) => (
           <button
-            key={img.url}
+            key={it.key}
             type="button"
             onClick={() => setActive(i)}
             onMouseEnter={() => setActive(i)}
-            aria-label={`Show image ${i + 1} of ${images.length}`}
+            aria-label={it.kind === "video" ? `Play the product film (${i + 1} of ${items.length})` : `Show image ${i + 1} of ${items.length}`}
             aria-current={i === active}
             className={`relative aspect-square w-16 shrink-0 overflow-hidden rounded-xl border-2 bg-cream transition-colors sm:w-full ${
               i === active ? "border-green" : "border-line hover:border-green/50"
             }`}
           >
-            <Image src={img.url} alt={img.altText ?? `Product image ${i + 1}`} fill sizes="72px" className="object-cover" />
+            <Image src={thumbSrc(it)} alt="" fill sizes="72px" className="object-cover" />
+            {it.kind === "video" && (
+              <span aria-hidden className="absolute inset-0 grid place-items-center bg-ink/20">
+                <span className="grid size-7 place-items-center rounded-full bg-bg/90 text-green">
+                  <Play className="size-3.5 fill-current" />
+                </span>
+              </span>
+            )}
           </button>
         ))}
         {extra > 0 && (
@@ -140,24 +199,28 @@ export function ProductGallery({ images, title, handle }: { images: ShopifyImage
             onScroll={main.onScroll}
             className="flex aspect-[4/5] snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] sm:overflow-hidden"
           >
-            {images.map((img, i) => (
+            {items.map((it, i) => (
               <button
-                key={img.url}
+                key={it.key}
                 type="button"
                 onClick={() => setFull(true)}
                 tabIndex={i === active ? 0 : -1}
                 aria-hidden={i !== active}
-                aria-label={`Open full view of image ${i + 1}`}
+                aria-label={`Open full view of ${it.kind === "video" ? "the product film" : `image ${i + 1}`}`}
                 className="relative h-full w-full shrink-0 snap-center cursor-zoom-in"
               >
-                <Image
-                  src={img.url}
-                  alt={img.altText ?? title}
-                  fill
-                  priority={i === 0}
-                  sizes="(min-width:1024px) 46vw, 100vw"
-                  className="object-cover"
-                />
+                {it.kind === "video" ? (
+                  <FilmSlide video={it.video} playing={i === active && !full} />
+                ) : (
+                  <Image
+                    src={it.img.url}
+                    alt={itemAlt(it, title)}
+                    fill
+                    priority={i === 0}
+                    sizes="(min-width:1024px) 46vw, 100vw"
+                    className="object-cover"
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -179,8 +242,8 @@ export function ProductGallery({ images, title, handle }: { images: ShopifyImage
 
           {/* swipe dots (touch) */}
           <div aria-hidden className="absolute inset-x-0 bottom-4 flex justify-center gap-1.5 sm:hidden">
-            {images.map((img, i) => (
-              <span key={img.url} className={`h-1.5 rounded-full transition-all ${i === active ? "w-5 bg-green" : "w-1.5 bg-ink/25"}`} />
+            {items.map((it, i) => (
+              <span key={it.key} className={`h-1.5 rounded-full transition-all ${i === active ? "w-5 bg-green" : "w-1.5 bg-ink/25"}`} />
             ))}
           </div>
 
@@ -205,20 +268,20 @@ export function ProductGallery({ images, title, handle }: { images: ShopifyImage
         </button>
       </div>
 
-      {full && <Lightbox images={images} title={title} index={active} setIndex={setActive} step={step} onClose={() => setFull(false)} />}
+      {full && <Lightbox items={items} title={title} index={active} setIndex={setActive} step={step} onClose={() => setFull(false)} />}
     </div>
   );
 }
 
 function Lightbox({
-  images,
+  items,
   title,
   index,
   setIndex,
   step,
   onClose,
 }: {
-  images: ShopifyImage[];
+  items: Item[];
   title: string;
   index: number;
   setIndex: (i: number) => void;
@@ -248,13 +311,13 @@ function Lightbox({
       ref={panel}
       role="dialog"
       aria-modal="true"
-      aria-label={`${title}: full view, image ${index + 1} of ${images.length}`}
+      aria-label={`${title}: full view, ${index + 1} of ${items.length}`}
       tabIndex={-1}
       className="fixed inset-0 z-[70] flex flex-col bg-bg outline-none"
     >
       <div className="flex items-center justify-between px-5 py-3 md:px-8">
         <p className="text-sm font-semibold text-ink-soft">
-          {title} · {index + 1} / {images.length}
+          {title} · {index + 1} / {items.length}
         </p>
         <button type="button" onClick={onClose} aria-label="Close full view" className="grid size-11 place-items-center rounded-full hover:bg-cream">
           <X className="size-6" aria-hidden />
@@ -263,13 +326,17 @@ function Lightbox({
 
       <div className="relative min-h-0 flex-1">
         <div ref={track.ref} onScroll={track.onScroll} className="flex h-full snap-x snap-mandatory overflow-x-auto [scrollbar-width:none]">
-          {images.map((img, i) => (
-            <div key={img.url} className="relative h-full w-full shrink-0 snap-center" aria-hidden={i !== index}>
-              <Image src={img.url} alt={img.altText ?? title} fill sizes="100vw" className="object-contain p-2 md:p-6" />
+          {items.map((it, i) => (
+            <div key={it.key} className="relative h-full w-full shrink-0 snap-center" aria-hidden={i !== index}>
+              {it.kind === "video" ? (
+                <FilmSlide video={it.video} playing={i === index} contain />
+              ) : (
+                <Image src={it.img.url} alt={itemAlt(it, title)} fill sizes="100vw" className="object-contain p-2 md:p-6" />
+              )}
             </div>
           ))}
         </div>
-        {images.length > 1 && (
+        {items.length > 1 && (
           <>
             <button type="button" onClick={() => step(-1)} aria-label="Previous image" className={`${navBtn} left-4 md:left-8`}>
               <ChevronLeft className="size-6" aria-hidden />
@@ -282,18 +349,18 @@ function Lightbox({
       </div>
 
       <div className="flex justify-center gap-2 overflow-x-auto px-5 py-4 [scrollbar-width:none]">
-        {images.map((img, i) => (
+        {items.map((it, i) => (
           <button
-            key={img.url}
+            key={it.key}
             type="button"
             onClick={() => setIndex(i)}
-            aria-label={`Show image ${i + 1}`}
+            aria-label={it.kind === "video" ? "Play the product film" : `Show image ${i + 1}`}
             aria-current={i === index}
             className={`relative size-14 shrink-0 overflow-hidden rounded-lg border-2 bg-cream md:size-16 ${
               i === index ? "border-green" : "border-line"
             }`}
           >
-            <Image src={img.url} alt={img.altText ?? `Product image ${i + 1}`} fill sizes="64px" className="object-cover" />
+            <Image src={thumbSrc(it)} alt="" fill sizes="64px" className="object-cover" />
           </button>
         ))}
       </div>

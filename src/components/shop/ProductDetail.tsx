@@ -4,6 +4,7 @@ import { IntroReveal } from "@/components/motion/IntroReveal";
 import { ProductFacts } from "@/components/ui/ProductFacts";
 import type { Product } from "@/lib/commerce/types";
 import { FAQ } from "@/content/faq";
+import { PRODUCT_VIDEOS } from "@/content/product-videos";
 import { ProductGallery } from "./ProductGallery";
 import { VariantPurchase } from "./VariantPurchase";
 
@@ -23,7 +24,7 @@ export function ProductDetail({ product }: { product: Product }) {
         <IntroReveal className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
           {/* Media */}
           {images.length ? (
-            <ProductGallery images={images} title={product.title} handle={product.handle} />
+            <ProductGallery images={images} title={product.title} handle={product.handle} video={PRODUCT_VIDEOS[product.handle]} />
           ) : (
             <div
               data-hero-reveal="clip"
