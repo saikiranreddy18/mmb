@@ -6,16 +6,16 @@ import { Pause, Play } from "lucide-react";
 import { SOCIAL_CARDS } from "@/content/social-cards";
 import { MQ } from "@/lib/motion/gsap";
 
-const COUNT = 7;
-const STEP = 360 / COUNT; // 51.4286°
+const COUNT = SOCIAL_CARDS.length; // designed for 7 (51.43° apart); spaces whatever is supplied evenly
+const STEP = 360 / COUNT;
 const RADIUS = 700; // px at full size; scaled down on narrow screens
 const SPEED = 12; // degrees per second
 
 /**
- * Everyday bites — 7 social cards on one horizontal 3D ring.
+ * Everyday bites — the social cards on one horizontal 3D ring (7 by design).
  *
  * MOTION CONTRACT — Card ring
- * One cylinder of 7 cards, 51.43° apart, turning continuously at 12°/s
+ * One cylinder of N cards (7 → 51.43° apart), turning continuously at 12°/s
  * (requestAnimationFrame, frame-rate independent, never resets). For card i:
  *   angle = i·STEP + phase · x = R·sin(angle) · z = R·(1 − cos(angle))
  *   transform: translate3d(x, 0, z) rotateY(−angle)
