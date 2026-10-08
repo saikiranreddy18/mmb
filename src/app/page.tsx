@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { CardRing } from "@/components/home/CardRing";
 import { ClosingInvite } from "@/components/home/ClosingInvite";
-import { ContactSection } from "@/components/home/ContactSection";
 import { Hero } from "@/components/home/Hero";
 import { IngredientSection } from "@/components/home/IngredientSection";
 import { features } from "@/content/features";
 import { PromiseQuotes } from "@/components/home/PromiseQuotes";
+import { TalkingIngredients } from "@/components/home/TalkingIngredients";
 import { ProcessFilm } from "@/components/home/ProcessFilm";
 import { ShopShowcase } from "@/components/home/ShopShowcase";
 import { getProducts } from "@/lib/commerce/products";
@@ -32,11 +32,13 @@ export default async function HomePage() {
       <Hero />
       <ShopShowcase products={products} />
       <CardRing />
-      <PromiseQuotes />
       <ProcessFilm />
       {features.ingredientIllustrations && <IngredientSection />}
       <ClosingInvite />
-      <ContactSection />
+      <section aria-label="What goes in" className="pb-20 pt-14 md:pb-28 md:pt-20">
+        <TalkingIngredients />
+      </section>
+      <PromiseQuotes />
     </>
   );
 }

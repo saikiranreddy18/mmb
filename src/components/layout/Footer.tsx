@@ -15,7 +15,7 @@ const QUICK_LINKS: FooterLink[] = [
   ...(storyPublished ? [{ href: "/our-story", label: "Our Story" }] : []),
   { href: "/shop", label: "Shop" },
   { href: "/shop#faq", label: "FAQ" },
-  { href: "/#contact", label: "Contact Us" },
+  { href: "/policies/contact-information", label: "Contact Us" },
   // Shopify customer accounts: order history and tracking.
   { href: ACCOUNT_URL, label: "Track Order", external: true },
   { href: ACCOUNT_URL, label: "My Account", external: true },
