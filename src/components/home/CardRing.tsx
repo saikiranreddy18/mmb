@@ -6,24 +6,26 @@ import { Pause, Play } from "lucide-react";
 import { SOCIAL_CARDS } from "@/content/social-cards";
 import { MQ } from "@/lib/motion/gsap";
 
-const COUNT = SOCIAL_CARDS.length; // designed for 7 (51.43° apart); spaces whatever is supplied evenly
+/** Each card appears twice around the ring so a full arc of 7 is always in view. */
+const SLOTS = [...SOCIAL_CARDS, ...SOCIAL_CARDS];
+const COUNT = SLOTS.length; // 14 → 25.71° apart
 const STEP = 360 / COUNT;
-const RADIUS = 700; // px at full size; scaled down on narrow screens
-const SPEED = 12; // degrees per second
+const SPEED = 8; // degrees per second
+const VISIBLE = 88; // cards beyond ±this angle (the back of the ring) are hidden
 
 /**
- * Everyday bites — the social cards on one horizontal 3D ring (7 by design).
+ * Everyday bites — the social cards on one 3D cylinder, seen from the front.
  *
- * MOTION CONTRACT — Card ring
- * One cylinder of N cards (7 → 51.43° apart), turning continuously at 12°/s
- * (requestAnimationFrame, frame-rate independent, never resets). For card i:
- *   angle = i·STEP + phase · x = R·sin(angle) · z = R·(1 − cos(angle))
- *   transform: translate3d(x, 0, z) rotateY(−angle)
- * The camera sits inside the ring (CSS perspective ≈ 1.55·R): the card at
- * angle 0 is farthest and dimmest, its neighbours swing past closer and larger,
- * and cards that would reach the camera fade out and hide. Only transform and
- * opacity change per frame (GPU-friendly). Runs only while on screen; Pause/Play
- * always available (WCAG 2.2.2). Reduced motion: no ring, a swipeable row.
+ * MOTION CONTRACT — Card arc
+ * 14 slots (the 7 cards twice) evenly around one ring, turning continuously at
+ * 8°/s (requestAnimationFrame, frame-rate independent, never resets). For slot i:
+ *   angle = i·STEP + phase · x = R·sin(angle) · z = R·(cos(angle) − 1)
+ *   transform: translate3d(x, 0, z) rotateY(angle)
+ * The front card is nearest and largest; the others curve away, smaller and
+ * angled inward, ~7 in view at once (like a cover-flow arc). Cards fade out
+ * past ±75° and hide past ±88°; farther cards are slightly dimmer. Only
+ * transform/opacity change per frame. Runs only while on screen; Pause/Play
+ * always available (WCAG 2.2.2). Reduced motion: a swipeable row.
  */
 export function CardRing() {
   const stage = useRef<HTMLDivElement>(null);
@@ -43,30 +45,31 @@ export function CardRing() {
     let last = 0;
     let phase = 0;
     let visible = false;
-    let R = RADIUS;
-    let P = RADIUS * 1.55;
+    let R = 600;
 
     const size = () => {
-      R = Math.min(RADIUS, el.clientWidth * 0.62);
-      P = R * 1.55;
-      el.style.perspective = `${P}px`;
+      const w = el.querySelector<HTMLElement>(".ring-card")?.offsetWidth ?? 220;
+      // neighbouring cards nearly touch: chord(STEP) ≈ 1.02 × card width; close camera = strong curve
+      R = (w * 1.16) / (2 * Math.sin((STEP * Math.PI) / 360));
+      el.style.perspective = `${Math.round(R * 1.9)}px`;
     };
 
     const place = () => {
-      const hideZ = P * 0.62; // beyond this a card is too close to / behind the camera
       for (let i = 0; i < COUNT; i++) {
         const card = cards.current[i];
         if (!card) continue;
-        const angle = i * STEP + phase;
+        let angle = (i * STEP + phase) % 360;
+        if (angle > 180) angle -= 360;
         const r = (angle * Math.PI) / 180;
         const x = R * Math.sin(r);
-        const z = R * (1 - Math.cos(r));
-        card.style.transform = `translate3d(${x.toFixed(2)}px, 0, ${z.toFixed(2)}px) rotateY(${(-angle).toFixed(3)}deg)`;
-        const fade = Math.min(1, Math.max(0, (hideZ - z) / (R * 0.22)));
+        const z = R * (Math.cos(r) - 1);
+        card.style.transform = `translate3d(${x.toFixed(2)}px, 0, ${z.toFixed(2)}px) rotateY(${angle.toFixed(3)}deg)`;
+        const a = Math.abs(angle);
+        const fade = a <= 75 ? 1 : Math.max(0, (VISIBLE - a) / (VISIBLE - 75));
         card.style.opacity = fade.toFixed(3);
         card.style.visibility = fade <= 0 ? "hidden" : "visible";
         const shade = shades.current[i];
-        if (shade) shade.style.opacity = (0.28 * (1 - Math.min(1, z / hideZ))).toFixed(3); // farther = dimmer
+        if (shade) shade.style.opacity = (0.32 * Math.min(1, a / 80)).toFixed(3); // farther = dimmer
       }
     };
 
@@ -135,16 +138,18 @@ export function CardRing() {
         </ul>
       ) : (
         <div ref={stage} className="ring-stage relative mt-6 h-[clamp(440px,72vh,680px)] md:mt-10">
+          <div aria-hidden className="ring-floor pointer-events-none absolute left-1/2 top-1/2" />
           <ul className="absolute inset-0 [transform-style:preserve-3d]">
-            {SOCIAL_CARDS.slice(0, COUNT).map((c, i) => (
+            {SLOTS.map((c, i) => (
               <li
-                key={c.src}
+                key={`${c.src}-${i}`}
+                aria-hidden={i >= SOCIAL_CARDS.length || undefined}
                 ref={(n) => {
                   cards.current[i] = n;
                 }}
                 className="ring-card absolute left-1/2 top-1/2 overflow-hidden rounded-[1.25rem] bg-cream shadow-[0_24px_60px_-20px_rgba(40,30,20,0.45)] [backface-visibility:hidden] [will-change:transform,opacity]"
               >
-                <Image src={c.src} alt={c.alt} fill sizes="(min-width:768px) 15rem, 10rem" className="object-cover" />
+                <Image src={c.src} alt={i < SOCIAL_CARDS.length ? c.alt : ""} fill sizes="(min-width:768px) 15rem, 10rem" className="object-cover" />
                 <span
                   aria-hidden
                   ref={(n) => {
@@ -160,7 +165,11 @@ export function CardRing() {
       )}
 
       <style>{`
-        .ring-stage { perspective-origin: 50% 50%; }
+        .ring-stage { perspective-origin: 50% 42%; }
+        .ring-floor { width: min(92vw, 1100px); height: 120px; translate: -50% calc(var(--fh, 220px));
+          border-radius: 50%; background: radial-gradient(closest-side, rgba(47,74,50,0.18), rgba(47,74,50,0.06) 60%, transparent);
+          box-shadow: inset 0 0 0 1px rgba(199,160,74,0.25); }
+        @media (max-width: 767px) { .ring-floor { --fh: 150px; height: 70px; } }
         .ring-card { --w: clamp(150px, 26vw, 240px); width: var(--w); height: calc(var(--w) * 16 / 9);
           margin-left: calc(var(--w) / -2); margin-top: calc(var(--w) * -8 / 9); }
       `}</style>

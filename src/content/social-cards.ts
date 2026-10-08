@@ -43,7 +43,7 @@ export const SOCIAL_CARDS: SocialCard[] = [
     height: 1672,
   },
   {
-    src: "/assets/social/piece-of-home-everywhere.jpg",
+    src: "/assets/social/piece-of-home-everywhere-v2.jpg",
     alt: "A little piece of home everywhere: a woman at her desk with a coffee, slipping a Mumma's Bite bar into her bag",
     width: 1080,
     height: 1920,
