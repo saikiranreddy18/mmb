@@ -31,8 +31,8 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Hero />
       <ShopShowcase products={products} />
-      <CardRing />
       <ProcessFilm />
+      <CardRing />
       {features.ingredientIllustrations && <IngredientSection />}
       <ClosingInvite />
       <section aria-label="What goes in" className="pb-20 pt-14 md:pb-28 md:pt-20">

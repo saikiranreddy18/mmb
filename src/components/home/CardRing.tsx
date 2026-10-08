@@ -6,9 +6,9 @@ import { Pause, Play } from "lucide-react";
 import { SOCIAL_CARDS } from "@/content/social-cards";
 import { MQ } from "@/lib/motion/gsap";
 
-/** Each card appears twice around the ring so a full arc of 7 is always in view. */
-const SLOTS = [...SOCIAL_CARDS, ...SOCIAL_CARDS];
-const COUNT = SLOTS.length; // 14 → 25.71° apart
+/** Each card appears three times around the (large) ring so the arc is full edge to edge. */
+const SLOTS = [...SOCIAL_CARDS, ...SOCIAL_CARDS, ...SOCIAL_CARDS];
+const COUNT = SLOTS.length; // 21 → 17.14° apart
 const STEP = 360 / COUNT;
 const SPEED = 8; // degrees per second
 const VISIBLE = 88; // cards beyond ±this angle (the back of the ring) are hidden
@@ -17,7 +17,8 @@ const VISIBLE = 88; // cards beyond ±this angle (the back of the ring) are hidd
  * Everyday bites — the social cards on one 3D cylinder, seen from the front.
  *
  * MOTION CONTRACT — Card arc
- * 14 slots (the 7 cards twice) evenly around one ring, turning continuously at
+ * 21 slots (the 7 cards three times) evenly around one large ring (R ≥ 0.62 ×
+ * page width, so the arc spans the full page), turning continuously at
  * 8°/s (requestAnimationFrame, frame-rate independent, never resets). For slot i:
  *   angle = i·STEP + phase · x = R·sin(angle) · z = R·(cos(angle) − 1)
  *   transform: translate3d(x, 0, z) rotateY(angle)
@@ -49,9 +50,10 @@ export function CardRing() {
 
     const size = () => {
       const w = el.querySelector<HTMLElement>(".ring-card")?.offsetWidth ?? 220;
-      // neighbouring cards nearly touch: chord(STEP) ≈ 1.02 × card width; close camera = strong curve
-      R = (w * 1.16) / (2 * Math.sin((STEP * Math.PI) / 360));
-      el.style.perspective = `${Math.round(R * 1.9)}px`;
+      // Big ring: wide enough to span the whole page, and never so tight that cards overlap
+      // (chord between neighbours ≥ 1.15 × card width). The arc runs off both page edges.
+      R = Math.max(el.clientWidth * 0.62, (w * 1.15) / (2 * Math.sin((STEP * Math.PI) / 360)));
+      el.style.perspective = `${Math.round(R * 2.2)}px`;
     };
 
     const place = () => {
@@ -166,7 +168,7 @@ export function CardRing() {
 
       <style>{`
         .ring-stage { perspective-origin: 50% 42%; }
-        .ring-floor { width: min(92vw, 1100px); height: 120px; translate: -50% calc(var(--fh, 220px));
+        .ring-floor { width: 100vw; height: 120px; translate: -50% calc(var(--fh, 220px));
           border-radius: 50%; background: radial-gradient(closest-side, rgba(47,74,50,0.18), rgba(47,74,50,0.06) 60%, transparent);
           box-shadow: inset 0 0 0 1px rgba(199,160,74,0.25); }
         @media (max-width: 767px) { .ring-floor { --fh: 150px; height: 70px; } }
