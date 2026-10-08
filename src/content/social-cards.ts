@@ -1,7 +1,7 @@
 /**
  * Cards of the Home "everyday" 3D carousel — the brand's social-style posts
  * (text is part of each image). The ring spaces however many cards there are
- * evenly (designed for 7; one more card to come).
+ * evenly (7 cards → 51.43° apart).
  */
 export type SocialCard = { src: string; alt: string; width: number; height: number };
 
@@ -13,10 +13,10 @@ export const SOCIAL_CARDS: SocialCard[] = [
     height: 1920,
   },
   {
-    src: "/assets/social/pre-workout.jpg",
-    alt: "Pre-workout fuel: a Mumma's Bite Multi-Seed Energy Bar pack on a bench beside a gym bag, towel and steel bottle",
-    width: 1080,
-    height: 1920,
+    src: "/assets/social/pre-workout-30.jpg",
+    alt: "Pre-workout fuel for ₹30: a Mumma's Bite Multi-Seed Energy Bar pack on a bench beside a gym bag, dumbbell, towel and steel bottle",
+    width: 941,
+    height: 1672,
   },
   {
     src: "/assets/social/piece-of-home-anywhere.jpg",
@@ -31,10 +31,16 @@ export const SOCIAL_CARDS: SocialCard[] = [
     height: 1920,
   },
   {
-    src: "/assets/social/work-slumps.jpg",
-    alt: "Power through work slumps: a Mumma's Bite Multi-Seed Energy Bar pack on a desk beside a laptop and a cup of coffee",
-    width: 1125,
-    height: 2000,
+    src: "/assets/social/work-slumps-25.jpg",
+    alt: "Power through work slumps: a Mumma's Bite Multi-Seed Energy Bar pack on a desk beside a laptop, notebook and a cup of coffee",
+    width: 941,
+    height: 1672,
+  },
+  {
+    src: "/assets/social/daily-journey.jpg",
+    alt: "Nourishment for your daily journey: a Mumma's Bite Multi-Seed Energy Bar pack on a desk beside a laptop, succulent and coffee",
+    width: 941,
+    height: 1672,
   },
   {
     src: "/assets/social/piece-of-home-everywhere.jpg",
