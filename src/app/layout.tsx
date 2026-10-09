@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   keywords,
   applicationName: siteName,
   category: "food",
+  // Points AI assistants and crawlers at the plain-text brief of the site.
+  alternates: { types: { "text/plain": "/llms.txt" } },
   openGraph: {
     type: "website",
     siteName,
