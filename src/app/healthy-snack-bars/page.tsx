@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: PATH },
-  openGraph: { title: `${TITLE} | ${siteName}`, description: DESCRIPTION, url: PATH },
-  twitter: { card: "summary_large_image", title: `${TITLE} | ${siteName}`, description: DESCRIPTION },
+  openGraph: { title: `${TITLE} | ${siteName}`, description: DESCRIPTION, url: PATH, images: ["/opengraph-image.png"] },
+  twitter: { card: "summary_large_image", title: `${TITLE} | ${siteName}`, description: DESCRIPTION, images: ["/twitter-image.png"] },
 };
 
 const maxPercent = Math.max(...OFFER_TIERS.map((t) => t.percent));

@@ -16,8 +16,6 @@ export const metadata: Metadata = {
   keywords,
   applicationName: siteName,
   category: "food",
-  // Points AI assistants and crawlers at the plain-text brief of the site.
-  alternates: { types: { "text/plain": "/llms.txt" } },
   openGraph: {
     type: "website",
     siteName,
@@ -88,6 +86,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-IN" suppressHydrationWarning>
       <head>
+        {/* Points AI assistants and crawlers at the plain-text brief of the site. */}
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="Mumma's Bite brief for AI assistants" />
         <script dangerouslySetInnerHTML={{ __html: motionScript }} />
         <script
           type="application/ld+json"
