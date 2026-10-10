@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, MapPin, Store } from "lucide-react";
+import { Heart, Mail, MapPin, Store } from "lucide-react";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { storyPublished } from "@/content/brand";
@@ -135,6 +135,9 @@ export function Footer() {
           </div>
           <p className="text-xs text-ink-soft">
             © {new Date().getFullYear()} Mumma&apos;s Bite · Made with a mother&apos;s love.
+            <span className="mt-1 block sm:ml-1.5 sm:mt-0 sm:inline">
+              Developed with <Heart className="inline size-3.5 -translate-y-px fill-red-500 text-red-500" aria-label="love" /> by DS Agency
+            </span>
           </p>
         </div>
       </div>
