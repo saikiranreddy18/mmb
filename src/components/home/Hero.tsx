@@ -8,6 +8,7 @@ import { brand, storyPublished } from "@/content/brand";
 import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
 const LOGO = "/assets/logo/mummas-bite-logo.svg";
+const HERO_VIDEOS = ["/assets/dryfruit-bar.mp4", "/assets/hero.mp4"] as const;
 
 declare global {
   interface Window {
@@ -39,7 +40,6 @@ export function Hero() {
   const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoIndex, setVideoIndex] = useState(0);
-  const heroVideos = ["/assets/dryfruit-bar.mp4", "/assets/hero.mp4"];
 
   useEffect(() => {
     // Mark the app as booted after this first paint, so later in-site visits skip the intro.
@@ -49,14 +49,15 @@ export function Hero() {
 
   useEffect(() => {
     const v = videoRef.current;
-    if (!v || !window.matchMedia(MQ.motion).matches) return;
-    v.src = heroVideos[videoIndex];
+    if (!v) return;
+    // src is rendered directly on the video element so the first film is
+    // available immediately; explicitly reload/play after each source change.
     v.load();
     v.play().catch(() => {});
   }, [videoIndex]);
 
   const playNextHeroVideo = () => {
-    setVideoIndex((current) => (current + 1) % heroVideos.length);
+    setVideoIndex((current) => (current + 1) % HERO_VIDEOS.length);
   };
 
   // Navbar logo steps aside while the hero is on screen (the hero shows the logo).
@@ -136,7 +137,9 @@ export function Hero() {
           <video
             ref={videoRef}
             className="absolute inset-0 h-full w-full object-cover [filter:brightness(1.18)_saturate(1.08)_contrast(1.03)]"
+            src={HERO_VIDEOS[videoIndex]}
             poster={assets.heroPoster.src ?? undefined}
+            autoPlay
             muted
             playsInline
             preload="auto"
