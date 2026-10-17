@@ -200,3 +200,14 @@ body {
 /* The navbar logo steps aside while the hero logo is on screen (no duplicate logo). */
 .nav-logo { transition: opacity 0.4s var(--mb-ease), visibility 0.4s; }
 html[data-hero-logo="on"] .nav-logo { opacity: 0; visibility: hidden; }
+
+/* Sale film: show only the video; keep the branded hero copy for the bowl film. */
+.hero-root[data-sale-video="true"] .hero-copy,
+.hero-root[data-sale-video="true"] .hero-wash,
+.hero-root[data-sale-video="true"] .hero-intro {
+  display: none !important;
+}
+.hero-root[data-sale-video="true"] .hero-media {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
