@@ -125,6 +125,7 @@ export function Hero() {
             src="/assets/hero.mp4"
             poster={assets.heroPoster.src ?? undefined}
             autoPlay
+            loop
             muted
             playsInline
             preload="auto"
