@@ -130,7 +130,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={rootRef} aria-labelledby="hero-title" className="hero-root relative">
+    <section ref={rootRef} aria-labelledby="hero-title" data-sale-video={videoIndex === 1 ? "true" : undefined} className="hero-root relative">
       <div className="sticky top-0 h-[100svh] min-h-[600px] overflow-hidden bg-bg">
         {/* LAYER 01 — video, seen through the logo */}
         <div ref={mediaRef} className="hero-media absolute inset-0">
