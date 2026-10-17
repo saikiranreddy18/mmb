@@ -153,6 +153,8 @@ export function Hero() {
           />
         </div>
 
+        {videoIndex === 0 && (
+          <>
         {/* Opening composition — line bottom-left, cue bottom-right */}
         <div className="hero-intro pointer-events-none absolute inset-x-0 bottom-0 pb-8 md:pb-12">
           <div className="shell flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
@@ -195,6 +197,8 @@ export function Hero() {
             </div>
           </div>
         </div>
+          </>
+        )}
 
       </div>
     </section>
