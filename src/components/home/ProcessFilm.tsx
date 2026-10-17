@@ -1,13 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { assets } from "@/content/assets";
 import { MQ } from "@/lib/motion/gsap";
 
-/**
- * Plays the process film once, then shows the seasonal sale banner for six
- * seconds before replaying the film. Reduced-motion visitors get a static
- * banner and the process steps remain available.
- */
+/** Beats of the supplied process film, keyed to where they start (seconds). */
 const steps = [
   { at: 0, title: "Gathered", text: "Dates, nuts and seeds come together in one bowl." },
   { at: 3.2, title: "Pressed", text: "The mix is pressed into a dense, chewy bar." },
@@ -18,18 +15,13 @@ export function ProcessFilm() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(0);
   const [reduced, setReduced] = useState(false);
-  const [showSale, setShowSale] = useState(false);
-  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     const allow = window.matchMedia(MQ.motion).matches;
     setReduced(!allow);
-    if (!allow) {
-      setShowSale(true);
-      return;
-    }
+    if (!allow) return;
 
     const small = window.matchMedia("(max-width: 767px)").matches;
     const webm = video.canPlayType('video/webm; codecs="vp9"') !== "";
@@ -41,7 +33,7 @@ export function ProcessFilm() {
     const ctrl = new AbortController();
 
     const sync = () => {
-      if (!onScreen || !ready || showSale) {
+      if (!onScreen || !ready) {
         video.pause();
         return;
       }
@@ -80,7 +72,7 @@ export function ProcessFilm() {
       if (timerRef.current !== null) window.clearTimeout(timerRef.current);
       if (url) URL.revokeObjectURL(url);
     };
-  }, [showSale]);
+  }, []);
 
   const onTime = () => {
     const t = videoRef.current?.currentTime ?? 0;
@@ -91,17 +83,6 @@ export function ProcessFilm() {
     if (i !== active) setActive(i);
   };
 
-  const onEnded = () => {
-    setShowSale(true);
-    timerRef.current = window.setTimeout(() => {
-      const video = videoRef.current;
-      setShowSale(false);
-      if (video) {
-        video.currentTime = 0;
-        video.play().catch(() => {});
-      }
-    }, 6000);
-  };
 
   return (
     <section aria-labelledby="process-title" className="relative isolate overflow-hidden">
@@ -111,13 +92,14 @@ export function ProcessFilm() {
             <video
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover"
+              poster={assets.processPoster.src ?? undefined}
               muted
+              loop
               playsInline
               preload="none"
               aria-hidden
               tabIndex={-1}
               onTimeUpdate={onTime}
-              onEnded={onEnded}
             >
               <source src="/assets/process.webm" type="video/webm" />
               <source src="/assets/process.mp4" type="video/mp4" />
@@ -162,17 +144,6 @@ export function ProcessFilm() {
           </>
         )}
 
-        {showSale && (
-          <div className="absolute inset-0 flex items-center justify-center bg-[#f9edcf]">
-            <img
-              src="/assets/dasra-sale-banner.svg"
-              alt="Mumma’s Bite Dasra Sale — Made with Mother’s Love. 5% off orders of ₹800 or more; 10% off and free shipping on orders of ₹2,000 or more."
-              className="h-full w-full object-contain md:object-cover"
-              width={2000}
-              height={650}
-            />
-          </div>
-        )}
       </div>
     </section>
   );
