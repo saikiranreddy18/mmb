@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CardRing } from "@/components/home/CardRing";
 import { ClosingInvite } from "@/components/home/ClosingInvite";
 import { Hero } from "@/components/home/Hero";
+import { SaleVideoBanner } from "@/components/home/SaleVideoBanner";
 import { IngredientSection } from "@/components/home/IngredientSection";
 import { features } from "@/content/features";
 import { PromiseQuotes } from "@/components/home/PromiseQuotes";
@@ -30,6 +31,7 @@ export default async function HomePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Hero />
+      <SaleVideoBanner />
       <ShopShowcase products={products} />
       <ProcessFilm />
       <CardRing />
