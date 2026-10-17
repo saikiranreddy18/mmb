@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { assets } from "@/content/assets";
@@ -38,6 +38,8 @@ export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoIndex, setVideoIndex] = useState(0);
+  const heroVideos = ["/assets/dryfruit-bar.mp4", "/assets/hero.mp4"];
 
   useEffect(() => {
     // Mark the app as booted after this first paint, so later in-site visits skip the intro.
@@ -47,8 +49,15 @@ export function Hero() {
 
   useEffect(() => {
     const v = videoRef.current;
-    if (v && window.matchMedia(MQ.motion).matches) v.play().catch(() => {});
-  }, []);
+    if (!v || !window.matchMedia(MQ.motion).matches) return;
+    v.src = heroVideos[videoIndex];
+    v.load();
+    v.play().catch(() => {});
+  }, [videoIndex]);
+
+  const playNextHeroVideo = () => {
+    setVideoIndex((current) => (current + 1) % heroVideos.length);
+  };
 
   // Navbar logo steps aside while the hero is on screen (the hero shows the logo).
   useEffect(() => {
@@ -129,15 +138,12 @@ export function Hero() {
             className="absolute inset-0 h-full w-full object-cover [filter:brightness(1.18)_saturate(1.08)_contrast(1.03)]"
             poster={assets.heroPoster.src ?? undefined}
             muted
-            loop
             playsInline
             preload="auto"
             aria-hidden
             tabIndex={-1}
-          >
-            <source src="/assets/hero.webm" type="video/webm" />
-            <source src="/assets/hero.mp4" type="video/mp4" />
-          </video>
+            onEnded={playNextHeroVideo}
+          />
           <div
             aria-hidden
             className="hero-wash pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(251,247,239,0.97)_0%,rgba(251,247,239,0.88)_46%,rgba(251,247,239,0)_78%)] md:bg-[linear-gradient(90deg,rgba(251,247,239,0.95)_0%,rgba(251,247,239,0.82)_34%,rgba(251,247,239,0)_66%)]"
