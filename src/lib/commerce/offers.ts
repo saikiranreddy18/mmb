@@ -1,26 +1,22 @@
 import type { Money } from "./types";
 
 /**
- * Cart offers, mirroring what Shopify applies at checkout:
- *   ₹799 or more   → 5% off      (automatic discount, min subtotal 799)
- *   ₹2,000 or more → 10% off     (automatic discount, min subtotal 2000; the best one applies)
- *   free delivery when the total after the discount is ₹1,299 or more
- *     (Shopify "Standard ₹0" rate, condition: order price ≥ 1299)
- * Shopify checkout is the source of truth for the final price.
+ * Current cart offers:
+ *   ₹800 or more  → 5% off
+ *   ₹2,000 or more → 10% off + free delivery
+ * Shopify checkout is the source of truth for the final price and shipping.
  */
 export const OFFER_TIERS = [
-  { min: 799, percent: 5, freeDelivery: false },
-  { min: 1299, percent: 5, freeDelivery: true },
+  { min: 800, percent: 5, freeDelivery: false },
   { min: 2000, percent: 10, freeDelivery: true },
 ] as const;
 
-/** Free delivery applies when the order total AFTER the percentage offer reaches this (Shopify's rate rule). */
-export const FREE_DELIVERY_MIN = 1299;
+/** Free delivery applies when the order subtotal reaches ₹2,000. */
+export const FREE_DELIVERY_MIN = 2000;
 
 export const OFFER_LINES = [
-  "5% off on orders of ₹799 or more",
-  "Free delivery on orders of ₹1,299 or more (after offers)",
-  "10% off on orders of ₹2,000 or more",
+  "5% off on orders of ₹800 or more",
+  "10% off + free delivery on orders of ₹2,000 or more",
 ];
 
 export type OfferResult = {
@@ -37,8 +33,8 @@ function evaluate(value: number) {
   const percent = reached?.percent ?? 0;
   const discount = Math.round(value * percent) / 100;
   const total = value - discount;
-  // Shopify's free-delivery rate compares the order total after discounts.
-  return { percent, discount, total, freeDelivery: total >= FREE_DELIVERY_MIN };
+  // Free delivery unlocks only at the ₹2,000 offer threshold.
+  return { percent, discount, total, freeDelivery: value >= FREE_DELIVERY_MIN };
 }
 
 export function applyOffers(subtotal: Money): OfferResult {
