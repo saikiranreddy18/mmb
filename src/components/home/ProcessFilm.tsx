@@ -69,7 +69,6 @@ export function ProcessFilm() {
       ctrl.abort();
       near.disconnect();
       seen.disconnect();
-      if (timerRef.current !== null) window.clearTimeout(timerRef.current);
       if (url) URL.revokeObjectURL(url);
     };
   }, []);
@@ -87,8 +86,7 @@ export function ProcessFilm() {
   return (
     <section aria-labelledby="process-title" className="relative isolate overflow-hidden">
       <div className="relative min-h-[520px] h-[78svh] md:h-[88svh]">
-        {!showSale && (
-          <>
+        <>
             <video
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover"
@@ -141,8 +139,7 @@ export function ProcessFilm() {
                 )}
               </div>
             </div>
-          </>
-        )}
+        </>
 
       </div>
     </section>
