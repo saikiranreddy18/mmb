@@ -136,7 +136,7 @@ export function Hero() {
         <div ref={mediaRef} className="hero-media absolute inset-0">
           <video
             ref={videoRef}
-            className="absolute inset-0 h-full w-full object-cover [filter:brightness(1.18)_saturate(1.08)_contrast(1.03)]"
+            className={`absolute inset-0 h-full w-full ${videoIndex === 1 ? "object-contain" : "object-cover"} [filter:brightness(1.18)_saturate(1.08)_contrast(1.03)]`}
             src={HERO_VIDEOS[videoIndex]}
             poster={assets.heroPoster.src ?? undefined}
             autoPlay
