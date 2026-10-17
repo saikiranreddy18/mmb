@@ -8,7 +8,6 @@ import { brand, storyPublished } from "@/content/brand";
 import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
 const LOGO = "/assets/logo/mummas-bite-logo.svg";
-const HERO_VIDEOS = ["/assets/hero.mp4", "/assets/dryfruit-bar.mp4"] as const;
 
 declare global {
   interface Window {
@@ -39,26 +38,12 @@ export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoIndex, setVideoIndex] = useState(0);
 
   useEffect(() => {
     // Mark the app as booted after this first paint, so later in-site visits skip the intro.
     const id = window.setTimeout(() => (window.__mbBooted = true), 0);
     return () => window.clearTimeout(id);
   }, []);
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    // src is rendered directly on the video element so the first film is
-    // available immediately; explicitly reload/play after each source change.
-    v.load();
-    v.play().catch(() => {});
-  }, [videoIndex]);
-
-  const playNextHeroVideo = () => {
-    setVideoIndex((current) => (current + 1) % HERO_VIDEOS.length);
-  };
 
   // Navbar logo steps aside while the hero is on screen (the hero shows the logo).
   useEffect(() => {
@@ -130,14 +115,14 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={rootRef} aria-labelledby="hero-title" data-sale-video={videoIndex === 1 ? "true" : undefined} className="hero-root relative">
+    <section ref={rootRef} aria-labelledby="hero-title" className="hero-root relative">
       <div className="sticky top-0 h-[100svh] min-h-[600px] overflow-hidden bg-bg">
         {/* LAYER 01 — video, seen through the logo */}
         <div ref={mediaRef} className="hero-media absolute inset-0">
           <video
             ref={videoRef}
-            className={`absolute inset-0 h-full w-full ${videoIndex === 1 ? "object-contain" : "object-cover"} [filter:brightness(1.18)_saturate(1.08)_contrast(1.03)]`}
-            src={HERO_VIDEOS[videoIndex]}
+            className="absolute inset-0 h-full w-full object-cover [filter:brightness(1.18)_saturate(1.08)_contrast(1.03)]"
+            src="/assets/hero.mp4"
             poster={assets.heroPoster.src ?? undefined}
             autoPlay
             muted
@@ -145,7 +130,6 @@ export function Hero() {
             preload="auto"
             aria-hidden
             tabIndex={-1}
-            onEnded={playNextHeroVideo}
           />
           <div
             aria-hidden
@@ -153,8 +137,6 @@ export function Hero() {
           />
         </div>
 
-        {videoIndex === 0 && (
-          <>
         {/* Opening composition — line bottom-left, cue bottom-right */}
         <div className="hero-intro pointer-events-none absolute inset-x-0 bottom-0 pb-8 md:pb-12">
           <div className="shell flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
@@ -197,8 +179,6 @@ export function Hero() {
             </div>
           </div>
         </div>
-          </>
-        )}
 
       </div>
     </section>
