@@ -8,7 +8,7 @@ import { brand, storyPublished } from "@/content/brand";
 import { MQ, gsap, useIsoLayoutEffect } from "@/lib/motion/gsap";
 
 const LOGO = "/assets/logo/mummas-bite-logo.svg";
-const HERO_VIDEOS = ["/assets/dryfruit-bar.mp4", "/assets/hero.mp4"] as const;
+const HERO_VIDEOS = ["/assets/hero.mp4", "/assets/dryfruit-bar.mp4"] as const;
 
 declare global {
   interface Window {
