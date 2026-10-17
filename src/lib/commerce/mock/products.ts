@@ -86,9 +86,9 @@ export const mockProducts: Product[] = [
     shortDescription: "Crunchy roasted peanuts and five kinds of seeds, held together with the natural sweetness of dates.",
     description:
       "A crunchy mix of roasted peanuts and seeds, brought together with dates and a touch of ghee. Pumpkin, sunflower, watermelon, sesame and flax seeds give it a varied, nutty crunch, with no added sugar. Each 25 g bar (about 4 × 5 cm) is an easy snack for your desk, bag or journey.",
-    featuredImage: img("multiseed-front-v2.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front: 25 g bar, 2.5 g protein, ₹30 each", 1080, 1457),
+    featuredImage: img("multiseed-front-v2.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front: 25 g bar, 2.5 g protein, ₹20 each", 1080, 1457),
     images: [
-      img("multiseed-front-v2.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front: 25 g bar, 2.5 g protein, ₹30 each", 1080, 1457),
+      img("multiseed-front-v2.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch, front: 25 g bar, 2.5 g protein, ₹20 each", 1080, 1457),
       img("multiseed-lifestyle-v2.jpg", "Mumma's Bite Multi-Seed Energy Bar pouch on slate with a bar, peanuts and seeds", 1121, 1403),
       img(
         "multiseed-ingredients-ghee.jpg",
@@ -97,13 +97,14 @@ export const mockProducts: Product[] = [
         1402,
       ),
     ],
-    priceRange: { minVariantPrice: { amount: "250.00", currencyCode: "INR" } },
+    priceRange: { minVariantPrice: { amount: "200.00", currencyCode: "INR" } },
     variants: [
       {
         id: "gid://mumma/ProductVariant/multi-seed-pack-10",
         title: "Pack of 10 · 250 g",
         availableForSale: true,
-        price: { amount: "250.00", currencyCode: "INR" },
+        // ₹20 per bar × 10 bars = ₹200 per pack.
+        price: { amount: "200.00", currencyCode: "INR" },
         selectedOptions: [{ name: "Pack", value: "Pack of 10 (250 g)" }],
       },
     ],
