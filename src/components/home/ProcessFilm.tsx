@@ -165,7 +165,7 @@ export function ProcessFilm() {
         {showSale && (
           <div className="absolute inset-0 flex items-center justify-center bg-[#f9edcf]">
             <img
-              src="/assets/dasra-sale-banner.png"
+              src="/assets/dasra-sale-banner.svg"
               alt="Mumma’s Bite Dasra Sale — Made with Mother’s Love. 5% off orders of ₹800 or more; 10% off and free shipping on orders of ₹2,000 or more."
               className="h-full w-full object-contain md:object-cover"
               width={2000}
